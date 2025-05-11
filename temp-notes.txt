@@ -1,0 +1,6 @@
+Basic Setup
+
+ - style.css file needs to be linked in the index.html file
+   before changes into it will be applied to the index-page.
+     <link rel="stylesheet" href="./style.css">
+
