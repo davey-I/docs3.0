@@ -1,3 +1,37 @@
-body {
-    background-color: black;
+
+.codeblock {
+    width: fit-content;
+}
+
+/* Sidebar boxes */
+.sidebar-mainbox {
+    
+  width: 80px;                 /* small sidebar width */
+  height: 50vh;               /* full height of screen */
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;     /* center items vertically */
+  align-items: center;         /* center items horizontally */
+  position: fixed;             /* fix to the side */
+  left: 2;
+  top: 2;
+  border-style: solid;
+}
+
+.sidebar-subbox {
+  width: 2em;
+  height: 2em;
+  margin: 22px; 
+  text-align: center;
+  cursor: pointer;
+  border-style: solid;
+}
+
+
+/* Intro Box */
+.introbox {
+    align-items: left;
+    background-color: rgb(140, 140, 91);
 }

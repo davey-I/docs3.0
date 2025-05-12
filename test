@@ -1,0 +1,8 @@
+&lt;div class="codeblock"&gt;
+    &lt;pre&gt;
+        &lt;code class="lang-py"&gt;
+            def blaBlup():
+                name = "hansi"
+                print(name)
+        &lt;/code&gt;
+    &lt;/pre&gt;
