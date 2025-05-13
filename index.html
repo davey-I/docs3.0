@@ -7,22 +7,14 @@
 </head>
 <body>
     <h1>Title Placeholder</h1>
-
-    <div class="sidebar-mainbox">
-        <div class="sidebar-subbox">
-
-        </div>
-        <div class="sidebar-subbox">
-
-        </div>
-        <div class="sidebar-subbox">
-            
-        </div>
-        <div class="sidebar-subbox">
-            
-        </div>
+    <div id="hans" class="foldable-content folded" style="position: relative;">
+        <button type="button" style="position: absolute; right: 10px; top: 10px;" onclick="document.getElementById('hans').classList.replace('unfolded', 'folded')">X</button>
+        Bla Blup
+        <br><br>
+        blubber...
     </div>
 
+    <button type="button" onclick="document.getElementById('hans').classList.replace('folded', 'unfolded')">Unfold Toggle</button>
    <script src="./prism.js"></script>
 </body>
 </html>

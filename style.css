@@ -35,3 +35,23 @@
     align-items: left;
     background-color: rgb(140, 140, 91);
 }
+
+/*foldable content*/
+.foldable-content {
+  position: relative;
+}
+
+/* 'unfold' state */
+.unfolded {
+  width: 20%;
+  border-style: solid;
+  border-color: blueviolet;
+}
+
+/* 'folded' state */
+.folded {
+  content-visibility: hidden;
+  width: 20%;
+  border-style: solid;
+  border-color: blueviolet;
+}

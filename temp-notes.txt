@@ -4,3 +4,14 @@ Basic Setup
    before changes into it will be applied to the index-page.
      <link rel="stylesheet" href="./style.css">
 
+ - Prism ist eine nützliche 3th-party library, welche code prettyfier
+   für praktisch jede programmiersprache und scriptsprache bereit hält.
+   Auf der Prism seite wählt man verschiedene kriterien aus und kann
+   dann ein auto erstelltes.js sowie ein .css file herunterladen und
+   diese dann in seiner index.js seite verlinken.
+
+   Möchte man dann code snippets in die html seite einbinden, kann
+   mann dies mit einem <pre><code>... konstrukt machen, wobei man dann
+   dem <code> block, die entsprechende class z.b. "lang-python/lang-bash"
+   erteilt und man erhält pretty code.
+
