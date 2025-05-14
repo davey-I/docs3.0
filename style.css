@@ -36,22 +36,32 @@
     background-color: rgb(140, 140, 91);
 }
 
-/*foldable content*/
-.foldable-content {
+/*foldable content container*/
+.foldable-container {
+  margin: 13px;
+  padding: 10px;
   position: relative;
-}
-
-/* 'unfold' state */
-.unfolded {
-  width: 20%;
   border-style: solid;
-  border-color: blueviolet;
+  border-radius: 20px;
 }
 
-/* 'folded' state */
+/* 'unfold' state of foldable container */
+.unfolded {
+  width: 80%;
+  border-style: dotted;
+  padding: 12px;
+  margin: 10px;
+}
+
+/* 'folded' state of foldable container */
 .folded {
   content-visibility: hidden;
   width: 20%;
-  border-style: solid;
-  border-color: blueviolet;
+  
+}
+
+/* foldable containers title, that is not folded */
+.foldable-title {
+  padding: 12px;
+  margin: 10px;
 }

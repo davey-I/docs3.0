@@ -7,14 +7,17 @@
 </head>
 <body>
     <h1>Title Placeholder</h1>
-    <div id="hans" class="foldable-content folded" style="position: relative;">
-        <button type="button" style="position: absolute; right: 10px; top: 10px;" onclick="document.getElementById('hans').classList.replace('unfolded', 'folded')">X</button>
-        Bla Blup
-        <br><br>
-        blubber...
+    
+    <!--## skdfjlk #################################################################################################################-->
+    <div class="foldable-container" id="foldcontainer-skdfjlk" onClick="toggleFoldableContent('skdfjlk')">
+    <h2 class="foldable-title" id="foldable-title-skdfjlk">skdfjlk</h2>
+    
+      <div class="foldable-content folded" id="foldable-content-skdfjlk">
+       {Placeholder Content}
+      </div>
     </div>
-
-    <button type="button" onclick="document.getElementById('hans').classList.replace('folded', 'unfolded')">Unfold Toggle</button>
+    
    <script src="./prism.js"></script>
+   <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,46 @@
+// Place your key bindings in this file to override the defaults
+// These go into the file, 'Preferences: Open Keyboard Shortcuts (JSON)'
+// That can be found vis CTRL+SHIFT+P in vscode.
+[
+    {
+        "key": "ctrl+shift+y",
+        "command": "editor.emmet.action.wrapWithAbbreviation",
+        "when": "editorHasSelection",
+        "args": {
+          "abbreviation": "span.highlighteryellow"
+        }
+      },
+      {
+        "key": "ctrl+shift+b",
+        "command": "editor.emmet.action.wrapWithAbbreviation",
+        "when": "editorHasSelection",
+        "args": {
+          "abbreviation": "span.highlighterblue"
+        }
+      },
+      {
+        "key": "ctrl+shift+o",
+        "command": "editor.emmet.action.wrapWithAbbreviation",
+        "when": "editorHasSelection",
+        "args": {
+          "abbreviation": "span.highlighterorange"
+        }
+      },
+      {
+        "key": "ctrl+shift+k",
+        "command": "editor.action.insertSnippet",
+        "when": "editorHasSelection",
+        "args": {
+            "snippet": "<!--## ${TM_SELECTED_TEXT} #################################################################################################################-->\n<button type=\"button\" class=\"collapsible\" aria-label=\"${TM_SELECTED_TEXT}\" id=\"level-0\">${TM_SELECTED_TEXT}</button>\n<div class=\"content\"><br></div>"
+        }
+    },
+    {
+        "key": "ctrl+shift+q",
+        "command": "editor.action.insertSnippet",
+        "when": "editorHasSelection",
+        "args": {
+            "snippet": "<!--## ${TM_SELECTED_TEXT} #################################################################################################################-->\n<div class=\"foldable-container\" id=\"foldcontainer-${TM_SELECTED_TEXT}\" onClick=\"toggleFoldableContent('${TM_SELECTED_TEXT}')\">\n<h2 class=\"foldable-title\" id=\"foldable-title-${TM_SELECTED_TEXT}\">${TM_SELECTED_TEXT}</h2>\n\n  <div class=\"foldable-content folded\" id=\"foldable-content-${TM_SELECTED_TEXT}\">\n   {Placeholder Content}\n  </div>\n</div>"
+        }
+    }
+    
+]
