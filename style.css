@@ -1,11 +1,15 @@
 
+body {
+  padding: 25px;
+  position: relative;
+}
+
 .codeblock {
     width: fit-content;
 }
 
 /* Sidebar boxes */
 .sidebar-mainbox {
-    
   width: 80px;                 /* small sidebar width */
   height: 50vh;               /* full height of screen */
   background-color: #333;
@@ -29,7 +33,6 @@
   border-style: solid;
 }
 
-
 /* Intro Box */
 .introbox {
     align-items: left;
@@ -41,13 +44,23 @@
   margin: 13px;
   padding: 10px;
   position: relative;
-  border-style: solid;
-  border-radius: 20px;
+  overflow: auto;
+  border-radius: 50px;
+  transform-origin: center
+}
+
+:hover.foldable-container {
+  cursor: pointer;
+  transform: scale(1.01);
+  background-color: #333333;
+  border-left-style: solid;
+  border-left-color: rgb(177, 177, 123);
 }
 
 /* 'unfold' state of foldable container */
 .unfolded {
-  width: 80%;
+  width: 90%;
+  position: relative;
   border-style: dotted;
   padding: 12px;
   margin: 10px;
