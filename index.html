@@ -2,22 +2,39 @@
 <html>
 <head>
     <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./prism.css">
+    <link rel="stylesheet" href=" /static/style.css">
+    <link rel="stylesheet" href="/static/prism.css">
 </head>
-<body>
+<body class="body">
     <h1>Title Placeholder</h1>
-    
+
+    <button type="button" onclick="append_foldable_content('TEST')">ADD</button><br><br>
+
+    <button type="button" onclick="addNewBlock()">ADD NEW BLOCK TEST</button><br><br>
+
+    <a href="/pages/test1.html">GO TO testpage</a>
+
+
     <!--## skdfjlk #################################################################################################################-->
     <div class="foldable-container" id="foldcontainer-skdfjlk" onClick="toggleFoldableContent('skdfjlk')">
     <h2 class="foldable-title" id="foldable-title-skdfjlk">skdfjlk</h2>
     
       <div class="foldable-content folded" id="foldable-content-skdfjlk">
-       {Placeholder Content}
+       Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio maxime quae illum minus fugit suscipit magni tempora harum quam distinctio, quo quos aliquid ex, nulla aperiam cumque neque nesciunt soluta?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore quis, enim rerum sunt magni qui molestiae distinctio pariatur dolore consequatur tenetur laboriosam corrupti cupiditate provident minima dolorem culpa dolores ipsum.
       </div>
     </div>
+
+    <!--## BLABLA #################################################################################################################-->
+    <div class="foldable-container" id="foldcontainer-BLABLA" onClick="toggleFoldableContent('BLABLA')">
+    <h2 class="foldable-title" id="foldable-title-BLABLA">BLABLA</h2>
     
-   <script src="./prism.js"></script>
-   <script src="script.js"></script>
+      <div class="foldable-content folded" id="foldable-content-BLABLA">
+       {Placeholder Content}
+      </div><br>
+
+    </div>
+    
+   <script src="/static/prism.js"></script>
+   <script src="/static/script.js"></script>
 </body>
 </html>

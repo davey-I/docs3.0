@@ -61,6 +61,7 @@ body {
 .unfolded {
   width: 90%;
   position: relative;
+  font-size: x-large;
   border-style: dotted;
   padding: 12px;
   margin: 10px;
