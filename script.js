@@ -11,10 +11,6 @@ function append_foldable_content(ID){
       </div>
     `;
 
-   /* let last_element = document.querySelector('body > div:last-of-type')
-      last_element.insertAdjacentHTML('afterend', foldable_container_snippet)
-   ....(probably delete...*/ 
-
    fetch('/save_page', {
       method: 'POST',
       headers: {
@@ -29,33 +25,6 @@ function append_foldable_content(ID){
    .then(data => alert(data.status))
    .catch(err => console.error('Save data error: ', err));
    /* --> add page refresher here */
-}
-
-/* JUST FOR TESTING bottle */
-
-function addNewBlock() {
-    const newHtml = `
-        <div class="foldable-container">
-            <h2>New Block</h2>
-            <div class="foldable-content folded">
-                New block content added!
-            </div>
-        </div>
-    `;
-
-    fetch('/save_page', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            page: 'test1',      // this maps to test1.html
-            content: newHtml    // content to append
-        })
-    })
-    .then(res => res.json())
-    .then(data => alert(data.status))
-    .catch(err => console.error('Save error:', err));
 }
 
 /* Function to fold/unfold the foldable containers */
