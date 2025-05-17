@@ -11,6 +11,10 @@ def index():
 def servers_static(filename):
     return static_file(filename, root='/home/inderdav/src/docs3.0')
 
+@route('/prism/<filename>')
+def serve_prism(filename):
+    return static_file(filename, root='/home/inderdav/src/docs3.0/prism')
+
 @route('/pages/<pagename>')
 def serve_page(pagename):
     return static_file(pagename, root='/home/inderdav/src/docs3.0/pages')
