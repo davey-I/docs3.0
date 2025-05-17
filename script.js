@@ -1,7 +1,9 @@
-/* Insert new foldable content */
-function append_foldable_content(ID){
+/* Append new foldable content to page end  */
+function append_foldable_content(){
+   const ID = prompt("Enter Content Title: ")
+   if (ID){
    const foldable_container_snippet = `
-      <!--## skdfjlk #################################################################################################################-->
+      <!--## ${ID} #################################################################################################################-->
       <div class="foldable-container" id="foldcontainer-${ID}" onClick="toggleFoldableContent('${ID}')">
          <h2 class="foldable-title" id="foldable-title-${ID}">${ID}</h2>
 
@@ -25,6 +27,32 @@ function append_foldable_content(ID){
    .then(data => alert(data.status))
    .catch(err => console.error('Save data error: ', err));
    /* --> add page refresher here */
+}
+else {
+   console.log("You did not enter a Title !")
+}
+}
+
+/* Create new page, when on Index-page */
+function create_new_page(){
+   var id = prompt("Enter Page Name: ")
+   if (id) {
+   fetch('/add_page', {
+      method : 'POST',
+      headers : {
+         'Content-Type' : 'application/json'
+      },
+      body : JSON.stringify({
+         page : id
+      })
+   })
+   .then(res => res.json())
+   .then(data => alert(data.status))
+   .catch(err => console.error('Create page error: ', err));
+ }
+ else {
+   console.log("You did not enter a name !") 
+ }
 }
 
 /* Function to fold/unfold the foldable containers */

@@ -1,4 +1,5 @@
 from bottle import route, run, template, static_file, response, request
+from string import Template
 import os
 
 PAGES_DIR = '/home/inderdav/src/docs3.0/pages'
@@ -39,5 +40,30 @@ def save_page():
         f.write('\n' + new_content + '\n')
 
     return {'status': f'Content appended to {page_name}.html'}
+
+@route('/add_page', method='POST')
+def add_page():
+    data = request.json
+    page_name = data.get('page')
+    file_path = os.path.join(PAGES_DIR, f'{page_name}.html')
+    template = Template('''<!DOCTYPE html>
+    <html>
+    <head>
+        <title>$ID</title>
+        <link rel="stylesheet" href=" ../static/style.css">
+        <link rel="stylesheet" href="../prism/prism.css">
+    </head>
+    <body class="body">
+        <h1>$ID</h1>
+    
+        <script src="../prism/prism.js"></script>
+        <script src="../static/script.js"></script>
+    </body>
+    </html>''')
+    html = template.substitute(ID=page_name)
+    with open(file_path, 'x', encoding='utf-8') as f:
+      f.write(html)
+
+    return {'status': f'Page created {page_name}.html'}
 
 run(host='localhost', port=8000, debug=True) 
