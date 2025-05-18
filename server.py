@@ -1,6 +1,8 @@
 from bottle import route, run, template, static_file, response, request
 from string import Template
 import os
+from bs4 import BeautifulSoup as bs
+import re
 
 PAGES_DIR = '/home/inderdav/src/docs3.0/pages'
 
@@ -115,5 +117,45 @@ def add_page():
       f.write(html)
 
     return {'status': f'Page created {page_name}.html'}
+
+###############################
+### SAVE CONTENT EDIT/CHANGES #
+###############################
+
+@route('/save_editable', method='POST')
+def save_editable():
+
+    data = request.json
+
+    page_name = data.get('page_name')
+    div_id = data.get('id')
+    new_content = data.get('data')  # This should be a string of HTML
+
+    if not (page_name and div_id and new_content):
+        return {'status': 'Missing data'}
+
+    # Load the HTML file
+    with open(f'./pages/{page_name}.html', 'r', encoding='utf-8') as f:
+        soup = bs(f, 'html.parser')
+
+    # Find the specific div by ID
+    target_div = soup.find('div', id=div_id)
+
+    if target_div:
+        # Clear the old content of the div
+        target_div.clear()
+
+        # Insert parsed HTML into that div
+        new_soup = bs(new_content, 'html.parser')
+        for element in new_soup.contents:
+            target_div.append(element)
+
+        # Save the modified HTML
+        with open(f'./pages/{page_name}.html', 'w', encoding='utf-8') as f:
+            f.write(str(soup))
+
+        return {'status': 'Saved successfully'}
+    else:
+        return {'status': f'Div with ID "{div_id}" not found'}
 
 run(host='localhost', port=8000, debug=True) 

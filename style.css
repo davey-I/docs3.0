@@ -132,11 +132,11 @@ body {
 
 /* 'unfold' state of foldable container */
 .unfolded {
-  width: 90%;
+  width: 95%;
   position: relative;
   font-size: x-large;
   border-style: dotted;
-  padding: 12px;
+  padding: 13px;
   margin: 10px;
 }
 
@@ -151,4 +151,17 @@ body {
 .foldable-title {
   padding: 12px;
   margin: 10px;
+}
+
+/* foldable edit button foldable content right-side */
+.foldable-content-penButton{
+  position: relative;
+left: 100%;
+bottom: 80px;
+transform: scale(0.4);
+}
+
+:hover.foldable-content-penButton {
+  transform: scale(1.2);
+  cursor: pointer;
 }
