@@ -13,13 +13,15 @@ function append_foldable_content(){
       </div>
     `;
 
+   const title = document.querySelector('.pagetitle').textContent;
+
    fetch('/save_page', {
       method: 'POST',
       headers: {
          'Content-Type' : 'application/json'
       },
       body : JSON.stringify({
-         page: 'test1',
+         page: title,
          content: foldable_container_snippet
       })
    })

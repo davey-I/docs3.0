@@ -2,6 +2,7 @@
 body {
   padding: 25px;
   position: relative;
+  padding: 80px;
 }
 
 .codeblock {
@@ -30,6 +31,11 @@ body {
 .sidbear-enclosure-open button{
   display: block;
   margin: 0px auto;
+}
+
+:hover.sidbear-enclosure-open button {
+  cursor: pointer;
+  transform: scale(1.08);
 }
 
 
@@ -83,12 +89,11 @@ body {
   margin: 22px; 
   text-align: center;
   cursor: pointer;
-  border-style: solid;
 }
 
 :hover.sidebar-subbox-open {
   cursor: pointer;
-  border-color: rgb(194, 194, 117);
+  transform: scale(1.2);
 }
 
 .sidebar-subbox-closed {
