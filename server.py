@@ -42,10 +42,23 @@ def save_page():
         response.status = 404
         return {'status': 'Page not found'}
 
-    with open(file_path, 'a', encoding='utf-8') as f:
-        f.write('\n' + new_content + '\n')
+    # Parse existing HTML file
+    with open(file_path, 'r', encoding='utf-8') as f:
+        soup = bs(f, 'html.parser')
 
-    return {'status': f'Content appended to {page_name}.html'}
+    # Parse new content and append to <body>
+    body = soup.body
+    if body:
+        body.append(bs(new_content, 'html.parser'))
+    else:
+        return {'status': 'No <body> tag found in HTML'}
+
+    # Write back to the file
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(str(soup))
+
+    return {'status': f'Content added to <body> in {page_name}.html'}
+
 
 
 ##############################

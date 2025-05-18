@@ -15,7 +15,7 @@ function save_editable_content(PAGE_ID, ID) {
       body: JSON.stringify({
          page_name: PAGE_ID,
          id: ID,
-         data: content.textContent
+         data: content.innerHTML
       })
    })
    .then(res => res.json())
