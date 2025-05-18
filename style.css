@@ -119,7 +119,7 @@ body {
   position: relative;
   overflow: auto;
   border-radius: 50px;
-  transform-origin: center
+  transform-origin: center;
 }
 
 :hover.foldable-container {

@@ -4,7 +4,7 @@ function append_foldable_content(){
    if (ID){
    const foldable_container_snippet = `
       <!--## ${ID} #################################################################################################################-->
-      <div class="foldable-container" id="foldcontainer-${ID}" onClick="toggleFoldableContent('${ID}')">
+      <div contenteditable='true' class="foldable-container" id="foldcontainer-${ID}" onClick="toggleFoldableContent('${ID}')">
          <h2 class="foldable-title" id="foldable-title-${ID}">${ID}</h2>
 
          <div class="foldable-content folded" id="foldable-content-${ID}">
