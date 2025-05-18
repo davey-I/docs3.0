@@ -69,3 +69,28 @@ function toggleFoldableContent(ID){
     foldContent.classList.replace('unfolded', 'folded')
    }
 }
+
+/* Function for the button in the sidebar enclosure to open/close the sidebar */
+function toggle_sidebar() {
+  const sidebar_container = document.querySelector('.sidebar-mainbox-open') || document.querySelector('.sidebar-mainbox-closed');
+  const sidebar_buttons = document.querySelectorAll('.sidebar-subbox-open, .sidebar-subbox-close');
+
+  if (!sidebar_container) return; // Safety check
+
+  // Toggle main sidebar class
+  if (sidebar_container.classList.contains('sidebar-mainbox-open')) {
+    sidebar_container.classList.replace('sidebar-mainbox-open', 'sidebar-mainbox-closed');
+  } else {
+    sidebar_container.classList.replace('sidebar-mainbox-closed', 'sidebar-mainbox-open');
+  }
+
+  // Toggle button classes
+  sidebar_buttons.forEach(button => {
+    if (button.classList.contains('sidebar-subbox-open')) {
+      button.classList.replace('sidebar-subbox-open', 'sidebar-subbox-close');
+    } else {
+      button.classList.replace('sidebar-subbox-close', 'sidebar-subbox-open');
+    }
+  });
+}
+

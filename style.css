@@ -8,10 +8,56 @@ body {
     width: fit-content;
 }
 
+.pagetitle {
+  visibility: true;
+}
+
+/* Sidebar enclosure */
+.sidbear-enclosure-open {
+  width: 80px;
+  height: 30vh;
+  color: white;
+  display: block;
+  flex-direction: column;
+  justify-content: center;     /* center items vertically */
+  align-items: center;         /* center items horizontally */
+  position: fixed;             /* fix to the side */
+  left: 10px;
+  top: 230px;
+}
+
+/* Sidebar enclosure button for open/close sidebar */
+.sidbear-enclosure-open button{
+  display: block;
+  margin: 0px auto;
+}
+
+
 /* Sidebar boxes */
-.sidebar-mainbox {
-  width: 80px;                 /* small sidebar width */
-  height: 50vh;               /* full height of screen */
+.sidebar-mainbox-open {
+  width: 80px;
+  height: 30vh;
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;     /* center items vertically */
+  align-items: center;         /* center items horizontally */
+  position: fixed;             /* fix to the side */
+  left: 10px;
+  top: 300px;
+  border-style: solid;
+}
+
+:hover.sidebar-mainbox-open {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.sidebar-mainbox-closed {
+  width: 5px;
+  height: 50vh;
+  visibility: collapse;
   background-color: #333;
   color: white;
   display: flex;
@@ -24,7 +70,14 @@ body {
   border-style: solid;
 }
 
-.sidebar-subbox {
+:hover.sidebar-mainbox-closed {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+
+/* Sidebar sub-boxe 'buttons' inside mainboxes */
+.sidebar-subbox-open {
   width: 2em;
   height: 2em;
   margin: 22px; 
@@ -32,6 +85,21 @@ body {
   cursor: pointer;
   border-style: solid;
 }
+
+:hover.sidebar-subbox-open {
+  cursor: pointer;
+  border-color: rgb(194, 194, 117);
+}
+
+.sidebar-subbox-closed {
+  width: 2em;
+  height: 2em;
+  margin: 22px; 
+  text-align: center;
+  cursor: pointer;
+  border-style: solid;
+}
+
 
 /* Intro Box */
 .introbox {
