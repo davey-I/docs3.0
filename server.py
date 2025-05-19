@@ -2,6 +2,7 @@ from bottle import route, run, template, static_file, response, request
 from string import Template
 import os
 from bs4 import BeautifulSoup as bs
+from bs4 import NavigableString
 import re
 
 PAGES_DIR = '/home/inderdav/src/docs3.0/pages'
@@ -139,7 +140,6 @@ def add_page():
 def save_editable():
 
     data = request.json
-
     page_name = data.get('page_name')
     div_id = data.get('id')
     new_content = data.get('data')  # This should be a string of HTML
@@ -156,12 +156,22 @@ def save_editable():
 
     if target_div:
         # Clear the old content of the div
+        print(f"Befor delete: {target_div}\n")
         target_div.clear()
-
+        print(f"After delete: {target_div}")
         # Insert parsed HTML into that div
         new_soup = bs(new_content, 'html.parser')
+
         for element in new_soup.contents:
-            target_div.append(element)
+            if isinstance(element, NavigableString):
+                parts = str(element).split('\n')
+                for i, part in enumerate(parts):
+                    if part:
+                        target_div.append(part)
+                    if i != len(parts) - 1:
+                        target_div.append(bs('<br>', 'html.parser').br)
+            else:
+                target_div.append(element)
 
         # Save the modified HTML
         with open(f'./pages/{page_name}.html', 'w', encoding='utf-8') as f:

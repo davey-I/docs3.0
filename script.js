@@ -15,15 +15,13 @@ function save_editable_content(PAGE_ID, ID) {
       body: JSON.stringify({
          page_name: PAGE_ID,
          id: ID,
-         data: content.innerHTML
+         data: content.innerText
       })
    })
    .then(res => res.json())
    .then(data => alert(data.status))
    .catch(err => console.error('Save editable-content error:', err));
 }
-
-
 
 /* Append new foldable content to page end  */
 function append_foldable_content(){
@@ -32,9 +30,11 @@ function append_foldable_content(){
    if (ID){
    const foldable_container_snippet = `
       <!--## ${ID} #################################################################################################################-->
-      <div contenteditable='true' class="foldable-container" id="foldcontainer-${ID}" onClick="toggleFoldableContent('${ID}')">
+      <div class="foldable-container" id="foldcontainer-${ID}")">
          <h2 class="foldable-title" id="foldable-title-${ID}">${ID}</h2>
-
+         <button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('${ID}')" type="button">
+          UNFOLD
+         </button>
          <div class="foldable-content folded" id="foldable-content-${ID}">
            <button type='button' class='foldable-content-penButton' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}')" id='foldable-content-penButton-${ID}'>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
@@ -43,7 +43,7 @@ function append_foldable_content(){
                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
              </svg>
             </button>
-            <div class="editable-paragraph" id="editable-paragraph-${ID}">
+            <div contenteditable="true" class="editable-paragraph" id="editable-paragraph-${ID}">
                Lorem ipsum ...
             </div>
          </div>

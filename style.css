@@ -153,6 +153,14 @@ body {
   margin: 10px;
 }
 
+/* Button to fold/unfold foldable content */
+.foldable-content-unfoldbutton {
+position: relative;
+left: 90%;
+bottom: 80px;
+transform: scale(0.4);
+}
+
 /* foldable edit button foldable content right-side */
 .foldable-content-penButton{
   position: relative;
