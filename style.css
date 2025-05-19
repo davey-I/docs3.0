@@ -38,7 +38,6 @@ body {
   transform: scale(1.08);
 }
 
-
 /* Sidebar boxes */
 .sidebar-mainbox-open {
   width: 80px;
@@ -140,6 +139,10 @@ body {
   margin: 10px;
 }
 
+.banana {
+  border-style: solid;
+}
+
 /* 'folded' state of foldable container */
 .folded {
   content-visibility: hidden;
@@ -158,6 +161,14 @@ body {
 position: relative;
 left: 90%;
 bottom: 80px;
+transform: scale(0.4);
+}
+
+/* Button to toggle editmode */
+.foldable-content-edittoggle {
+position: static;
+left: 20%;
+bottom: 88px;
 transform: scale(0.4);
 }
 

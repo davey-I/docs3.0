@@ -143,6 +143,7 @@ def save_editable():
     page_name = data.get('page_name')
     div_id = data.get('id')
     new_content = data.get('data')  # This should be a string of HTML
+    new_soup = bs(new_content, 'html.parser')
 
     if not (page_name and div_id and new_content):
         return {'status': 'Missing data'}
@@ -151,34 +152,43 @@ def save_editable():
     with open(f'./pages/{page_name}.html', 'r', encoding='utf-8') as f:
         soup = bs(f, 'html.parser')
 
-    # Find the specific div by ID
     target_div = soup.find('div', id=div_id)
+    target_div.clear()
 
-    if target_div:
-        # Clear the old content of the div
-        print(f"Befor delete: {target_div}\n")
-        target_div.clear()
-        print(f"After delete: {target_div}")
-        # Insert parsed HTML into that div
-        new_soup = bs(new_content, 'html.parser')
+    for el in new_soup:
+        target_div.append(el)
+   
+    with open(f'./pages/{page_name}.html', 'w', encoding='utf-8') as f:
+        f.write(str(soup))
 
-        for element in new_soup.contents:
-            if isinstance(element, NavigableString):
-                parts = str(element).split('\n')
-                for i, part in enumerate(parts):
-                    if part:
-                        target_div.append(part)
-                    if i != len(parts) - 1:
-                        target_div.append(bs('<br>', 'html.parser').br)
-            else:
-                target_div.append(element)
+    return {'status': 'Saved successfully'}
+    
 
-        # Save the modified HTML
-        with open(f'./pages/{page_name}.html', 'w', encoding='utf-8') as f:
-            f.write(str(soup))
+###########################
+### GET CURRENT HTML CODE #
+###########################
 
-        return {'status': 'Saved successfully'}
-    else:
-        return {'status': f'Div with ID "{div_id}" not found'}
+@route('/get_editable', method="POST")
+def get_editable():
+    data = request.json
+    page_name = data.get('page_name')
+    div_id = data.get('id')
+
+    file_path = os.path.join(PAGES_DIR, f'{page_name}.html')
+    if not os.path.exists(file_path):
+        response.status = 404
+        return {'error': 'Page not found'}
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        soup = bs(f, 'html.parser')
+
+    target_div = soup.find('div', id=div_id)
+    if not target_div:
+        response.status = 404
+        return {'error': 'Div not found'}
+
+    # Return only the contents (not the <div> wrapper)
+    return {'html': target_div.decode_contents()}
+    
 
 run(host='localhost', port=8000, debug=True) 
