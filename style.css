@@ -174,7 +174,7 @@ transform: scale(0.4);
 
 /* foldable edit button foldable content right-side */
 .foldable-content-penButton{
-  position: relative;
+position: relative;
 left: 100%;
 bottom: 80px;
 transform: scale(0.4);
@@ -183,4 +183,8 @@ transform: scale(0.4);
 :hover.foldable-content-penButton {
   transform: scale(1.2);
   cursor: pointer;
+}
+
+.foldable-content-penButton-hidden {
+  visibility: hidden;
 }

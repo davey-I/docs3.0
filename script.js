@@ -1,6 +1,6 @@
 
 /* Fetch editable content */
-async function fetchEditableContent(pageName, divId) {
+async function fetchEditableContent(pageName, divId, penid) {
   const response = await fetch('/get_editable', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -18,12 +18,18 @@ async function fetchEditableContent(pageName, divId) {
 
   const data = await response.json();
   const editableDiv = document.getElementById(divId);
+  const penbutton = document.getElementById(penid);
+  console.log("PENID: ", penid)
+  editableDiv.setAttribute('contenteditable', true)
+  penbutton.classList.replace('foldable-content-penButton-hidden', 'foldable-content-penButton')
+  
   editableDiv.innerText = data.html;  // Shows raw HTML code for editing
+  document.getElementById(divId)
 }
-
 
 /* Save edited content */
 function save_editable_content(PAGE_ID, ID) {
+   document.getElementById(ID).setAttribute('contenteditable', false)
    var content = document.getElementById(ID);
 
    console.log(content)
@@ -61,16 +67,16 @@ function append_foldable_content(){
          <button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('${ID}')" type="button">
           UNFOLD
          </button>
-         <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}')" type="button">EDITMODE</button>
+         <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}', 'foldable-content-penButton-${ID}')" type="button">EDITMODE</button>
          <div class="foldable-content folded" id="foldable-content-${ID}">
-           <button type='button' class='foldable-content-penButton' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}')" id='foldable-content-penButton-${ID}'>
+           <button type='button' class='foldable-content-penButton-hidden' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}')" id='foldable-content-penButton-${ID}'>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 20h9" />
                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
              </svg>
             </button>
-            <div contenteditable="true" class="editable-paragraph" id="editable-paragraph-${ID}"><h1>TITLE IPSUM</h2></div>
+            <div contenteditable="false" class="editable-paragraph" id="editable-paragraph-${ID}"><h1>TITLE IPSUM</h2></div>
          </div>
       </div>
     `;
