@@ -143,11 +143,12 @@ def save_editable():
     page_name = data.get('page_name')
     div_id = data.get('id')
     new_content = data.get('data')  # This should be a string of HTML
+    print(f"NEW-CONTent {new_content}")
     new_soup = bs(new_content, 'html.parser')
 
     if not (page_name and div_id and new_content):
         return {'status': 'Missing data'}
-
+    print("DAATEN:",data)
     # Load the HTML file
     with open(f'./pages/{page_name}.html', 'r', encoding='utf-8') as f:
         soup = bs(f, 'html.parser')
@@ -155,9 +156,10 @@ def save_editable():
     target_div = soup.find('div', id=div_id)
     target_div.clear()
 
-    for el in new_soup:
-        target_div.append(el)
-   
+    #for el in new_soup:
+    target_div.append(bs(data['data'], 'html.parser'))
+    
+
     with open(f'./pages/{page_name}.html', 'w', encoding='utf-8') as f:
         f.write(str(soup))
 

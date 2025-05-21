@@ -19,7 +19,7 @@ async function fetchEditableContent(pageName, divId, penid) {
   const data = await response.json();
   const editableDiv = document.getElementById(divId);
   const penbutton = document.getElementById(penid);
-  console.log("PENID: ", penid)
+
   editableDiv.setAttribute('contenteditable', true)
   penbutton.classList.replace('foldable-content-penButton-hidden', 'foldable-content-penButton')
   
