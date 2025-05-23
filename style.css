@@ -80,13 +80,11 @@ body {
   cursor: pointer;
 }
 
-
 /* Sidebar sub-boxe 'buttons' inside mainboxes */
 .sidebar-subbox-open {
   width: 2em;
   height: 2em;
   margin: 22px; 
-  text-align: center;
   cursor: pointer;
 }
 
@@ -104,6 +102,24 @@ body {
   border-style: solid;
 }
 
+/* page-overwiew container */
+.page-overwiew {
+  border-style: dotted;
+  width: 50em;
+  height: 20em;
+  position: relative;
+  left: 400px;
+}
+
+.page-overwiew-hidden {
+  visibility: hidden;
+}
+
+.page-overwiew-foldericon{
+  position: relative;
+  width: 10%;
+  height: 10%;
+}
 
 /* Intro Box */
 .introbox {
@@ -136,10 +152,6 @@ body {
   font-size: x-large;
   padding: 13px;
   margin: 10px;
-}
-
-.banana {
-  border-style: solid;
 }
 
 /* 'folded' state of foldable container */

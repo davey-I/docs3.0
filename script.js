@@ -164,3 +164,40 @@ function toggle_sidebar() {
   });
 }
 
+/* Toggle page overview window visibility */
+
+function page_overview_visibility_toggle(){
+   el = document.getElementById('page-overwiew-index')
+   if (el.classList.contains('page-overwiew-hidden')){
+      el.classList.replace('page-overwiew-hidden', 'page-overwiew')
+   }
+   else {
+      el.classList.replace('page-overwiew', 'page-overwiew-hidden')
+   }
+}
+
+/* Create new page-folder */
+function create_new_pagefolder(){
+   var foldername = prompt("Enter Foldername: ")
+   var path1 = "/home/inderdav/src/docs3.0/pages/"
+   var path2 = path1.concat(foldername)
+   
+   if(foldername){
+     fetch('/create_folder', {
+      method : 'POST',
+      headers : {
+         'Content-Type' : 'application/json'
+      },
+      body : JSON.stringify({
+         folderpath : path2,
+         folderName : foldername
+      })
+   })
+   .then(res => res.json())
+   .then(data => alert(data.status))
+   .catch(err => console.error('Create folder error: ', err));
+   }
+   else{
+    console.error("You did not enter a foldername !")
+   }
+}

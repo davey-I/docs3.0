@@ -148,7 +148,7 @@ def save_editable():
 
     if not (page_name and div_id and new_content):
         return {'status': 'Missing data'}
-    print("DAATEN:",data)
+
     # Load the HTML file
     with open(f'./pages/{page_name}.html', 'r', encoding='utf-8') as f:
         soup = bs(f, 'html.parser')
@@ -192,5 +192,36 @@ def get_editable():
     # Return only the contents (not the <div> wrapper)
     return {'html': target_div.decode_contents()}
     
+#######################
+### CREATE NEW FOLDER #
+#######################
+
+@route('/create_folder', method="POST")
+def create_folder():
+    data = request.json
+    filepath = data.get('folderpath')
+    foldername = data.get('folderName')
+
+    # Create the directory
+    try:
+        os.mkdir(filepath)
+        with open('./index.html', 'r', encoding='utf-8') as f:
+            soup = bs(f, 'html.parser')
+        li_new = soup.new_tag("li")
+        li_new['class'] = 'page-overwiew-listIL'
+        li_new['id'] = f'page-overwiew-listIL-{foldername}'
+        li_new.append(f"{foldername}")
+
+        li_element_list = soup.find_all('li')
+        li_element_list_len = len(li_element_list)
+        li_element_list[li_element_list_len-1].append(li_new)
+
+        with open('./index.html', 'w', encoding='utf-8') as f:
+            f.write(str(soup))
+
+        return {'status': f'Directory Created successfully'}
+    except FileExistsError:
+        return{'error' : 'Directory could not be created'}
+
 
 run(host='localhost', port=8000, debug=True) 
