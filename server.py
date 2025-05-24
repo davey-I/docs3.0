@@ -233,7 +233,18 @@ def create_folder():
                 f.write(str(soup))
 
             with open(f'./pages/{foldername}/{foldername}-index.html', 'w', encoding='utf-8') as f:
-                f.write(str(f'<h1>{foldername}</h1><a href="./../..">HOME</a>'))
+                html_content = f"""<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>{foldername} Index</title>
+            </head>
+            <body>
+                <h1>{foldername}</h1>
+                <a href="./../..">HOME</a>
+            </body>
+            </html>"""
+                f.write(html_content)
             
             return {'status': f'Directory Created successfully'}
         except FileExistsError:
