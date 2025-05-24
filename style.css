@@ -198,4 +198,10 @@ transform: scale(0.4);
 
 .foldable-content-penButton-hidden {
   visibility: hidden;
+  margin: 30px;
+}
+
+/*page overview */
+.page-overwiew-listIL{
+  list-style-type: none
 }
