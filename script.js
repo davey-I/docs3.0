@@ -1,11 +1,13 @@
 
 /* Fetch editable content */
 async function fetchEditableContent(pageName, divId, penid) {
+  const page_folder = document.querySelector('.pagetitle').getAttribute('data-folder-path');
   const response = await fetch('/get_editable', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       id: divId,
+      page_folder: page_folder,
       page_name: pageName
     })
   });
@@ -31,8 +33,7 @@ async function fetchEditableContent(pageName, divId, penid) {
 function save_editable_content(PAGE_ID, ID) {
    document.getElementById(ID).setAttribute('contenteditable', false)
    var content = document.getElementById(ID);
-
-   console.log(content)
+   const page_folder = document.querySelector('.pagetitle').getAttribute('data-folder-path');
 
    if (!content) {
       console.error('No element found with ID:', ID);
@@ -46,6 +47,7 @@ function save_editable_content(PAGE_ID, ID) {
       },
       body: JSON.stringify({
          page_name: PAGE_ID,
+         page_folder: page_folder,
          id: ID,
          data: content.innerText
       })
@@ -55,21 +57,21 @@ function save_editable_content(PAGE_ID, ID) {
    .catch(err => console.error('Save editable-content error:', err));
 }
 
-/* Append new foldable content to page end  */
+/* Append new foldable content to page end */
 function append_foldable_content(){
    const ID = prompt("Enter Content Title: ")
    let PAGE_NAME = document.getElementsByClassName('pagetitle')[0].textContent;
    if (ID){
    const foldable_container_snippet = `
       <!--## ${ID} #################################################################################################################-->
-      <div class="foldable-container" id="foldcontainer-${ID}")">
+      <div class="foldable-container" id="foldcontainer-${ID}">
          <h2 class="foldable-title" id="foldable-title-${ID}">${ID}</h2>
          <button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('${ID}')" type="button">
           UNFOLD
          </button>
          <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}', 'foldable-content-penButton-${ID}')" type="button">EDITMODE</button>
          <div class="foldable-content folded" id="foldable-content-${ID}">
-           <button type='button' class='foldable-content-penButton-hidden' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}')" id='foldable-content-penButton-${ID}'>
+           <button type='button' class='foldable-content-penButton-hidden' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}', 'page-folder')" id='foldable-content-penButton-${ID}'>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 20h9" />
@@ -82,6 +84,7 @@ function append_foldable_content(){
     `;
 
    const title = document.querySelector('.pagetitle').textContent;
+   const page_folder = document.querySelector('.pagetitle').getAttribute('data-folder-path');
 
    fetch('/save_page', {
       method: 'POST',
@@ -90,6 +93,7 @@ function append_foldable_content(){
       },
       body : JSON.stringify({
          page: title,
+         page_folder: page_folder,
          content: foldable_container_snippet
       })
    })
@@ -106,14 +110,16 @@ else {
 /* Create new page, when on Index-page */
 function create_new_page(){
    var id = prompt("Enter Page Name: ")
-   if (id) {
+   var folder = prompt("Enter folder Name: ")
+   if (id && folder) {
    fetch('/add_page', {
       method : 'POST',
       headers : {
          'Content-Type' : 'application/json'
       },
       body : JSON.stringify({
-         page : id
+         page : id,
+         folder : folder
       })
    })
    .then(res => res.json())

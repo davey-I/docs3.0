@@ -2,8 +2,7 @@ from bottle import route, run, template, static_file, response, request
 from string import Template
 import os
 from bs4 import BeautifulSoup as bs
-from bs4 import NavigableString
-import re
+
 
 PAGES_DIR = '/home/inderdav/src/docs3.0/pages'
 
@@ -19,9 +18,9 @@ def servers_static(filename):
 def serve_prism(filename):
     return static_file(filename, root='/home/inderdav/src/docs3.0/prism')
 
-@route('/pages/<pagename>')
-def serve_page(pagename):
-    return static_file(pagename, root='/home/inderdav/src/docs3.0/pages')
+@route('/pages/<foldername>/<pagename>')
+def serve_page(foldername, pagename):
+    return static_file(pagename, root=f'/home/inderdav/src/docs3.0/pages/{foldername}')
 
 #################################
 ### ADD NEW CHAPTER TO NOTEPAGE #
@@ -31,13 +30,14 @@ def serve_page(pagename):
 def save_page():
     data = request.json
     page_name = data.get('page')
+    page_folder = data.get('page_folder')
     new_content = data.get('content')
 
     if not page_name or not new_content:
         response.status = 400
         return {'status': 'Missing data'}
-
-    file_path = os.path.join(PAGES_DIR, f'{page_name}.html')
+    file_path_folder = os.path.join(PAGES_DIR, page_folder )
+    file_path = os.path.join(file_path_folder, f'{page_name}.html')
 
     if not os.path.exists(file_path):
         response.status = 404
@@ -70,11 +70,16 @@ def save_page():
 def add_page():
     data = request.json
     page_name = data.get('page')
-    file_path = os.path.join(PAGES_DIR, f'{page_name}.html')
+    folder_name = data.get('folder')
+    if not os.path.exists(f'./pages/{folder_name}'):
+        return {'status': 'Folder not found !'}
+    
+    folder_name_path = os.path.join(PAGES_DIR, folder_name)
+    file_path = os.path.join(folder_name_path, f'{page_name}.html')
     template = Template('''<!DOCTYPE html>
 <html>
 <head>
-    <title>$ID</title>
+    <title data-folder-path="/$FOLDER_NAME">$ID</title>
     <link rel="stylesheet" href=" ../static/style.css">
     <link rel="stylesheet" href="../prism/prism.css">
 </head>
@@ -126,7 +131,7 @@ def add_page():
 </body>
 </html>
 ''')
-    html = template.substitute(ID=page_name)
+    html = template.substitute(ID=page_name, FOLDER_NAME=folder_name)
     with open(file_path, 'x', encoding='utf-8') as f:
       f.write(html)
 
@@ -141,16 +146,16 @@ def save_editable():
 
     data = request.json
     page_name = data.get('page_name')
+    folder_name = data.get('page_folder')
     div_id = data.get('id')
     new_content = data.get('data')  # This should be a string of HTML
-    print(f"NEW-CONTent {new_content}")
     new_soup = bs(new_content, 'html.parser')
 
     if not (page_name and div_id and new_content):
         return {'status': 'Missing data'}
 
     # Load the HTML file
-    with open(f'./pages/{page_name}.html', 'r', encoding='utf-8') as f:
+    with open(f'./pages/{folder_name}/{page_name}.html', 'r', encoding='utf-8') as f:
         soup = bs(f, 'html.parser')
 
     target_div = soup.find('div', id=div_id)
@@ -160,7 +165,7 @@ def save_editable():
     target_div.append(bs(data['data'], 'html.parser'))
     
 
-    with open(f'./pages/{page_name}.html', 'w', encoding='utf-8') as f:
+    with open(f'./pages/{folder_name}/{page_name}.html', 'w', encoding='utf-8') as f:
         f.write(str(soup))
 
     return {'status': 'Saved successfully'}
@@ -174,9 +179,11 @@ def save_editable():
 def get_editable():
     data = request.json
     page_name = data.get('page_name')
+    page_folder = data.get('page_folder')
+    path_with_folder = os.path.join(PAGES_DIR, page_folder)
     div_id = data.get('id')
 
-    file_path = os.path.join(PAGES_DIR, f'{page_name}.html')
+    file_path = os.path.join(path_with_folder, f'{page_name}.html')
     if not os.path.exists(file_path):
         response.status = 404
         return {'error': 'Page not found'}
@@ -201,27 +208,38 @@ def create_folder():
     data = request.json
     filepath = data.get('folderpath')
     foldername = data.get('folderName')
+    if not os.path.exists(f'./pages/{foldername}'):
+        # Create the directory
+        try:
+            os.mkdir(filepath)
+            with open('./index.html', 'r', encoding='utf-8') as f:
+                soup = bs(f, 'html.parser')
+            li_new = soup.new_tag("li")
+            li_new['class'] = 'page-overwiew-listIL'
+            li_new['id'] = f'page-overwiew-listIL-{foldername}'
+            a_new = soup.new_tag("a")
+            a_new['class'] = 'page-overwiew-lista-tag'
+            a_new['id'] = f'page-overwiew-lista-tag-{foldername}'
+            a_new['href'] = f'./pages/{foldername}/{foldername}-index.html'
+            a_new.append(f'{foldername}')
+            li_new.append(a_new)
+            #li_new.append(f"{foldername}")
 
-    # Create the directory
-    try:
-        os.mkdir(filepath)
-        with open('./index.html', 'r', encoding='utf-8') as f:
-            soup = bs(f, 'html.parser')
-        li_new = soup.new_tag("li")
-        li_new['class'] = 'page-overwiew-listIL'
-        li_new['id'] = f'page-overwiew-listIL-{foldername}'
-        li_new.append(f"{foldername}")
+            li_element_list = soup.find_all('li')
+            li_element_list_len = len(li_element_list)
+            li_element_list[li_element_list_len-1].append(li_new)
 
-        li_element_list = soup.find_all('li')
-        li_element_list_len = len(li_element_list)
-        li_element_list[li_element_list_len-1].append(li_new)
+            with open('./index.html', 'w', encoding='utf-8') as f:
+                f.write(str(soup))
 
-        with open('./index.html', 'w', encoding='utf-8') as f:
-            f.write(str(soup))
-
-        return {'status': f'Directory Created successfully'}
-    except FileExistsError:
-        return{'error' : 'Directory could not be created'}
+            with open(f'./pages/{foldername}/{foldername}-index.html', 'w', encoding='utf-8') as f:
+                f.write(str(f'<h1>{foldername}</h1><a href="./../..">HOME</a>'))
+            
+            return {'status': f'Directory Created successfully'}
+        except FileExistsError:
+            return{'status' : 'Directory could not be created'}
+    else:
+        return{'status' : 'Directory already exists'}
 
 
 run(host='localhost', port=8000, debug=True) 
