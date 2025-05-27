@@ -121,6 +121,20 @@ body {
   height: 10%;
 }
 
+.page-folder-index-icon-name {
+
+}
+
+.page-folder-header-div{
+  display: flex;
+  align-items: center;
+  gap: 1rem
+}
+
+.page-folder-page-div {
+  
+}
+
 /* Intro Box */
 .introbox {
     align-items: left;
@@ -201,7 +215,26 @@ transform: scale(0.4);
   margin: 30px;
 }
 
-/*page overview */
+/*page overview list */
+.page-overwiew-listUL {
+  
+}
+
+/*page overview entrances */
 .page-overwiew-listIL{
-  list-style-type: none
+  list-style-type: none;
+  margin-bottom: 1.5rem;
+}
+
+:hover.page-overwiew-listIL {
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
+/*page overview entrances a-tag */
+.page-overwiew-lista-tag {
+  display: flex;
+  align-items: center;   /* Vertically center children (svg & b tag ) */
+  gap: 0.5rem;           /* Optional: space between icon and label */
+  text-decoration: none; /* Optional: remove underline */
 }
