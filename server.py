@@ -32,12 +32,14 @@ def save_page():
     page_name = data.get('page')
     page_folder = data.get('page_folder')
     new_content = data.get('content')
-
+    print("PAGES_DIR: ",page_folder)
     if not page_name or not new_content:
         response.status = 400
         return {'status': 'Missing data'}
-    file_path_folder = os.path.join(PAGES_DIR, page_folder )
+    file_path_folder = os.path.join(PAGES_DIR, page_folder)
+    print("FILE_PAFFF_folder : ", file_path_folder)
     file_path = os.path.join(file_path_folder, f'{page_name}.html')
+    print("FILE_PAFFF : ", file_path)
 
     if not os.path.exists(file_path):
         response.status = 404
@@ -60,8 +62,6 @@ def save_page():
 
     return {'status': f'Content added to <body> in {page_name}.html'}
 
-
-
 ##############################
 ### ADD NEW PAGE TO NOTEBOOK #
 ##############################
@@ -80,11 +80,21 @@ def add_page():
 <html>
 <head>
     <title data-folder-path="/$FOLDER_NAME">$ID</title>
-    <link rel="stylesheet" href=" ../static/style.css">
-    <link rel="stylesheet" href="../prism/prism.css">
+    <link rel="stylesheet" href=" ../../static/style.css">
+    <link rel="stylesheet" href="../../prism/prism.css">
 </head>
 <body class="body">
-    <h1 class="pagetitle">$ID</h1>
+    <div class="page-folder-header-div">
+            <h1 class="pagetitle" data-folder-path="$FOLDER_NAME">$ID</h1>
+            <a href="./../..">
+                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 11L12 4L21 11" />
+                        <path d="M5 10V20H19V10" />
+                        <path d="M10 20V14H14V20" />
+                 </svg>
+            </a>
+    </div>
 
     <!-- Sidebar -->
     <div id="sidbear-enclosure-open-$ID" class="sidbear-enclosure-open">
@@ -126,8 +136,8 @@ def add_page():
       </div>
     </div>
     
-   <script src="../prism/prism.js"></script>
-   <script src="../static/script.js"></script>
+   <script src="../../prism/prism.js"></script>
+   <script src="../../static/script.js"></script>
 </body>
 </html>
 ''')
@@ -252,10 +262,17 @@ def create_folder():
                  </svg>
                 </a>
              </div><br><br><br>
-                <div class="page-folder-page-div">
-                    BLA
+                <div class="page-folder-page-div" id="page-folder-page-div-{foldername}">
+                    
                 </div>
             <script src="/static/script.js"></script>
+            <script>
+                let folderName = '{foldername}'
+                let div_id = 'page-folder-page-div-{foldername}'
+                document.addEventListener('DOMContentLoaded', function() {{
+                 load_pages_to_folderindex_overview(folderName, div_id);
+                }});
+            </script>
             </body>
             </html>"""
                 f.write(html_content)
@@ -266,5 +283,48 @@ def create_folder():
     else:
         return{'status' : 'Directory already exists'}
 
+
+#############################################
+### LOADE PAGES TO FOLDER OVERVIEW AS LINKS #
+#############################################
+
+@route('/load_indexpages', method="POST")
+def load_indexpages():
+    data = request.json
+    page_folder = data.get('page_folder')
+    path_with_folder = os.path.join(PAGES_DIR, page_folder)
+
+    if not os.path.exists(path_with_folder):
+        response.status = 404
+        return {'error': 'Folder not found'}
+
+    # Hier nun die Titel der in diesem Ordner vorhandenen pages holen und 
+    # und hier damit einen neuen <div> content erstellen, sodass dieser 
+    # auf client-side einfach nur noch ersetzt werden kann...
+    page_names = []
+    with os.scandir(path_with_folder) as listOfEntries:
+        for ent in listOfEntries:
+            if ent.is_file():
+                page_names.append(ent.name)
+
+    with open(f'{path_with_folder}/{page_folder}-index.html', 'r', encoding='utf-8') as f:
+        soup = bs(f, 'html.parser')
+
+    div_id = f'page-folder-page-div-{page_folder}'
+    target_div = soup.find('div', id=div_id)
+    if not target_div:
+        response.status = 404
+        return {'error': 'Div not found'}
+    
+    for el in page_names:
+        a_new = soup.new_tag("a")
+        a_new['class'] = 'page-overwiew-lista-tag'
+        a_new['id'] = f'page-overwiew-lista-tag-{el}'
+        a_new['href'] = f'{el}'
+        a_new.append(el)
+        target_div.append(a_new)
+
+    # Return only the contents (not the <div> wrapper)
+    return {'html': target_div.decode_contents()}
 
 run(host='localhost', port=8000, debug=True) 

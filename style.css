@@ -104,7 +104,6 @@ body {
 
 /* page-overwiew container */
 .page-overwiew {
-  border-style: dotted;
   width: 50em;
   height: 20em;
   position: relative;
@@ -121,18 +120,11 @@ body {
   height: 10%;
 }
 
-.page-folder-index-icon-name {
-
-}
 
 .page-folder-header-div{
   display: flex;
   align-items: center;
   gap: 1rem
-}
-
-.page-folder-page-div {
-  
 }
 
 /* Intro Box */
@@ -228,13 +220,17 @@ transform: scale(0.4);
 
 :hover.page-overwiew-listIL {
   cursor: pointer;
-  transform: scale(1.03);
+  color: rgb(142, 146, 146);
+  transform: scale(1.01);
+  text-shadow: 0 0 5px #ffffff; 
 }
 
 /*page overview entrances a-tag */
 .page-overwiew-lista-tag {
   display: flex;
+  font-size: larger;
+  color: inherit;
+  font-weight: 400;
   align-items: center;   /* Vertically center children (svg & b tag ) */
-  gap: 0.5rem;           /* Optional: space between icon and label */
   text-decoration: none; /* Optional: remove underline */
 }

@@ -207,3 +207,28 @@ function create_new_pagefolder(){
     console.error("You did not enter a foldername !")
    }
 }
+
+/* Load pages in folder-index page overview list */
+async function load_pages_to_folderindex_overview(folderName, divid) {
+  const page_folder = folderName;
+  console.log("PAGE-GOLDER:",page_folder)
+  const div_id = divid;
+  const response = await fetch('/load_indexpages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      page_folder: page_folder
+    })
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.error("Error fetching content:", error.error);
+    return;
+  }
+
+  const data = await response.json();
+  const page_list_div = document.getElementById(div_id);
+  
+  page_list_div.outerHTML = data.html;
+}
