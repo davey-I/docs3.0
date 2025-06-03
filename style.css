@@ -234,3 +234,8 @@ transform: scale(0.4);
   align-items: center;   /* Vertically center children (svg & b tag ) */
   text-decoration: none; /* Optional: remove underline */
 }
+
+/* button to create a subdiv */
+.create-subdiv{
+  
+}

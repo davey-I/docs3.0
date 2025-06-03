@@ -70,6 +70,7 @@ function append_foldable_content(){
           UNFOLD
          </button>
          <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}', 'foldable-content-penButton-${ID}')" type="button">EDITMODE</button>
+         <button class="create-subdiv" id="create-subdiv-${ID}" onclick="add_subdiv('foldcontainer-${ID}')" type=*button"> ADD DIV </button>
          <div class="foldable-content folded" id="foldable-content-${ID}">
            <button type='button' class='foldable-content-penButton-hidden' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}', 'page-folder')" id='foldable-content-penButton-${ID}'>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
@@ -95,6 +96,57 @@ function append_foldable_content(){
          page: title,
          page_folder: page_folder,
          content: foldable_container_snippet
+      })
+   })
+   .then(res => res.json())
+   .then(data => alert(data.status))
+   .catch(err => console.error('Save data error: ', err));
+   /* --> add page refresher here */
+}
+else {
+   console.log("You did not enter a Title !")
+}
+}
+
+/* Append new foldable subdiv */
+function add_subdiv(parentID){
+   const ID = prompt("Enter Content Title: ")
+   let PAGE_NAME = document.getElementsByClassName('pagetitle')[0].textContent;
+   if (ID){
+   const foldable_container_snippet = `
+      <!--## ${ID} #################################################################################################################-->
+      <div class="foldable-container" id="foldcontainer-${ID}">
+         <h2 class="foldable-title" id="foldable-title-${ID}">${ID}</h2>
+         <button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('${ID}')" type="button">
+          UNFOLD
+         </button>
+         <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}', 'foldable-content-penButton-${ID}')" type="button">EDITMODE</button>
+         <div class="foldable-content folded" id="foldable-content-${ID}">
+           <button type='button' class='foldable-content-penButton-hidden' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}', 'page-folder')" id='foldable-content-penButton-${ID}'>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+             </svg>
+            </button>
+            <div contenteditable="false" class="editable-paragraph" id="editable-paragraph-${ID}"><h1>TITLE IPSUM</h2></div>
+         </div>
+      </div>
+    `;
+
+   const title = document.querySelector('.pagetitle').textContent;
+   const page_folder = document.querySelector('.pagetitle').getAttribute('data-folder-path');
+
+   fetch('/add_subdiv', {
+      method: 'POST',
+      headers: {
+         'Content-Type' : 'application/json'
+      },
+      body : JSON.stringify({
+         page: title,
+         page_folder: page_folder,
+         content: foldable_container_snippet,
+         parentID: parentID
       })
    })
    .then(res => res.json())

@@ -32,14 +32,12 @@ def save_page():
     page_name = data.get('page')
     page_folder = data.get('page_folder')
     new_content = data.get('content')
-    print("PAGES_DIR: ",page_folder)
+    
     if not page_name or not new_content:
         response.status = 400
         return {'status': 'Missing data'}
     file_path_folder = os.path.join(PAGES_DIR, page_folder)
-    print("FILE_PAFFF_folder : ", file_path_folder)
     file_path = os.path.join(file_path_folder, f'{page_name}.html')
-    print("FILE_PAFFF : ", file_path)
 
     if not os.path.exists(file_path):
         response.status = 404
@@ -61,6 +59,43 @@ def save_page():
         f.write(str(soup))
 
     return {'status': f'Content added to <body> in {page_name}.html'}
+
+#####################
+### ADD NEW SUB-DIV #
+#####################
+
+@route('/add_subdiv', method='POST')
+def save_page():
+    data = request.json
+    page_name = data.get('page')
+    page_folder = data.get('page_folder')
+    new_content = data.get('content')
+    parentID = data.get('parentID')
+    
+    if not page_name or not new_content:
+        response.status = 400
+        return {'status': 'Missing data'}
+    file_path_folder = os.path.join(PAGES_DIR, page_folder)
+    file_path = os.path.join(file_path_folder, f'{page_name}.html')
+
+    if not os.path.exists(file_path):
+        response.status = 404
+        return {'status': 'Page not found'}
+
+    # Parse existing HTML file
+    with open(file_path, 'r', encoding='utf-8') as f:
+        soup = bs(f, 'html.parser')
+
+    # Parse new content and append to <body>
+    parentdiv = soup.find("div", id=parentID)
+    parentdiv.append(bs(new_content, 'html.parser'))
+
+    # Write back to the file
+    with open(file_path, 'w', encoding='utf-8') as f:
+        f.write(str(soup))
+
+    return {'status': f'Content added to <div>'}
+
 
 ##############################
 ### ADD NEW PAGE TO NOTEBOOK #
