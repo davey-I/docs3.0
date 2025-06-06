@@ -70,7 +70,7 @@ function append_foldable_content(){
           UNFOLD
          </button>
          <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}', 'foldable-content-penButton-${ID}')" type="button">EDITMODE</button>
-         <button class="create-subdiv" id="create-subdiv-${ID}" onclick="add_subdiv('foldcontainer-${ID}')" type=*button"> ADD DIV </button>
+         <button class="create-subdiv" id="create-subdiv-${ID}" onclick="add_subdiv('editable-paragraph-${ID}')" type=*button"> ADD DIV </button>
          <div class="foldable-content folded" id="foldable-content-${ID}">
            <button type='button' class='foldable-content-penButton-hidden' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}', 'page-folder')" id='foldable-content-penButton-${ID}'>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
@@ -196,6 +196,16 @@ function toggleFoldableContent(ID){
    } else {
     foldContent.classList.replace('unfolded', 'folded')
    }
+
+   let childDiv = foldContent.childNodes
+
+   childDiv.forEach(cDiv => {
+      if (cDiv.classList.contains('folded')) {
+    cDiv.classList.replace('folded', 'unfolded')
+   } else {
+    cDiv.classList.replace('unfolded', 'folded')
+   }
+   });
 }
 
 /* Function for the button in the sidebar enclosure to open/close the sidebar */
