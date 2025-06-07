@@ -248,3 +248,20 @@ transform: scale(0.4);
 .create-subdiv{
   
 }
+
+/* ELEMENT STYLECLASSES */
+
+
+
+/*yellow frame*/
+.frame{
+  border-style: solid;
+  border-color: yellow;
+  padding: 20px;
+  column-gap: 20px;
+}
+
+.editable-paragraph b{
+  color: yellow;
+  font-weight: 200;
+}
