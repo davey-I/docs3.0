@@ -198,15 +198,15 @@ transform: scale(0.4);
 /* foldable edit button foldable content right-side */
 .foldable-content-penButton{
 position: relative;
-left: 100%;
+left: 90%;
 bottom: 80px;
 transform: scale(0.4);
 }
 
 /* div where stuff gets written in finally */
-.editable-paragraph{
+.editable-paragraph {
   display: block;
-  margin: 12px;
+  margin: 0 12px 12px 12px; /* top, right, bottom, left */
 }
 
 :hover.foldable-content-penButton {
@@ -216,7 +216,6 @@ transform: scale(0.4);
 
 .foldable-content-penButton-hidden {
   visibility: hidden;
-  margin: 30px;
 }
 
 /*page overview list */
