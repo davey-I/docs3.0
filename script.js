@@ -247,7 +247,7 @@ function page_overview_visibility_toggle(){
 /* Create new page-folder */
 function create_new_pagefolder(){
    var foldername = prompt("Enter Foldername: ")
-   var path1 = "/home/inderdav/src/docs3.0/pages/"
+   var path1 = "./pages/"
    var path2 = path1.concat(foldername)
    
    if(foldername){
