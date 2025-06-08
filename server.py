@@ -4,23 +4,23 @@ import os
 from bs4 import BeautifulSoup as bs
 
 
-PAGES_DIR = '/home/inderdav/src/docs3.0/pages'
+PAGES_DIR = './pages'
 
 @route('/')
 def index():
-    return static_file('index.html', root='/home/inderdav/src/docs3.0')
+    return static_file('index.html', root='./')
 
 @route('/static/<filename>')
 def servers_static(filename):
-    return static_file(filename, root='/home/inderdav/src/docs3.0')
+    return static_file(filename, root='./')
 
 @route('/prism/<filename>')
 def serve_prism(filename):
-    return static_file(filename, root='/home/inderdav/src/docs3.0/prism')
+    return static_file(filename, root='./prism')
 
 @route('/pages/<foldername>/<pagename>')
 def serve_page(foldername, pagename):
-    return static_file(pagename, root=f'/home/inderdav/src/docs3.0/pages/{foldername}')
+    return static_file(pagename, root=f'./pages/{foldername}')
 
 #################################
 ### ADD NEW CHAPTER TO NOTEPAGE #
