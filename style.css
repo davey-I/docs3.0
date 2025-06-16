@@ -9,6 +9,15 @@ body {
     width: fit-content;
 }
 
+.foldable-content h3 {
+  border-left: 4px solid yellow;
+  border-color: yellow;
+  border-radius: 10px;
+  padding: 6px;
+  display: inline-block;
+  box-shadow: inset 12px 0 12px -6px rgba(255, 255, 0, 0.6); /* yellow glow inward */
+}
+
 .pagetitle {
   visibility: true;
 }
