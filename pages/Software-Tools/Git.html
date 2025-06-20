@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title data-folder-path="/Software-Tools">Git</title>
+<link href=" ../../static/style.css" rel="stylesheet"/>
+<link href="../../prism/prism.css" rel="stylesheet"/>
+</head>
+<body class="body">
+<div class="page-folder-header-div">
+<h1 class="pagetitle" data-folder-path="Software-Tools">Git</h1>
+<a href="./../..">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 11L12 4L21 11"></path>
+<path d="M5 10V20H19V10"></path>
+<path d="M10 20V14H14V20"></path>
+</svg>
+</a>
+</div>
+<!-- Sidebar -->
+<div class="sidbear-enclosure-open" id="sidbear-enclosure-open-Git">
+<button class="sidbear-enclosure-button-open" id="sidbear-enclosure-button-Git" onclick="toggle_sidebar()" type="button">
+<svg fill="white" height="30" viewbox="0 0 100 80" width="30" xmlns="http://www.w3.org/2000/svg">
+<rect height="10" width="100"></rect>
+<rect height="10" width="100" y="30"></rect>
+<rect height="10" width="100" y="60"></rect>
+</svg>
+</button>
+<div class="sidebar-mainbox-open" id="sidebar-mainbox-Git">
+<div class="sidebar-subbox-open" id="sidebar-subbox-1" onclick=" append_foldable_content()">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10"></circle>
+<line x1="12" x2="12" y1="8" y2="16"></line>
+<line x1="8" x2="16" y1="12" y2="12"></line>
+</svg>
+</div>
+<div class="sidebar-subbox-open" id="sidebar-subbox-2">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M9.09 9C9.32591 8.33109 9.78918 7.76807 10.4 7.41421C11.0108 7.06036 11.7266 6.93913 12.4152 7.07107C13.1038 7.20302 13.7206 7.57857 14.162 8.12132C14.6034 8.66407 14.8397 9.33984 14.83 10.03C14.83 12 12.5 12.5 12.5 14"></path>
+<circle cx="12" cy="17" r="1"></circle>
+</svg>
+</div>
+<div class="sidebar-subbox-open" id="sidebar-subbox-3">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M9.09 9C9.32591 8.33109 9.78918 7.76807 10.4 7.41421C11.0108 7.06036 11.7266 6.93913 12.4152 7.07107C13.1038 7.20302 13.7206 7.57857 14.162 8.12132C14.6034 8.66407 14.8397 9.33984 14.83 10.03C14.83 12 12.5 12.5 12.5 14"></path>
+<circle cx="12" cy="17" r="1"></circle>
+</svg>
+</div>
+</div>
+</div>
+<script src="../../prism/prism.js"></script>
+<script src="../../static/script.js"></script>
+<!--## General-Git-Tips #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-General-Git-Tips">
+<h2 class="foldable-title" id="foldable-title-General-Git-Tips">General-Git-Tips</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('General-Git-Tips')" type="button">
+          UNFOLD
+         </button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Git','editable-paragraph-General-Git-Tips', 'foldable-content-penButton-General-Git-Tips')" type="button">EDITMODE</button>
+<button class="create-subdiv" id="create-subdiv-General-Git-Tips" onclick="add_subdiv('editable-paragraph-General-Git-Tips')" type='*button"'> ADD DIV </button>
+<div class="foldable-content folded" id="foldable-content-General-Git-Tips">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-General-Git-Tips" onclick="save_editable_content('Git','editable-paragraph-General-Git-Tips', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-General-Git-Tips"><h3>Adjust Commit History</h3><br/>
+<p>
+<ul>
+<li>interactive rebase starten ( for ex. 3 commits should be adjusted ~3 ): <b>git rebase -i Head~3</b></li><br/>
+<li>Commit lines can then be cut, moved, pasted as desired, directly in opened vim-editor</li><br/>
+</ul>
+</p>
+<h3>Squash</h3><br/>
+<p>
+<ul>
+<li>To <b>squash</b> in Git means to combine multiple commits into one.</li><br/>
+<li>interactive rebase starten ( for ex. 3 commits should be adjusted ~3 ): <b>git rebase -i Head~3</b></li><br/>
+<li>Search for commit(s) that need to be squashed</li><br/>
+<li> Replace the 'pick' in front of the commit line with a 's' and close the editor </li><br/>
+<li>In the next vim window, we see what commits get taken into the squash and we can<br/>
+determine a new commit-message or just comment out all, except the one we want to keep.
+</li><br/>
+</ul></p></div>
+</div>
+</div>
+<!--## Rebase #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Rebase">
+<h2 class="foldable-title" id="foldable-title-Rebase">Rebase</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Rebase')" type="button">
+          UNFOLD
+         </button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Git','editable-paragraph-Rebase', 'foldable-content-penButton-Rebase')" type="button">EDITMODE</button>
+<button class="create-subdiv" id="create-subdiv-Rebase" onclick="add_subdiv('editable-paragraph-Rebase')" type='*button"'> ADD DIV </button>
+<div class="foldable-content folded" id="foldable-content-Rebase">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Rebase" onclick="save_editable_content('Git','editable-paragraph-Rebase', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Rebase"><h3>Interactive Rebase Prefixes</h3>
+<ul>
+  <li><b>p</b> – pick: Use the commit as is                                                                                            <b>r</b> – reword: Edit the commit message</li>
+  <li><b>e</b> – edit: Pause to amend the commit                                                                                  <b>s</b> – squash: Combine with the previous commit and keep both messages</li>
+  <li><b>f</b> – fixup: Combine with the previous commit and discard this one's message                  <b>x</b> – exec: Run a shell command</li>
+  <li><b>b</b> – break: Stop here during rebase (manually continue later)                                            <b>d</b> – drop: Remove the commit</li>
+  <li><b>l</b> – label: Label the current commit for later use                                                                 <b>t</b> – reset: Reset HEAD to a labeled commit</li>
+  <li><b>m</b> – merge: Create a merge commit using labeled commits</li>
+</ul>
+</div>
+</div>
+</div>
+</body>
+</html>
