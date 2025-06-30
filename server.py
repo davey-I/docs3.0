@@ -362,4 +362,19 @@ def load_indexpages():
     # Return only the contents (not the <div> wrapper)
     return {'html': target_div.decode_contents()}
 
+
+##################
+### SEARCH LOGIC #
+##################
+
+@route('/search_content', method="POST")
+def search_content():
+    data = request.json
+    search_string = data.get('search_string')
+    pages_path = "./pages"
+
+    print(f"From frontend :{search_string} ")
+
+    return {'{"message": "Hello from Backend"}'}
+
 run(host='localhost', port=8000, debug=True) 

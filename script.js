@@ -273,7 +273,6 @@ function create_new_pagefolder(){
 /* Load pages in folder-index page overview list */
 async function load_pages_to_folderindex_overview(folderName, divid) {
   const page_folder = folderName;
-  console.log("PAGE-GOLDER:",page_folder)
   const div_id = divid;
   const response = await fetch('/load_indexpages', {
     method: 'POST',
@@ -293,4 +292,26 @@ async function load_pages_to_folderindex_overview(folderName, divid) {
   const page_list_div = document.getElementById(div_id);
   
   page_list_div.outerHTML = data.html;
+}
+
+/* Search Function */
+
+async function search_content(){
+   const search_string = prompt("Enter Searchterm : ");
+   
+   const response = await fetch('/search_content', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+      search_string: search_string
+   })
+});
+
+if (!response.ok) {
+   const error = await response.json();
+   console.error("Error fetching content:", error.error);
+   return;
+ }
+ const data = await response.json();
+ console.log("Text from backend : ", data.message)
 }
