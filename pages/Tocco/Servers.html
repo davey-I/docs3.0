@@ -74,5 +74,277 @@ If this is the case, we need to clean up old <b>_app</b> folders and <b>.pearl</
 <li></li></div>
 </div>
 </div>
+<!--## Tocco-DB-Servers #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Tocco-DB-Servers">
+<h2 class="foldable-title" id="foldable-title-Tocco-DB-Servers">Tocco-DB-Servers</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Tocco-DB-Servers')" type="button">
+          UNFOLD
+         </button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Servers','editable-paragraph-Tocco-DB-Servers', 'foldable-content-penButton-Tocco-DB-Servers')" type="button">EDITMODE</button>
+<button class="create-subdiv" id="create-subdiv-Tocco-DB-Servers" onclick="add_subdiv('editable-paragraph-Tocco-DB-Servers')" type='*button"'> ADD DIV </button>
+<div class="foldable-content folded" id="foldable-content-Tocco-DB-Servers">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Tocco-DB-Servers" onclick="save_editable_content('Servers','editable-paragraph-Tocco-DB-Servers', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Tocco-DB-Servers"><h1>Allgemeine Tips</h1>
+<ul>
+<li>Bei grossen DBs vorher prüfen ob <b>diskspace ausreicht</b></li><br/>
+<li> Möchten wir den Stand vor und nach dem restore in Bezug auf die DB-Grösse überprüfen wie bei <b>\l+</b><br/>
+ können wir dies mit dem folgenden Statement machen, wobei wir lediglich den Customernamen <b>'%nice_cwb%'</b>
+ anpassen müssen:<br/>
+ <!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-sql">
+            SELECT d.datname as "Name", pg_catalog.pg_get_userbyid(d.datdba) as "Owner", pg_catalog.pg_size_pretty(pg_catalog.pg_database_size(d.datname)) as "Size", LEFT(des.description, 20) AS "Description" FROM pg_catalog.pg_database d LEFT JOIN pg_shdescription des ON des.objoid = d.oid AND des.classoid = 'pg_database'::regclass JOIN pg_catalog.pg_tablespace t on d.dattablespace = t.oid WHERE d.datname LIKE '%nice_cwb%' ORDER BY "Size";       
+        </code>
+    </pre>
+</li><br/>
+<li>Div. Postgres Commands:
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-sql">
+# restore from dumpfile (does not work when in psql context)
+pg_restore -j 4 --role ${DB_USER} --no-owner --no-acl -d ${DB_NAME} ${DUMP_FILE_OR_DIRECTORY}
+
+# Drop DB
+DROP DATABASE ${DB_NAME};
+
+#Create DB
+CREATE DATABASE ${DB_NAME} WITH OWNER ${DB_USER};
+         </code>
+ </pre>
+</li>
+</ul><br/>
+<!--## Restore-From-Tocco-DB-Backups #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Restore-From-Tocco-DB-Backups">
+<h2 class="foldable-title" id="foldable-title-Restore-From-Tocco-DB-Backups">Restore-From-Tocco-DB-Backups</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Restore-From-Tocco-DB-Backups')" type="button">
+UNFOLD
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Servers','editable-paragraph-Restore-From-Tocco-DB-Backups', 'foldable-content-penButton-Restore-From-Tocco-DB-Backups')" type="button">EDITMODE</button>
+<div class="foldable-content folded" id="foldable-content-Restore-From-Tocco-DB-Backups">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Restore-From-Tocco-DB-Backups" onclick="save_editable_content('Servers','editable-paragraph-Restore-From-Tocco-DB-Backups', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Restore-From-Tocco-DB-Backups"><h3>Test mit Produktivdaten Überspielen</h3>
+<p>
+Wenn wir im Geschäft eine Testumgebung mit einem Backup aus der Produktionsumgebung<br/>
+wiederherstellen, dann ist es wichtig, dass wir je nachdem, welche <b>Version die Produktionsumgebung</b><br/>
+hat, ein <b>neues Deployment</b> der Testumgebung starten<br/><br/>
+
+
+Da diese möglicherweise nicht mit dem Stand der Produktionsumgebung übereinstimmt,<br/>
+muss ein zusätzliches Deployment erstellt werden, um die Daten zu synchronisieren.<br/>
+</p>
+</div>
+</div>
+</div>
+<!--## Direkt-Restore-Via-Borg-Extract #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Direkt-Restore-Via-Borg-Extract">
+<h2 class="foldable-title" id="foldable-title-Direkt-Restore-Via-Borg-Extract">Direkt-Restore-Via-Borg-Extract</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Direkt-Restore-Via-Borg-Extract')" type="button">
+UNFOLD
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Servers','editable-paragraph-Direkt-Restore-Via-Borg-Extract', 'foldable-content-penButton-Direkt-Restore-Via-Borg-Extract')" type="button">EDITMODE</button>
+<div class="foldable-content folded" id="foldable-content-Direkt-Restore-Via-Borg-Extract">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Direkt-Restore-Via-Borg-Extract" onclick="save_editable_content('Servers','editable-paragraph-Direkt-Restore-Via-Borg-Extract', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Direkt-Restore-Via-Borg-Extract"><div>
+ <ul>
+   <li>
+        Borg Backup finden <b>Search on Slave not Master !!</b>
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+$ sudo -i
+$ borg-repos
+$ borg-2 list
+
+#List data inside specific archive:
+$ borg-2 list ::db-2024-04-26T04:12:02
+        </code>
+    </pre>
+   </li><br/>
+   <li>
+        Direkt extract command vorbereiten:<br/>
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+            ssh db4.tocco.cust.vshn.net sudo -i borg extract --stdout ::db-2025-01-08T04:12:02 var/lib/postgresql-backup/nice_hkvag.dump | ssh db5.stage.tocco.cust.vshn.net pg_restore --no-acl --no-owner --role nice_hkvagtest -d nice_hkvagtest_temp        
+        </code>
+    </pre>
+ 
+    </li><br/>
+      
+    <li>
+        Auf dem Testsystem eine neue DB erstellen, die gleich heisst<br/>
+        wie die des aktuellen Testsystems, einfach mit der endung <span class="highlighteryellow">_temp</span><br/>
+        der Owner bzw. role ist die gleiche wie beim laufenden Testsystem, sonst müsste eine neue Role<br/>
+        erstellt werden..<br/><br/>
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+            CREATE DATABASE ${DB_NAME} WITH OWNER ${DB_USER};        
+        </code>
+    </pre>
+        <div></div>
+    </li><br/>
+
+
+    <li>
+        Nachdem DB erstellt wurde, kurz mit dem <b>\l+</b> den aktuellen spacebedarf<br/>
+        der DB testen ( wahrsch im KB-Bereich)
+    </li><br/>
+
+
+    <li>
+        Dann den oben vorbereiteten Borg-Direkt-Extrakt Befehl ausführen und mit dem Backup restoren.
+    </li><br/>
+
+
+    <li>
+        Nach dem restore, nochmals mit <span>\l+</span> den Space checken, der nun<br/>
+        natürlich deutlich höher sein sollte..
+    </li><br/>
+
+
+    <li>
+        Zwei DB-ALTER_DB Befehle vorbereiten...<br/><br/>
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+            ALTER DATABASE nice_{$CUSTOMER}test RENAME TO nice_{$CUSTOMER}test_old;        
+        </code>
+    </pre>
+          <br/><br/>
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+            ALTER DATABASE nice_{$CUSTOMER}test_temp RENAME TO nice_{$CUSTOMER}test;        
+        </code>
+    </pre>
+
+    </li><br/>
+
+    <li>
+        Kurze Downtime auf dem entsprechenden Testsystem erstellen...
+    </li><br/>
+
+    <li>
+        Sicherstellen, dass bereits auf der DB des Testsystems eingeloggt und user <span class="highlighteryellow">psql</span>
+    </li>:<br/>
+
+    <li>
+        Pod des Testsystems auf 0 scalen
+    </li><br/>
+      
+    <li>
+        Sobald Pod runtergefahren, die beiden vorbereiteten ALTER_DB befehle ausführen.
+    </li><br/>
+
+
+    <li>
+        Pod wieder hochfahren und status checken..
+    </li>:<br/>
+
+    </ul><br/><br/>
+
+
+    <div>
+      Danach muss noch irgend ein DB-Domain-Table angepasst werden:<br/>
+
+
+      "ah ja guet das chan suscht au de mache wo die ufgab macht:<br/>
+
+      basically het es table namens <b>nice_domain<b></b><br/>
+
+
+      det hets es feld url. de wird halt überall e url stah vom produktiv. z.B <span class="highlighterblue">hkvag.tocco</span>.ch/extranet<br/>
+      das mummer halt überall umaendere uf <span class="highlighteryellow">hkvagtest</span>.tocco.ch/extranet<br/>
+      je nach dem chasch eifach update nice_domain set url = replace(url, '<span class="highlighterblue">hkvag.tocco</span>.ch', '<span class="highlighteryellow">hkvagtest</span>.tocco.ch'); (edited) <br/>
+      mengisch gahts au ned so eeasy peasy denn muschs halt chli einzeln ga update"<br/><br/>
+
+
+      <b>_old </b>kann dann am nächsten tag gleöscht werden...<br/>
+
+      <b>History DB</b> muss eigentlich nicht mitrestored werden<br/>
+      kann höchstens kleine unstimmigkeiten in den logs geben<br/>
+      aber eigentlich sind diese grösstenteils unabhängig<br/>
+    </b></div>
+  </div></div>
+</div>
+</div>
+<!--## Download-Backup-From-Server #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Download-Backup-From-Server">
+<h2 class="foldable-title" id="foldable-title-Download-Backup-From-Server">Download-Backup-From-Server</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Download-Backup-From-Server')" type="button">
+UNFOLD
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Servers','editable-paragraph-Download-Backup-From-Server', 'foldable-content-penButton-Download-Backup-From-Server')" type="button">EDITMODE</button>
+<div class="foldable-content folded" id="foldable-content-Download-Backup-From-Server">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Download-Backup-From-Server" onclick="save_editable_content('Servers','editable-paragraph-Download-Backup-From-Server', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Download-Backup-From-Server"><ul>
+<li> SSH into the server and <b>cd</b> to <b>/var/lib/postgresql-backup</b><br/>
+and create a new folder in here, after that <b>cd</b> into that folder.
+</li><br/>
+<li>
+  Borg Backup finden <b>Search on Slave not Master !!</b>
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+$ sudo -i
+$ borg-repos
+$ borg-2 list
+
+#List data inside specific archive:
+$ borg-2 list ::db-2024-04-26T04:12:02
+
+# extract backup to folder currently in
+$ borg extract ::db-2024-02-08T04:12:01 var/lib/postgresql-backup/nice_zb.dump
+        </code>
+</pre>
+   </li><br/>
+<li> Once extracted, change ownership to user that needs the backup , so it will allow<br/>
+to fetch down to local machine.<br/>
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+# find username
+cat /etc/passwd
+
+#change ownership
+chown -R username:groupname directoryname
+        </code>
+</pre>
+</li><br/>
+<li> Pull backup down to local machine. for ex with rsync <b>(executed local, on users machine)</b>: <br/>
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+rsync -avz --progress -e ssh ${SSH-USER-SERVER}@${SERVERNAME}:/backup/On-server /destination/local
+        </code>
+</pre>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </body>
 </html>
