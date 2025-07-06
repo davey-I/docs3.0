@@ -75,11 +75,96 @@ for ex. Browser Applications (Chrome, Firefox etc.), Outlook, Slack etc.
 <li> Application Layer includes and provides Protocols, that are used for Network application services:
 <ul>
   <li> HTTP/HTTPS-Protocol | All in Browser</li>
+
+  <li> FTP: File Transfer Protocol </li>
   <li> SMTP: Mailstuff </li>
   <li>Telnet: Virtual Terminals</li>
 </ul>
 </li><br/>
 </div>
+</div>
+</div>
+<!--## Presentation-Layer #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Presentation-Layer">
+<h2 class="foldable-title" id="foldable-title-Presentation-Layer">Presentation-Layer</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Presentation-Layer')" type="button">
+          UNFOLD
+         </button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('OSI-Modell','editable-paragraph-Presentation-Layer', 'foldable-content-penButton-Presentation-Layer')" type="button">EDITMODE</button>
+<button class="create-subdiv" id="create-subdiv-Presentation-Layer" onclick="add_subdiv('editable-paragraph-Presentation-Layer')" type='*button"'> ADD DIV </button>
+<div class="foldable-content folded" id="foldable-content-Presentation-Layer">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Presentation-Layer" onclick="save_editable_content('OSI-Modell','editable-paragraph-Presentation-Layer', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Presentation-Layer"><li> Receives Data from Application Layer, formatted as strings and numbers</li><br/>
+<li> Presentation Layer <b>converts</b> these to machine understandable <b>binary format</b><br/>
+for ex. conversion from <b>ASCII to EBCDIC format</b>.
+
+</li><br/>
+<li>The Translation Process is then followed by a the <b>compression process</b>, that reduces the<br/>
+
+amount of data used. This can be <b>lossy</b> or <b>lossless</b></li><br/>
+<li> The last process is the <b>data encryption</b> using <b>SSL</b></li>
+</div>
+</div>
+</div>
+<!--## Session-Layer #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Session-Layer">
+<h2 class="foldable-title" id="foldable-title-Session-Layer">Session-Layer</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Session-Layer')" type="button">
+          UNFOLD
+         </button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('OSI-Modell','editable-paragraph-Session-Layer', 'foldable-content-penButton-Session-Layer')" type="button">EDITMODE</button>
+<button class="create-subdiv" id="create-subdiv-Session-Layer" onclick="add_subdiv('editable-paragraph-Session-Layer')" type='*button"'> ADD DIV </button>
+<div class="foldable-content folded" id="foldable-content-Session-Layer">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Session-Layer" onclick="save_editable_content('OSI-Modell','editable-paragraph-Session-Layer', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Session-Layer"><h3> Helps with setting up and managing connections using APIs</h3>
+<li> Takes care of the <b>authentication</b> process during connections build up </li><br/>
+<li> Takes care of the <b>authentication</b> process during connections build up </li><br/>
+<li> Helps in session management, for all <b>sub-sessions</b> opened during for ex. file access via Web</li><br/>
+<li> Everything up to here ( including Session-Layer) is done by Web-Browser</li>
+</div>
+</div>
+</div>
+<!--## Transport-Layer #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Transport-Layer">
+<h2 class="foldable-title" id="foldable-title-Transport-Layer">Transport-Layer</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Transport-Layer')" type="button">
+          UNFOLD
+         </button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('OSI-Modell','editable-paragraph-Transport-Layer', 'foldable-content-penButton-Transport-Layer')" type="button">EDITMODE</button>
+<button class="create-subdiv" id="create-subdiv-Transport-Layer" onclick="add_subdiv('editable-paragraph-Transport-Layer')" type='*button"'> ADD DIV </button>
+<div class="foldable-content folded" id="foldable-content-Transport-Layer">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Transport-Layer" onclick="save_editable_content('OSI-Modell','editable-paragraph-Transport-Layer', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Transport-Layer"><h3> Segmentation </h3>
+<ul>
+
+ <li> Data received from Session layer are <b>devided</b> into small units called <b>Segments </b> </li><br/>
+ <li> Each Segments contains a <b>Source-Port , Destination-Port and Sequence</b> Number </li><br/>
+ <li><b>Port-Numbers</b> help to <b>direct</b> each Segment to the correct Application</li><br/>
+
+ <li><b>Sequence-Number</b> helps to <b>re-assemble</b> Segments in the correct Order</li><br/>
+</ul>
+ <h3> Flow-Control</h3>
+ <li></li><br/>
+
+ <li></li><br/>
+<h3> Error-Control </h3>
+<li></li><br/>
+<li></li><br/></div>
 </div>
 </div>
 </body>
