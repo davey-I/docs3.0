@@ -340,6 +340,24 @@ rsync -avz --progress -e ssh ${SSH-USER-SERVER}@${SERVERNAME}:/backup/On-server 
         </code>
 </pre>
 </li>
+<li>
+Create a new DB:
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-sql">
+CREATE DATABASE ${DB_NAME} WITH OWNER ${DB_USER};
+        </code>
+</pre>
+</li><br/>
+<li>
+Restore a from the downloaded dumpfile:
+<!--Prism bash pretyfier code example-->
+    <pre>
+        <code class="lang-bash">
+pg_restore -j 4 --role ${DB_USER} --no-owner --no-acl -d ${DB_NAME} ${DUMP_FILE_OR_DIRECTORY}
+        </code>
+</pre>
+</li><br/>
 </ul></div>
 </div>
 </div>
