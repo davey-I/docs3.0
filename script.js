@@ -296,22 +296,23 @@ async function load_pages_to_folderindex_overview(folderName, divid) {
 
 /* Search Function */
 
-async function search_content(){
+function search_content(){
    const search_string = prompt("Enter Searchterm : ");
    
-   const response = await fetch('/search_content', {
+   fetch('/search_content', {
      method: 'POST',
      headers: { 'Content-Type': 'application/json' },
      body: JSON.stringify({
-      search_string: search_string
+       search_string: search_string
+     })
    })
-});
-
-if (!response.ok) {
-   const error = await response.json();
-   console.error("Error fetching content:", error.error);
-   return;
- }
- const data = await response.json();
- console.log("Text from backend : ", data.message)
+   .then(response => {
+       
+       window.location.href = '/searchresults/searchresults.html';
+   })
+   .catch(err => {
+       console.error('Search error:', err);
+       
+   });
 }
+

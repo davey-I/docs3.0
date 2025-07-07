@@ -2,13 +2,17 @@ from bottle import route, run, template, static_file, response, request
 from string import Template
 import os
 from bs4 import BeautifulSoup as bs
-
+from find_string_start import find_string
 
 PAGES_DIR = './pages'
 
 @route('/')
 def index():
     return static_file('index.html', root='./')
+
+@route('/searchresults/<filename>')
+def serve_searchresults(filename):
+    return static_file(filename, root='./searchresults')
 
 @route('/static/<filename>')
 def servers_static(filename):
@@ -373,8 +377,23 @@ def search_content():
     search_string = data.get('search_string')
     pages_path = "./pages"
 
-    print(f"From frontend :{search_string} ")
+    result = find_string(search_string)
 
-    return {'{"message": "Hello from Backend"}'}
+    with open("./searchresults/searchresults.html", 'r', encoding='utf-8') as f:
+        soup = bs(f, 'html.parser')
+
+    target_div = soup.find('div', id="search-results")
+    target_div.clear()
+    for link, snippets in result.items():
+        for snippet in snippets:
+            # Create the HTML string with the link and snippet
+            new_content = f'<li><a href="../{link}">{link}</a> <span>{snippet}</span></li>'
+            target_div.append(bs(new_content, 'html.parser'))
+
+    with open('./searchresults/searchresults.html', 'w', encoding='utf-8') as f:
+        f.write(str(soup))
+
+    
+    return {'message': "done"}
 
 run(host='localhost', port=8000, debug=True) 
