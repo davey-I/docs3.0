@@ -145,11 +145,12 @@ body {
 .foldable-container {
   margin: 13px;
   padding: 10px;
-  position: block;
+  position: relative; /* <-- THIS is required for absolute positioning inside */
   overflow: auto;
   border-radius: 50px;
   transform-origin: center;
 }
+
 
 :hover.foldable-container {
   cursor: pointer;
@@ -189,11 +190,31 @@ body {
 
 /* Button to fold/unfold foldable content */
 .foldable-content-unfoldbutton {
-position: relative;
-left: 90%;
-bottom: 80px;
-transform: scale(0.4);
+  position: absolute;
+  right: 10px;       /* adjust as needed */
+  top: 10px;         /* adjust as needed */
+  transform: scale(0.9);
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
 }
+
+
+.foldable-content-unfoldbutton:hover {
+  background-color: #0056b3;
+}
+
+.arrow-icon {
+  transition: transform 0.3s ease;
+}
+
 
 /* Button to toggle editmode */
 .foldable-content-edittoggle {

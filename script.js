@@ -67,7 +67,9 @@ function append_foldable_content(){
       <div class="foldable-container" id="foldcontainer-${ID}">
          <h2 class="foldable-title" id="foldable-title-${ID}">${ID}</h2>
          <button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('${ID}')" type="button">
-          UNFOLD
+          <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M7 10l5 5 5-5H7z"/>
+      </svg>
          </button>
          <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}', 'foldable-content-penButton-${ID}')" type="button">EDITMODE</button>
          <button class="create-subdiv" id="create-subdiv-${ID}" onclick="add_subdiv('editable-paragraph-${ID}')" type=*button"> ADD DIV </button>
@@ -118,7 +120,9 @@ function add_subdiv(parentID){
       <div class="foldable-container" id="foldcontainer-${ID}">
          <h2 class="foldable-title" id="foldable-title-${ID}">${ID}</h2>
          <button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('${ID}')" type="button">
-          UNFOLD
+          <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M7 10l5 5 5-5H7z"/>
+      </svg>
          </button>
          <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}', 'foldable-content-penButton-${ID}')" type="button">EDITMODE</button>
          <div class="foldable-content folded" id="foldable-content-${ID}">
