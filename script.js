@@ -72,7 +72,17 @@ function append_foldable_content(){
       </svg>
          </button>
          <button class="foldable-content-edittoggle" onclick="fetchEditableContent('${PAGE_NAME}','editable-paragraph-${ID}', 'foldable-content-penButton-${ID}')" type="button">EDITMODE</button>
-         <button class="create-subdiv" id="create-subdiv-${ID}" onclick="add_subdiv('editable-paragraph-${ID}')" type=*button"> ADD DIV </button>
+         <button class="create-subdiv" id="create-subdiv-${ID}" onclick="add_subdiv('editable-paragraph-${ID}')" type=*button">
+         <svg class="add-tag-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <!-- < and > symbols -->
+            <path d="M6 8l-4 4 4 4" /> <!-- Left angle bracket -->
+            <path d="M18 8l4 4-4 4" /> <!-- Right angle bracket -->
+               
+            <!-- Plus sign in center -->
+            <path d="M12 10v4" />
+            <path d="M10 12h4" />
+         </svg>
+         </button>
          <div class="foldable-content folded" id="foldable-content-${ID}">
            <button type='button' class='foldable-content-penButton-hidden' onclick="save_editable_content('${PAGE_NAME}','editable-paragraph-${ID}', 'page-folder')" id='foldable-content-penButton-${ID}'>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"

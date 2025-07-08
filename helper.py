@@ -27,9 +27,11 @@ for root, dirs, files in os.walk("./pages"):
 
             with open(pfad, "r", encoding="utf-8") as f:
                 soup = bs(f, "html.parser")
-                print("INSIDE: ", pfad)
                 for btn in soup.find_all("button", class_="create-subdiv"):
                     btn.clear()
-                    print(rep)
-                    btn.append(rep)
+                    btn.append(bs(rep, "html.parser"))
+
+            with open(pfad, 'w', encoding='utf-8') as f:
+                
+                f.write(str(soup))
                     
