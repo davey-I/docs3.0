@@ -49,18 +49,23 @@ body {
 
 /* Sidebar boxes */
 .sidebar-mainbox-open {
-  width: 80px;
-  height: 30vh;
+  box-sizing: border-box;
+  width: 100px;
+  height: 38vh;
   background-color: #333;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: center;     /* center items vertically */
-  align-items: center;         /* center items horizontally */
-  position: fixed;             /* fix to the side */
+  justify-content: flex-start;    /* top-align for natural scrolling */
+  align-items: center;
+  position: fixed;
   left: 10px;
   top: 300px;
-  border-style: solid;
+  border: 2px solid white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px;
+  gap: 6px; /* spacing between buttons instead of margin */
 }
 
 :hover.sidebar-mainbox-open {
@@ -191,7 +196,7 @@ body {
 /* Button to fold/unfold foldable content */
 .foldable-content-unfoldbutton {
   position: absolute;
-  right: 10px;       /* adjust as needed */
+  right: 18px;       /* adjust as needed */
   top: 10px;         /* adjust as needed */
   transform: scale(0.9);
   background-color: #007bff;
@@ -218,10 +223,24 @@ body {
 
 /* Button to toggle editmode */
 .foldable-content-edittoggle {
-position: static;
-left: 20%;
-bottom: 88px;
-transform: scale(0.4);
+  position: absolute;
+  right: 160px;       /* adjust as needed */
+  top: 10px;         /* adjust as needed */
+  transform: scale(0.6);
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.foldable-content-edittoggle:hover {
+  background-color: #0056b3;
 }
 
 /* foldable edit button foldable content right-side */
@@ -277,7 +296,24 @@ transform: scale(0.7);
 
 /* button to create a subdiv */
 .create-subdiv{
-  
+  position: absolute;
+  right: 90px;       /* adjust as needed */
+  top: 10px;         /* adjust as needed */
+  transform: scale(0.6);
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.create-subdiv:hover {
+  background-color: #0056b3;
 }
 
 /* ELEMENT STYLECLASSES */
