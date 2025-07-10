@@ -123,17 +123,29 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Software-Tools-Wordpress-Setup-Wordpress-Stuff">  <ul>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Software-Tools-Wordpress-Setup-Wordpress-Stuff"><p>Atuell, (da noch nicht in Ansible eingepflegt) und Webkinder nicht ganz alles<br/>
+auf dem IWay Server machen können, müssen wir bei neuen Setups voraus noch <br/>
+<b>VHost, SSL-Cert und Maria-DB</b>. Dies wird durch maba kommuniziert und ist auch <br/>
+auf dem Asana Board "Tocco - Plugin + Tocco-Template" unter "Todo" zu sehen.<br/><br/>
+Da noch nicht 'Ansiblisier', muss dies alles mit den von IWay beim Einrichten des Servers <br/>
+ in <b>/opt/script/</b> hinterlegten scripts  selber gemacht werden.
+</p>  
+<ul>
     <li>Login to Asana</li><br/>
-    <li>Search Ticket from Rasti</li><br/>
-    <li>Search subdomainname (probably smth. with 'temp'in it) and create an CNAME<br/>
-from this Subdomain to wp2.... directly or via the 'wir haben hoheit über domain'<br/>
- 'zwischendomain'
+    <li>Search Ticket from Rasti in Board "Tocco - Plugin + Tocco-Template"</li><br/>
+    <li>Search subdomainname (probably smth. with 'temp'in it) in Ticket and create a CNAME:<br/>
+<br/><ul>
+<li>from this Subdomain to wp2.stage.tocco.ch directly <br/><b>CNAME</b>  web.$KUNDEtemp.tocco.ch  wp2.stage.tocco.ch <b>(bad practice)<b></b></b></li><br/>
+<li>or via the  'zwischendomain' construct over which we have control all the time:<br/>
+<b>CNAME</b> web.$KUNDEtemp.tocco.ch $KUNDEtest.wp.tocco.ch<br/>
+which should already have a entrance :<br/><b>CNAME</b> web.$KUNDEtemp.tocco.ch $KUNDEtest.wp.tocco.ch
+</li>
+</ul>
     </li><br/>
     <li>Login to IWay ssh wp2.iway.tocco.ch</li><br/>
     <li>Now we need to:<br/>
       <ul>
-<li>Execute 3 scripts in /opt/script: apache-createvhost.sh, letsencypt-createcert.sh, mysql-createdatabase.sh<br/>
+<li>Execute 3 scripts in /opt/script: <b>apache-createvhost.sh, letsencypt-createcert.sh, mysql-createdatabase.sh</b><br/>
 these scripts mostly need the domain name as input, but it can be checked by just not preventing any input or <br/>
 check the script with <b>vim</b> there you see what you need to give it 
 </li>
