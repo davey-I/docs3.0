@@ -149,6 +149,11 @@ which should already have a entrance :<br/><b>CNAME</b> web.$KUNDEtemp.tocco.ch�
 these scripts mostly need the domain name as input, but it can be checked by just not preventing any input or <br/>
 check the script with <b>vim</b> there you see what you need to give it 
 </li>
+<li> <b> When we provide the domainname to the first script, we need to do it like this:<br/>
+        if the domain is <b>bla.abcteest.tocco.ch</b> dann müssen wir diese dem Vhost script<br/>
+        so übergeben, dass zwischen der domain <b>tocco.ch</b> und der subdomain ( egal wie lang)
+        einfach der ganze kasumpel von sub-domain abstand Domain und dies übergeben.
+</b></li>
  <li>Create DB credentials: pwgen -20, database, username <br/>
 its basically just the customer name dbname for ex. "wp_ihkschwabentesttemp" <br/>
 we can display with "mysql" then "show databases;" to see the already existing.<br/>

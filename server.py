@@ -396,4 +396,4 @@ def search_content():
     
     return {'message': "done"}
 
-run(host='localhost', port=8000, debug=True) 
+run(host='localhost', port=8500, debug=True) 
