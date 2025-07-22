@@ -81,7 +81,8 @@
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Build-Docs-Local--"><p>For ex. the build for the Ansible-Docs can be seen at <a href="https://gitlab.com/toccoag/ansible/-/blob/master/.gitlab-ci.yml">GITLAB</a> (this is only for the one in /ansible/docs<br/>
-To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.html">THIS</a> (BUT STILL USE <b>python3 -m http.server 8888</b> inside the <b>_build</b> folder that gets created</p> 
+To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.html">THIS</a><br/>
+ (BUT STILL USE <b>python3 -m http.server 8888</b> inside the <b>_build</b> folder that gets created or use the lifeserver setup part <b> make livehtml</b>)</p> 
 <br/><li>Ensure your docs directory contains a <b>conf.py</b> file for Sphinx configuration and an <b>index.rst</b> file as the root of your documentation.</li>
 <li> If you encounter any missing dependencies, you can add them to the requirements.txt file and install them using <b>pip install -r requirements.txt</b> </li><br/>
 <!--## Prerequisites #################################################################################################################-->
@@ -223,6 +224,19 @@ To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.
 <li> Enclose the Word or text with backticks / backquotest: ``WORD``</li><br/>
 <h3>Add some color</h3>
 <li> :green:`green-text` , :red:`red-text` etc...</li><br/>
+<h3>Create Links</h3>
+<li> At the end of the file create a list of links</li>
+<pre>
+<code class="lang-bash">
+.. _domain tocco.ch: https://cockpit.nine.ch/en/dns/unmanaged/domains/2156
+.. _Nine's cockpit: https://cockpit.nine.ch/en/dns/domains
+.. _NS lookup: https://toolbox.googleapps.com/apps/dig/#NS/tocco.ch
+.
+.
+.
+</code>
+</pre>
+<li> These can then easily be used withing normal text with: ...sections in <b>`Nine's Cockpit`_</b>.</li><br/>
 <h3>Add a hint box</h3>
 <pre>
 <code class="lang-bash">
@@ -240,7 +254,7 @@ To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.
       :scale: 80%
 </code>
 </pre>
-</li><br/>
+</li><br>
 <h3> Create Bookmark/Titles</h3>
 <pre>
 <code class="lang-bash">
@@ -258,7 +272,7 @@ Title_h2
 Title_h3
 ----------
 </code>
-</pre></div>
+</pre></br></div>
 </div>
 </div>
 </body>
