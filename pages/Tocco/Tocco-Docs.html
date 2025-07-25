@@ -222,9 +222,10 @@ To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Tocco-Tocco-Docs-Sphinx-RST"><h3>Display Text in Red-Codebox </h3>
 <li> Enclose the Word or text with backticks / backquotest: ``WORD``</li><br/>
-<h3>Add some color</h3>
+<h3>Add some color (only in Tocco-Docs, not in Devops-Docs)</h3>
 <li> :green:`green-text` , :red:`red-text` etc...</li><br/>
 <h3>Create Links</h3>
+<br/><span> <b>External</b></span>
 <li> At the end of the file create a list of links</li>
 <pre>
 <code class="lang-bash">
@@ -237,6 +238,13 @@ To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.
 </code>
 </pre>
 <li> These can then easily be used withing normal text with: ...sections in <b>`Nine's Cockpit`_</b>.</li><br/>
+<li> Create link <b>internal</b></li>
+<pre>
+<code class="lang-bash">
+# for a Title or subtitle, simply just add the following
+texttext...`${TITLE-NAME}`_
+</code>
+</pre>
 <h3>Add a hint box</h3>
 <pre>
 <code class="lang-bash">
@@ -254,7 +262,7 @@ To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.
       :scale: 80%
 </code>
 </pre>
-</li><br>
+</li><br/>
 <h3> Create Bookmark/Titles</h3>
 <pre>
 <code class="lang-bash">
@@ -272,7 +280,7 @@ Title_h2
 Title_h3
 ----------
 </code>
-</pre></br></div>
+</pre></div>
 </div>
 </div>
 </body>

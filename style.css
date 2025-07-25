@@ -72,6 +72,9 @@ body {
   transform: scale(1.05);
   cursor: pointer;
 }
+.intro-box{
+  border-style: solid;
+}
 
 .sidebar-mainbox-closed {
   width: 5px;
@@ -286,12 +289,20 @@ transform: scale(0.7);
 
 /*page overview entrances a-tag */
 .page-overwiew-lista-tag {
+  margin: 5px;
   display: flex;
   font-size: larger;
   color: inherit;
   font-weight: 400;
   align-items: center;   /* Vertically center children (svg & b tag ) */
   text-decoration: none; /* Optional: remove underline */
+}
+
+:hover.page-overwiew-lista-tag {
+  cursor: pointer;
+  color: rgb(142, 146, 146);
+  transform: scale(1.01);
+  text-shadow: 0 0 5px #ffffff; 
 }
 
 /* button to create a subdiv */
