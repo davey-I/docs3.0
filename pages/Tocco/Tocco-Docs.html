@@ -222,6 +222,38 @@ To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Tocco-Tocco-Docs-Sphinx-RST"><h3>Display Text in Red-Codebox </h3>
 <li> Enclose the Word or text with backticks / backquotest: ``WORD``</li><br/>
+<h3>Create nice code-boxes</h3>
+<pre>
+<code class="lang-bash">
+
+* Login and Connect via oc client:
+  .. parsed-literal::
+     $ oc login -w
+     $ oc project nice-${CUSTOMERNAME}
+</code>
+</pre>
+<h3>Add global Stuff</h3>
+<li> For ex. we can add the color role and global links like to the <b>global.rst</b> if we get errors like <br/>
+ERROR: Unknown interpreted text role "red":
+<pre>
+<code class="lang-bash">
+.. global roles
+.. ------------
+
+.. role:: strike
+    :class: strike
+
+.. role:: red
+    :class: red
+
+.. global links
+.. ------------
+
+.. _BO: https://www.tocco.ch/tocco
+.. _tocco_hieradata: https://git.vshn.net/tocco/tocco_hieradata
+</code>
+</pre>
+</li>
 <h3>Add some color (only in Tocco-Docs, not in Devops-Docs)</h3>
 <li> :green:`green-text` , :red:`red-text` etc...</li><br/>
 <h3>Create Links</h3>
@@ -249,11 +281,19 @@ texttext...`${TITLE-NAME}`_
 <pre>
 <code class="lang-bash">
 .. hint::
-
-
    The timestamp in the log messages is UTC but the one we are adjusting is UTC +2
 </code>
 </pre>
+<h3>Add Bullet Points</h3>
+<li>
+We can add the following construct for bullet points with depth 2:
+<pre>
+<code class="lang-bash">
+* BP-Level1
+  - BP-Level2
+</code>
+</pre>
+</li>
 <h3>Insert pictures</h3>
 <li> Use following syntax:
 <pre>

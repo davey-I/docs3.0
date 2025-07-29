@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="windRedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF4F4F"/>
+      <stop offset="100%" stop-color="#D72638"/>
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="256" fill="url(#windRedGradient)"/>
+  <path fill="#FFFFFF" d="M160 160c-8.8 0-16 7.2-16 16v160c0 8.8 7.2 16 16 16h80c8.8 0 16 7.2 16 16v-192c0-8.8-7.2-16-16-16h-80zm112 0c-8.8 0-16 7.2-16 16v192c0-8.8 7.2-16 16-16h80c8.8 0 16-7.2 16-16v-160c0-8.8-7.2-16-16-16h-80z"/>
+</svg>
