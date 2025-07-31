@@ -167,5 +167,158 @@ And then create a new .txt file in create a new filr in <b>cd /home/webkinder/db
   </ul></div>
 </div>
 </div>
+<!--## Restic-Backups #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Restic-Backups">
+<h2 class="foldable-title" id="foldable-title-Restic-Backups">Restic-Backups</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Restic-Backups')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Wordpress','editable-paragraph-Restic-Backups', 'foldable-content-penButton-Restic-Backups')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-Restic-Backups" onclick="add_subdiv('editable-paragraph-Restic-Backups')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-Restic-Backups">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Restic-Backups" onclick="save_editable_content('Wordpress','editable-paragraph-Restic-Backups', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Restic-Backups"><pre>
+<h3>Prerequisites for Login</h3>
+
+Go to Infomaniak, choose <i>Web &amp; Domains</i> / <i>Cloud Server</i> and there the searched Installation.
+
+
+On the L side of the page we choose <i>FTP / SSH</i>
+there we can find the user-name for the corresponding Installation.
+<ul>
+<li>If Login does not work, click SSH button for web-console go to .ssh/authorized_keys and add</li>
+<li>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICEUJzZ8JF57iRaCgqKOWXGjIAnPzuYrFWyHImfrmxhS dain@tocco</li>
+</ul>
+SSH into server for ex: ssh zt2e8m_system@wp1.stage.tocco.ch
+
+<h3>At this Point we follow the setup-guide:</h3>
+
+- Download Binary: <i>wget -O restic.bz2 https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_amd64.bz2</i>
+
+- Unzip Make executable move and open in vim in a command:
+<li>bunzip2 restic.bz2 &amp;&amp; chmod +x restic &amp;&amp; mv restic bin/ &amp;&amp; vim ~/resticconf
+
+Insert following content ...:
+.....
+<pre>
+<code class="lang-bash">
+export OS_AUTH_URL=https://swiss-backup03.infomaniak.com/identity/v3
+export OS_AUTH_VERSION=3
+export OS_IDENTITY_API_VERSION=3
+export OS_REGION_NAME=RegionOne
+export OS_PROJECT_NAME=sb_project_SBI-MB294341
+export OS_USERNAME=SBI-MB294341
+export OS_PASSWORD='lq79gDZmC!C0'
+export OS_USER_DOMAIN_NAME=default
+export OS_PROJECT_DOMAIN_NAME=default
+export RESTIC_REPOSITORY=swift:sb_project_SBI-MB294341:/svf
+export RESTIC_PASSWORD_FILE=restickey
+</code>
+</pre>
+.....
+... into the config and adjust : “export RESTIC_REPOSITORY=swift:sb_project_SBI-MB294341:/svf
+to the corresponding project...
+
+<b>How to name that thing after the / ?</b>
+
+- SVF = /svf
+- SVF Test = /svftest
+- LBBZ Test = /lbbztest
+
+Create &amp; print the key (encryption key for backups)
+this must of course also be stored in the secret / BW
+
+<i>openssl rand -base64 16 &gt; restickey</i>
+<i>cat restickey</i>
+
+Create variable: <li>source resticconf
+
+Init backup: <li>restic -r $RESTIC_REPOSITORY init
+
+create mysql folder: <li>mkdir mysql-backups
+
+Adapt to project before executing the cd command
+<b> Tip: cd sites/ and TABTAB ..installation is already set up </b>
+<li>cd sites/web.ihkschwaben.tocco.ch/
+
+- Open config: <li>cat wp-config.php</li>
+
+Dont worry if the <b>DB_USER &amp; DB_NAME</b> does not
+Relate to the Installation-Name like for ex:
+
+  - zt2e8m_svftest
+
+These Names are just created based on the
+Name that is set for the DB-User. This name
+can be looked up after we click the button
+Datenbank on Infomaniaks Web-UI view,
+on the corresponding Customers Installation.
+
+- Copy the following into a note:
+<pre>
+<code class="lang-bash">
+// The name of the database for WordPress
+define('DB_NAME', 'zt2e8m_svftest');
+
+// MySQL database username
+define('DB_USER', 'zt2e8m_svftest');
+
+// MySQL database password
+define('DB_PASSWORD', 'FM4_PzkFfT4');
+
+// MySQL hostname
+define('DB_HOST', 'zt2e8m.myd.infomaniak.com');
+</code>
+</pre>
+
+Start to edit the cronjob with <i>crontab -e:</i>
+und folgendes einfügen ( 1 oberhalb des bereits bestehenden )
+
+- replace the following:
+<pre>
+<code class="lang-bash">
+mysqlhost = 'DB_HOST', 'zt2e8m.myd.infomaniak.com'
+dbuser = 'DB_USER', 'zt2e8m_svftest'
+password = 'DB_PASSWORD', 'FM4_PzkFfT4'
+dbname = 'DB_NAME', 'zt2e8m_svftest'
+dbname (in mysql-backups/dbname) = 'DB_NAME', 'zt2e8m_svftest'
+
++ Zeit --keep-daily .. --keep-weekly .. anpassen auf wahrsch 45 / 12
+
+Example When replaced: 0 23 * * * mysqldump -h zt2e8m.myd.infomaniak.com -u zt2e8m_svftest -p 'dneb/2jdn' zt2e8m_svftest &gt; mysql-backups/zt2e8m_svftest.sql
+
+# MySQL Dumps
+0 23 * * * mysqldump -h mysqlhost -u dbuser -p 'password' dbname &gt; mysql-backups/dbname.sql
+
+# Restic Backup
+15 23 * * * . ~/resticconf; ~/bin/restic backup sites/ mysql-backups
+
+# Restic Cleanup
+30 23 * * * . ~/resticconf; ~/bin/restic forget --keep-daily 45 --keep-weekly 12 --prune
+</code>
+</pre>
+</li></li></li></li></li></pre></div>
+</div>
+</div>
 </body>
 </html>
