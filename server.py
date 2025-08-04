@@ -198,20 +198,20 @@ def save_editable():
     folder_name = data.get('page_folder')
     div_id = data.get('id')
     new_content = data.get('data')  # This should be a string of HTML
-    new_soup = bs(new_content, 'html.parser')
+    new_soup = bs(new_content, 'html5lib')
 
     if not (page_name and div_id and new_content):
         return {'status': 'Missing data'}
 
     # Load the HTML file
     with open(f'./pages/{folder_name}/{page_name}.html', 'r', encoding='utf-8') as f:
-        soup = bs(f, 'html.parser')
+        soup = bs(f, 'html5lib')
 
     target_div = soup.find('div', id=div_id)
     target_div.clear()
 
     #for el in new_soup:
-    target_div.append(bs(data['data'], 'html.parser'))
+    target_div.append(bs(data['data'], 'html5lib'))
     
 
     with open(f'./pages/{folder_name}/{page_name}.html', 'w', encoding='utf-8') as f:
@@ -238,7 +238,7 @@ def get_editable():
         return {'error': 'Page not found'}
 
     with open(file_path, 'r', encoding='utf-8') as f:
-        soup = bs(f, 'html.parser')
+        soup = bs(f, 'html5lib')
 
     target_div = soup.find('div', id=div_id)
     if not target_div:
