@@ -217,7 +217,6 @@ Memory-Dumps can be found at 
 </pre></div>
 </div>
 </div>
-
 <!--## Widget-Testdomain-Mida #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-Widget-Testdomain-Mida">
 <h2 class="foldable-title" id="foldable-title-Widget-Testdomain-Mida">Widget-Testdomain-Mida</h2>
@@ -238,7 +237,7 @@ Memory-Dumps can be found at 
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Widget-Testdomain-Mida"><html><head></head><body><pre>- Mida wants so test widgets on his own server sometimes (deex.cch)
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Widget-Testdomain-Mida"><pre>- Mida wants so test widgets on his own server sometimes (deex.cch)
 
 
 - Therefore we create a new entrance underneath <i>routes:</i>
@@ -276,6 +275,63 @@ underneath: <i>nice2.web.allowedRequestOrigins:</i> 
 </div>
 
 
+</pre></div>
+</div>
+</div>
+
+<!--## Domain-With-Wordpress #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Domain-With-Wordpress">
+<h2 class="foldable-title" id="foldable-title-Domain-With-Wordpress">Domain-With-Wordpress</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Domain-With-Wordpress')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Tocco-Ansible','editable-paragraph-Domain-With-Wordpress', 'foldable-content-penButton-Domain-With-Wordpress')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-Domain-With-Wordpress">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Domain-With-Wordpress" onclick="save_editable_content('Tocco-Ansible','editable-paragraph-Domain-With-Wordpress', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Domain-With-Wordpress"><html><head></head><body><pre>- Basically the same as @mida specialexample.
+- We need to create two entrances into routes:
+     Single Domain name
+     Ingress = False entrance
+
+
+- For Example:
+<pre><code class="lang-bash">
+                              routes:
+                                    web.cwbtest-temp.tocco.ch:
+                                         create_ingress: false            # WordPress pages using our widgets
+                                    tocco.web.cwbtest-temp.tocco.ch:'
+</code>
+</pre>
+or
+<pre><code class="lang-bash">
+                              routes:
+                                    test-my.swissengineering.ch:
+                                          create_ingress: false          # WordPress pages using our widgets
+                                    tocco.test-my.swissengineering.ch:
+</code>
+</pre>
+<b>Why is this needed after all ?</b>
+<div style="border-style:solid;">
+
+
+   Without create_ingress: false a new Cert. would be created via Openshift.
+   LetsEncrypt always needs a location where a special file is present
+   With certain content. Because the route leads to a Server
+   That has nothing to do with Openshift, this would fail.
+
+
+</div>
 </pre></body></html></div>
 </div>
 </div>
