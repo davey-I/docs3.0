@@ -327,8 +327,62 @@ transform: scale(0.7);
   gap: 0.3em;
 }
 
+.frame {
+  border: 2px solid rgb(233, 219, 32);
+  padding: 15px;
+  width: fit-content;
+}
+
 .create-subdiv:hover {
   background-color: #0056b3;
+}
+
+.highlighterblue {
+  color:rgb(84, 172, 223)
+}
+
+.highlighterbluelight {
+  color:rgb(144, 199, 231)
+}
+
+.highlighterpurple {
+  color:rgb(184, 24, 144)
+}
+
+.highlighteryellow {
+  color:rgb(212, 199, 18)
+}
+
+.highlighterblue2 {
+  color:rgb(28, 238, 210)
+}
+
+.highlighterblue3 {
+  color:rgb(66, 53, 240)
+}
+
+.highlighterorange {
+  color:rgb(219, 155, 15)
+}
+
+.highlightergold {
+  color:rgb(155, 110, 13)
+}
+
+.highlightergreen {
+  color:rgb(103, 235, 16)
+}
+
+.highlightergreen2 {
+  color:rgb(41, 179, 6)
+}
+
+.highlighterred {
+  color:rgb(235, 37, 113)
+}
+
+.highlighterred2 {
+  color:rgb(235, 37, 47)
 }
 
 /* ELEMENT STYLECLASSES */
