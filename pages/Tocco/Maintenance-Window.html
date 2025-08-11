@@ -214,7 +214,7 @@ causes your Ansible playbook to fail with:</li>
 </ul>
 <h3>🔁 Recovery Path</h3>
 <ul>
-  <li>After freeing up space, the system is left in a half-upgraded state.</li>
+  <li>After freeing up space with <b>apt clean</b>, the system is left in a half-upgraded state.</li>
   <li>To recover, run the following commands manually or via Ansible:</li>
   <li><code>sudo dpkg --configure -a</code></li>
   <li><code>sudo apt-get install -f</code></li>

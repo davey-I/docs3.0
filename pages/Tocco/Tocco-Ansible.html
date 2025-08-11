@@ -80,7 +80,7 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Adjust-Memory-RAM"><pre><b>Check Memory Stats with:</b>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Adjust-Memory-RAM"><html><head></head><body><pre><b>Check Memory Stats with:</b>
 <pre><code class="lang-bash">
  https://${CUSTOMERNAME}.tocco.ch/status-tocco
 tco status ${CUSTOMERNAME} 
@@ -123,8 +123,13 @@ Also check <a href="https://docs.tocco.ch/devops/app_management/ansible_memory.h
 <h3>Create Ticket if OOM</h3>
 Memory-Dumps can be found at 
 <pre><code class="lang-bash">
- s3cmd ls s3://memory-dumps/nice-${CUSTOMERNAME}/
+
+s3cmd ls -r s3://memory-dumps/nice-${CUSTOMERNAME}
+for ex 
+s3cmd ls -r s3://memory-dumps/nice-holzbautest
+
 </code>
+Or check commands at <a href="https://docs.tocco.ch/devops/nice/thread_and_memory_dumps.html#creating-memory-dump-on-oom">Tocco-Docs</a>
 </pre>
 - check if there is already a ticket (in time period smaller than ~2W) that concerns the same issue.
 - Create ticket at <b>Location : Tocco Development / Add Epic / TOCDEV-8234</b>
@@ -139,7 +144,7 @@ Memory-Dumps can be found at 
    </div>
 - Diesem Ticket dann <i>OPS-690</i> als parent zuweisen. Und mit anderem Ticket verlinken.
 
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 <!--## Add-New-Domain #################################################################################################################-->
@@ -299,7 +304,7 @@ underneath: <i>nice2.web.allowedRequestOrigins:</i> 
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Domain-With-Wordpress"><html><head></head><body><pre>- Basically the same as @mida specialexample.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Domain-With-Wordpress"><pre>- Basically the same as @mida specialexample.
 - We need to create two entrances into routes:
      Single Domain name
      Ingress = False entrance
@@ -332,7 +337,7 @@ or
 
 
 </div>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </div>
