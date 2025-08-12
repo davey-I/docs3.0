@@ -99,11 +99,14 @@
 
 - routers will notice IP addresse changes of its services and adapt its config acoringly
 
-- The path of a request starts with the DNS resolution of a host name to one or more routers. The suggested method
-is to define a cloud  domain with a wildcard DNS entry pointing to one or more virtual IP (VIP) addresses backed
-by multiple instances. Routes using names and addresses outside the cloud domain require configuration of
-individual DNS entries.
+- The path of a request starts with the DNS resolution of a host name to one or more routers.
+  The suggested method is to define a cloud  domain with a wildcard DNS entry pointing
+  to one or more virtual IP (VIP) addresses backed by multiple instances. Routes using
+  names and addresses outside the cloud domain require configuration of
+  individual DNS entries.
+
 - It is possible to create a <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html-single/architecture/index#router-sharding">Router Sharding</a> (create router groups basically)
+
 - Because a router binds to ports on the host node, only one router listening on those ports can be on
 each node if the router uses host networking (the default). 
 
@@ -114,14 +117,71 @@ Routers support the following protocols:
 - WebSockets
 - TLS with SNI
 </ul>
-<b>
+
+
+<h3>route-edge host name</h3>
+
+
+In order for services to be exposed externally, an OpenShift Container Platform route allows
+you to associate a service with an externally-reachable host name. This <b>edge host name</b>
+is then used to route traffic to the service.
+
+
+There might appear conflicts, see <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html-single/architecture/index#architecture-core-concepts-routes">Route Host Name</a> this link also contains 
+examples of different routes.
+
+
+Routes always need to have a host name, if none is provided at creation, openshift
+auto generates one for us.
+
+Example Route definition:
+<pre><code class="lang-yaml">
+apiVersion: v1
+kind: Route
+metadata:
+  name: host-route
+spec:
+  host: www.example.com  
+  to:
+    kind: Service
+    name: service-name
+</code>
+</pre>
+
+<h3>Route Types</h3>
+For details check <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html-single/architecture/index#route-types">Route Types</a>
+
+
+- Routes can basically be distinguished by:
 <ul>
-A wrapper that watches endpoints and routes.
-Endpoint and route data, which is saved into a consumable form.
-Passing the internal state to a configurable template and executing the template.
-Calling a reload script.
+- <span class="highlightergreen">secure</span> or <span class="highlighterred">unsecure</span>route
+- their <i>termination</i> type ( if they are secure )
+- is it a specific <span class="highlighterorange">path-route</span>
 </ul>
-</b></pre></body></html></div>
+- a <span class="highlightergreen">secure</span> route is one that defines its TLS termination
+- a <span class="highlighterorange">path-route</span> is one only allowing acces to a spcific path
+   see examples from link above for more details
+
+
+<h4>Termination Types</h4>
+Details about termination types can be found at this <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html-single/architecture/index#secured-routes">Secured Routes</a> section.
+
+
+Secured routes can use any of the following three types of secure TLS termination:
+<ul>
+- <strong class="highlighterblue">Edge Termination</strong>: termination occurs at the router, prior to proxying traffic to its destination
+   connections from the router to the endpoints over the internal network are not encrypted. 
+   Requires key or cert. entrance in the route definition (see examples from link)
+
+- <strong class="highlightergreen2">Passthrough Termination</strong>: encrypted traffic is sent straight to the destination without the
+  router providing TLS termination. Therefore no key or certificate is required destination pod is
+  responsible for serving certificates for the traffic at the endpoint
+
+- <strong class="highlighterpurple">Re-encryption Termination</strong>: variation on edge termination
+   where the router terminates TLS with a certificate, then re-encrypts its connection 
+   to the endpoint which may have a different certificate.
+</ul>
+</pre></body></html></div>
 </div>
 </div>
 

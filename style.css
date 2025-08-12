@@ -18,6 +18,15 @@ body {
   box-shadow: inset 12px 0 12px -6px rgba(255, 255, 0, 0.6); /* yellow glow inward */
 }
 
+.foldable-content h4 {
+  border-left: 4px solid rgb(70, 156, 226);
+  border-color: rgb(70, 156, 226);
+  border-radius: 10px;
+  padding: 6px;
+  display: inline-block;
+  box-shadow: inset 12px 0 12px -6px rgba(70, 156, 226 0.6); /* yellow glow inward */
+}
+
 .pagetitle {
   visibility: true;
 }
@@ -277,6 +286,8 @@ transform: scale(0.7);
 .page-overwiew-listUL {
  background-color: rgb(63, 63, 240);
  border-radius: 10px;
+ border-color: #ffffff;
+ border-style: solid;
  margin: 10px;
  padding: 20px;
  columns: 3;
