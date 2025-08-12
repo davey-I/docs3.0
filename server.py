@@ -387,7 +387,7 @@ def search_content():
     for link, snippets in result.items():
         for snippet in snippets:
             # Create the HTML string with the link and snippet
-            new_content = f'<li><a href="../{link}">{link}</a> <span>{snippet}</span></li>'
+            new_content = f'<li><a href="../{link}">{link}</a> <strong>{snippet}</strong></li><br/>'
             target_div.append(bs(new_content, 'html.parser'))
 
     with open('./searchresults/searchresults.html', 'w', encoding='utf-8') as f:
