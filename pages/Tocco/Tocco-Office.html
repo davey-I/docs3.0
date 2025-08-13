@@ -152,6 +152,17 @@ Es war nicht möglich, auf Mac ein File via R-Click Menue zu drucken.<br/>
               Note that this will only work for printing, not scanning<br/>
               If you want to use your device for scanning, add it back the conventional way, i.e., Add Printer, Scanner, or Fax --&gt; Default, then follow the prompts.  You will now have the device listed twice under "Printers and Scanners," once with the HP device name (this one will scan but not print) and once labeled with the IP address (for printing).  I recommend giving the latter a more useful name, I went with "Use this one for printing."<br/>
             </div>
+<h3>Scan Probleme 'Gateway'</h3>
+<pre>- Scanner hinten bei Admin, hatte Probleme mit Scannen, also Drucker zu Mailserververbindung
+   dies weil, Gateway nicht drin war.
+- Dazu wurde die config einfach manuell eingegeben mit folgenden values:
+<pre><code class="lang-bash">
+Subnetzmaske: 255.255.255.0
+Standard-Gateway: 10.23.0.1
+DNS-Server: 10.23.0.1
+</code>
+</pre>
+</pre>
 
 </body></html></div>
 </div>
