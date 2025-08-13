@@ -50,7 +50,6 @@
 </div>
 <script src="../../prism/prism.js"></script>
 <script src="../../static/script.js"></script>
-
 <!--## routes-routers #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-routes-routers">
 <h2 class="foldable-title" id="foldable-title-routes-routers">routes-routers</h2>
@@ -81,7 +80,7 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-routes-routers"><html><head></head><body><pre><h3>Routes</h3>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-routes-routers"><pre><h3>Routes</h3>
 
 - a route exposes a service at a host name, such as www.example.com, so that external clients
   can reach it by name. DNS resolution for a host name is handled separately from routing
@@ -186,9 +185,55 @@ Secured routes can use any of the following three types of secure TLS terminatio
 - <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html-single/architecture/index#route-status-field">Route Status</a>
 - <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html-single/architecture/index#architecture-core-concepts-routes-deny-allow">Deny / Allow certain Domains</a>
 - <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/3.11/html-single/architecture/index#architecture-routes-support-for-ingress">Support for K8S ingress objects</a>
+</pre></div>
+</div>
+</div>
+
+<!--## ingress-operator #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-ingress-operator">
+<h2 class="foldable-title" id="foldable-title-ingress-operator">ingress-operator</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('ingress-operator')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('networking','editable-paragraph-ingress-operator', 'foldable-content-penButton-ingress-operator')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-ingress-operator" onclick="add_subdiv('editable-paragraph-ingress-operator')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-ingress-operator">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-ingress-operator" onclick="save_editable_content('networking','editable-paragraph-ingress-operator', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-ingress-operator"><html><head></head><body><pre>- pods and services running on the cluster are each allocated their <b>own IP</b> addresses
+
+- These IPs are accessible to other pods and services running nearby but are
+   <b>not accessible to outside</b> clients
+
+-  The <span class="highlighterblue">Ingress Operator</span> implements the <b>IngressController API</b> and is the component
+    responsible for enabling external access to OpenShift Container Platform cluster services.
+
+- The <span class="highlighterblue">Ingress Operator</span> makes it possible for external clients to access your service by
+   deploying and managing one or more <b>HAProxy-based Ingress Controllers</b> to handle routing.
+   Check also <a href="../K8S/ingress.html">K8S Ingress</a>
+
+- <span class="highlighterblue">Ingress Operator</span> can be used to route traffic by specifying OpenShift Container Platform
+   <span class="highlighterorange">Route</span> and <span class="highlighterorange">Kubernetes Ingress</span> resources.
 </pre></body></html></div>
 </div>
 </div>
-
-
 </body></html>
