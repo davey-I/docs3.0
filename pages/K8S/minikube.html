@@ -118,6 +118,21 @@
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-overlapping-oc-client"><html><head></head><body><pre>- Wenn lokal ein <i>minikube</i> cluster gestartet ist kann dies den <b>oc-client</b>
    "stören" da er sich dann als minkube-user mit dem default namespace
     des lokalen clusters verbindet.
+
+
+- dies ist meist dann der fall, wenn man sich zuletzt im <i>minikube</i> eingeloggt hatte
+wenn man dann später einfach <b>oc login</b> ausführt, nimmt <b>oc</b> scheinbar einfach
+das zuletzt genommene Cluster für die Anmeldung.
+
+
+- Man kann wieder auf das Openshift Cluster wechseln, indem man sich nochmals via 
+folgendem command einlogt:
+<pre><code class="lang-bash">
+oc login https://api.c-tocco-ocp4.tocco.ch:6443
+</code>
+</pre>
+
+
 </pre></body></html></div>
 </div>
 </div>
