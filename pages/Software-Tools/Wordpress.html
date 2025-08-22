@@ -142,7 +142,10 @@ link in ./etc/apache2/ssl/tocco.ch: web.cwbtesttemp.key -&gt; /etc/letsencrypt/l
 link in ./etc/apache2/ssl/tocco.ch: web.cwbtesttemp.pem -&gt; /etc/letsencrypt/live/web.cwbtesttemp.tocco.ch/fullchain.pem
 
 
+#DB-Stuff
 
+
+DROP DATABASE wp_NAME;
 
   # Zertifikate
 
@@ -188,6 +191,8 @@ CNAME         web.cwbtesttemp.tocco.ch                        �
 
 /etc/php/8.2/fpm/pool.d/
 
+# version testen, einfach mal systemctl restart php-TABTAB... um die verion finden
+<b>systemctl restart php-fpm.service # typical</b>
 
 Welcher Probleme beim neustart des Servers verursachte, dieser muss also unbedingt auch entfernt werden.
 
@@ -203,7 +208,7 @@ sudo deluser wp-CUSTOMERNAME
 
 
 <h4>At the end do a apache2ctl configtest and expect syntax OK </h4>
-
+dont forget if not already done - <b>systemctl restart php-fpm.service    # typical</b>
 </pre></body></html></div>
 </div>
 </div>
