@@ -18,6 +18,10 @@ def serve_searchresults(filename):
 def servers_static(filename):
     return static_file(filename, root='./')
 
+@route('/images/<filename>')
+def servers_static(filename):
+    return static_file(filename, root='./images')
+
 @route('/prism/<filename>')
 def serve_prism(filename):
     return static_file(filename, root='./prism')

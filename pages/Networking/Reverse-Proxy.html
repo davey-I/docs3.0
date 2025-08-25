@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html><head>
+<title data-folder-path="/Networking">Reverse-Proxy</title>
+<link href=" ../../static/style.css" rel="stylesheet"/>
+<link href="../../prism/prism.css" rel="stylesheet"/>
+</head>
+<body class="body">
+<div class="page-folder-header-div">
+<h1 class="pagetitle" data-folder-path="Networking">Reverse-Proxy</h1>
+<a href="./../..">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 11L12 4L21 11"></path>
+<path d="M5 10V20H19V10"></path>
+<path d="M10 20V14H14V20"></path>
+</svg>
+</a>
+</div>
+<!-- Sidebar -->
+<div class="sidbear-enclosure-open" id="sidbear-enclosure-open-Reverse-Proxy">
+<button class="sidbear-enclosure-button-open" id="sidbear-enclosure-button-Reverse-Proxy" onclick="toggle_sidebar()" type="button">
+<svg fill="white" height="30" viewBox="0 0 100 80" width="30" xmlns="http://www.w3.org/2000/svg">
+<rect height="10" width="100"></rect>
+<rect height="10" width="100" y="30"></rect>
+<rect height="10" width="100" y="60"></rect>
+</svg>
+</button>
+<div class="sidebar-mainbox-open" id="sidebar-mainbox-Reverse-Proxy">
+<div class="sidebar-subbox-open" id="sidebar-subbox-1" onclick=" append_foldable_content()">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10"></circle>
+<line x1="12" x2="12" y1="8" y2="16"></line>
+<line x1="8" x2="16" y1="12" y2="12"></line>
+</svg>
+</div>
+<div class="sidebar-subbox-open" id="sidebar-subbox-2">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M9.09 9C9.32591 8.33109 9.78918 7.76807 10.4 7.41421C11.0108 7.06036 11.7266 6.93913 12.4152 7.07107C13.1038 7.20302 13.7206 7.57857 14.162 8.12132C14.6034 8.66407 14.8397 9.33984 14.83 10.03C14.83 12 12.5 12.5 12.5 14"></path>
+<circle cx="12" cy="17" r="1"></circle>
+</svg>
+</div>
+<div class="sidebar-subbox-open" id="sidebar-subbox-3">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10"></circle>
+<path d="M9.09 9C9.32591 8.33109 9.78918 7.76807 10.4 7.41421C11.0108 7.06036 11.7266 6.93913 12.4152 7.07107C13.1038 7.20302 13.7206 7.57857 14.162 8.12132C14.6034 8.66407 14.8397 9.33984 14.83 10.03C14.83 12 12.5 12.5 12.5 14"></path>
+<circle cx="12" cy="17" r="1"></circle>
+</svg>
+</div>
+</div>
+</div>
+<script src="../../prism/prism.js"></script>
+<script src="../../static/script.js"></script>
+<!--## Was-Ist-Ein-Reverse-Proxy #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Was-Ist-Ein-Reverse-Proxy">
+<h2 class="foldable-title" id="foldable-title-Was-Ist-Ein-Reverse-Proxy">Was-Ist-Ein-Reverse-Proxy</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Was-Ist-Ein-Reverse-Proxy')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Reverse-Proxy','editable-paragraph-Was-Ist-Ein-Reverse-Proxy', 'foldable-content-penButton-Was-Ist-Ein-Reverse-Proxy')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-Was-Ist-Ein-Reverse-Proxy" onclick="add_subdiv('editable-paragraph-Was-Ist-Ein-Reverse-Proxy')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-Was-Ist-Ein-Reverse-Proxy">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Was-Ist-Ein-Reverse-Proxy" onclick="save_editable_content('Reverse-Proxy','editable-paragraph-Was-Ist-Ein-Reverse-Proxy', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Was-Ist-Ein-Reverse-Proxy"><html><head></head><body><pre><p>
+Ein <span class="highlighteryellow">Reverse-Proxy</span> ist ein Server, der vor einem oder mehr
+Webservern sitzt und Anfragen von Clients abfängt.
+
+Das ist anders als bei einem <i>Weiterleitungsproxy / Proxy</i>, der <i>vor den Clients</i> sitzt. Wenn ein <span class="highlighteryellow">Reverse-Proxy</span> verwendet
+wird und Clients Anfragen an den Ursprungsserver einer Website senden, werden diese Anfragen vom
+<span class="highlighteryellow">Reverse-Proxy</span>server an der Netzwerk-Edge abgefangen.
+
+Der <span class="highlighteryellow">Reverse-Proxy</span>server sendet die Anfragen dann an den
+Ursprungsserver und empfängt Antworten von ihm.
+
+Der Unterschied zwischen einem Weiterleitungsproxy und einem <span class="highlighteryellow">Reverse-Proxy</span>
+ist subtil, aber wichtig. Vereinfacht ausgedrückt lässt er sich so zusammenfassen: Ein <i>Weiterleitungsproxy</i>
+sitzt vor einem Client und sorgt dafür, dass kein <i>Ursprungsserver jemals direkt mit diesem speziellen Client</i>
+kommuniziert.
+
+Dagegen sitzt ein <span class="highlighteryellow">Reverse-Proxy</span> vor einem Ursprungsserver
+und sorgt dafür, dass kein Client jemals direkt mit diesem Ursprungsserver kommuniziert.
+
+Wir wollen dieses Konzept wieder anhand der beteiligten Computer veranschaulichen:
+</p>
+<span class="highlightergreen2">D</span> : eine beliebige Anzahl von Heimcomputern von Benutzern
+<span class="highlighterblue">E</span> : ein <span class="highlighteryellow">Reverse-Proxy</span>server
+<span class="highlighterpurple">F</span> : einer oder mehrere Ursprungsserver
+
+<img alt="bla" height="340" src="../../images/reverse_proxy_flow.png" width="1000"/>
+
+<p>
+Gewöhnlich würden alle Anfragen von <span class="highlightergreen2">D</span> direkt an <span class="highlighterpurple">F</span> gehen, und <span class="highlighterpurple">F</span> würde Antworten direkt an <span class="highlightergreen2">D</span> senden.
+Wenn ein <span class="highlighteryellow">Reverse-Proxy</span> verwendet wird, gehen alle Anfragen von <span class="highlightergreen2">D</span> direkt
+an E, und<span class="highlighterblue">E</span> sendet seine
+Anfragen weiter an <span class="highlighterpurple">F</span> und empfängt Antworten von F. Dann leitet<span class="highlighterblue">E</span> die entsprechenden Antworten weiter an D.
+</p>
+
+Im Folgenden beschreiben wir einige der Vorteile eines <span class="highlighteryellow">Reverse-Proxy</span>s:
+
+<ul>
+<li><strong>Load Balancing:</strong> Eine populäre Website mit Millionen von täglichen
+Benutzern kann ihren gesamten eingehenden Traffic eventuell nicht mit einem einzigen
+Ursprungsserver bewältigen. Stattdessen kann die Website auf unterschiedliche Server
+verteilt werden, die alle Anfragen für dieselbe Site handhaben. In diesem Fall kann ein
+<span class="highlighteryellow">Reverse-Proxy</span> eine Load-Balancing-Lösung bereitstellen, wobei der eingehende Traffic
+gleichmäßig unter den verschiedenen Servern aufgeteilt wird, um zu verhindern, dass ein
+einzelner Server überlastet wird. Falls ein Server vollständig ausfällt, können andere
+Server einschreiten, um den Traffic zu handhaben.
+</li>
+<li><strong>Schutz vor Angriffen:</strong> Wenn ein <span class="highlighteryellow">Reverse-Proxy</span> eingerichtet ist, müssen
+eine Website oder ein Dienst nie die IP-Adresse ihrer Ursprungsserver aufdecken. Dadurch
+wird es für Angreifer viel schwerer, einen gezielten Angriff wie z. B. einen DDoS-Angriff
+gegen sie auszuführen. Stattdessen können die Angreifer nur auf den <span class="highlighteryellow">Reverse-Proxy</span> wie z.
+B. Cloudflares CDN abzielen, der über höhere Sicherheit und mehr Ressourcen verfügt, um
+einen Cyberangriff abzuwehren.
+</li>
+<li><strong>Globaler Serverlastenausgleich (GSLB):</strong> Bei dieser Form von Load
+Balancing kann eine Website auf mehrere Server auf der ganzen Welt verteilt werden, und
+der <span class="highlighteryellow">Reverse-Proxy</span> sendet Clients zu dem Server, der ihnen am nächsten liegt. Dadurch
+werden die von Anfragen und Antworten zurückzulegenden Entfernungen und infolgedessen die
+Ladezeiten reduziert.
+</li>
+<li><strong>Caching:</strong> Ein <span class="highlighteryellow">Reverse-Proxy</span> kann auch Inhalte zwischenspeichern und so die
+Performance beschleunigen. Wenn zum Beispiel ein Benutzer in Paris eine Website mit
+Webservern in Los Angeles besucht, für die ein <span class="highlighteryellow">Reverse-Proxy</span> verwendet wird, kann er sich
+mit einem lokalen <span class="highlighteryellow">Reverse-Proxy</span>server in Paris verbinden, der dann mit einem
+Ursprungsserver in Los Angeles kommunizieren muss. Der Proxyserver kann dann die
+Antwortdaten zwischenspeichern. Spätere Benutzer in Paris, die auf der Website browsen,
+erhalten dann die lokal zwischengespeicherte Version von dem <span class="highlighteryellow">Reverse-Proxy</span>server in Paris,
+wodurch eine viel schnellere Performance sichergestellt wird.
+</li>
+<li><strong>SSL-Verschlüsselung:</strong> Verschlüsseln und Entschlüsseln von
+SSL-Kommunikationen (oder TLS-Kommunikationen) für jeden Client kann bei einem
+Ursprungsserver viel Datenverarbeitungsressourcen in Anspruch nehmen. Ein <span class="highlighteryellow">Reverse-Proxy</span>
+kann konfiguriert werden, um alle eingehenden Anfragen zu entschlüsseln und alle
+ausgehenden Antworten zu verschlüsseln, und somit wertvolle Ressourcen am Ursprungsserver
+freistellen.
+</li>
+</ul>
+</pre>
+
+</body></html></div>
+</div>
+</div>
+
+<!--## Proxyserver #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Proxyserver">
+<h2 class="foldable-title" id="foldable-title-Proxyserver">Proxyserver</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Proxyserver')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Reverse-Proxy','editable-paragraph-Proxyserver', 'foldable-content-penButton-Proxyserver')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-Proxyserver" onclick="add_subdiv('editable-paragraph-Proxyserver')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-Proxyserver">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Proxyserver" onclick="save_editable_content('Reverse-Proxy','editable-paragraph-Proxyserver', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Proxyserver"><pre>Ein Weiterleitungsproxy, oft als Proxy, Proxyserver oder Webproxy bezeichnet, ist ein Server, der vor einer
+Gruppe von Clientgeräten sitzt. Wenn diese Geräte Anfragen an Websites und Dienste im Internet stellen,
+fängt der Proxyserver diese Anfragen ab und kommuniziert dann im Auftrag dieser Clients ähnlich einem
+Vermittler mit den Webservern.
+
+Sehen wir uns zum Beispiel drei Computer an, die in einer typischen Kommunikation mit einem
+Weiterleitungsproxy eingebunden sind:
+
+<span class="highlighterblue">A</span>: Das ist der Heimcomputer des Benutzers
+<span class="highlightergreen">B</span>: Das ist ein Weiterleitungsproxyserver
+<span class="highlighterorange">C</span>: Das ist der Ursprungsserver einer Website (wo die Websitedaten gespeichert werden)
+
+<img alt="bla" height="340" src="../../images/forward_proxy_flow.png" width="1000"/>
+
+Bei einer Standardkommunikation im Internet würde sich Computer <span class="highlighterblue">A</span> direkt an Computer <span class="highlighterorange">C</span> wenden, wobei der Client Anfragen
+an den Ursprungsserver sendet und der Ursprungsserver dem Client antwortet.
+
+Wenn ein Weiterleitungsproxy eingerichtet ist, sendet <span class="highlighterblue">A</span> stattdessen Anfragen an <span class="highlightergreen">B</span>, der die Anfrage
+dann an <span class="highlighterorange">C</span> weiterleitet. <span class="highlighterorange">C</span> sendet daraufhin eine Antwort an <span class="highlightergreen">B</span>, der sie zurück zu <span class="highlighterblue">A</span> weiterleitet.
+
+<h4>Warum würde irgendjemand diesen zusätzlichen Vermittler zu seiner Internetaktivität hinzufügen?</h4>
+<ul>
+<li>Um Einschränkungen von Behörden oder Institutionen beim Browsen zu vermeiden.
+Einige Regierungen, Schulen und andere Organisationen verwenden Firewalls, um ihren Benutzern Zugriff auf eine
+eingeschränkte Version des Internets zu gewähren. Ein Weiterleitungsproxy kann eingesetzt werden, um diese
+Einschränkungen zu umgehen, weil der Benutzer mit dem Proxy verbunden wird, anstatt mit den Websites, die er besucht.
+</li>
+
+<li>Um Zugriff auf bestimmte Inhalte zu blockieren.
+Umgekehrt können Proxys auch eingestellt werden, um eine Gruppe von Benutzern am Zugriff auf bestimmte Websites
+zu hindern.
+</li>
+
+<li>Zum Beispiel könnte ein Schulnetzwerk konfiguriert werden, sich über einen Proxy zur Aktivierung von
+Inhaltsfilterregeln mit dem Internet zu verbinden, um die Weiterleitung von Antworten von Facebook und anderen
+Social-Media-Websites zu verweigern.
+</li>
+</ul>
+</pre></div>
+</div>
+</div>
+
+
+
+</body></html>
