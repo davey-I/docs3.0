@@ -124,7 +124,6 @@
 </pre></div>
 </div>
 </div>
-
 <!--## open-metrics-endpoint #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-open-metrics-endpoint">
 <h2 class="foldable-title" id="foldable-title-open-metrics-endpoint">open-metrics-endpoint</h2>
@@ -155,7 +154,7 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-open-metrics-endpoint"><html><head></head><body><pre>- if not explicitly closed in the <i>grafana.ini</i> section inside helm-values.yaml
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-open-metrics-endpoint"><pre>- if not explicitly closed in the <i>grafana.ini</i> section inside helm-values.yaml
   the <b>/metrics</b> endpoint is publicly available.
 
 - This can leak detailed infos about the cluster, not to critical, but still.
@@ -167,9 +166,49 @@ grafana.ini:
     enabled: false
 </code>
 </pre>
+</pre></div>
+</div>
+</div>
+
+<!--## add-color-in-logQL #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-add-color-in-logQL">
+<h2 class="foldable-title" id="foldable-title-add-color-in-logQL">add-color-in-logQL</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('add-color-in-logQL')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Grafana','editable-paragraph-add-color-in-logQL', 'foldable-content-penButton-add-color-in-logQL')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-add-color-in-logQL" onclick="add_subdiv('editable-paragraph-add-color-in-logQL')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-add-color-in-logQL">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-add-color-in-logQL" onclick="save_editable_content('Grafana','editable-paragraph-add-color-in-logQL', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-add-color-in-logQL"><html><head></head><body><pre>If we use ...
+| <i>json </i>
+| <b>line_format `|</b>
+we can add :
+<pre><code class="lang-bash">
+ | line_format `| {{.k8s_namespace_name}} | {{ if eq (slice .structured_status 0 1) "2" }}{{.structured_status}}🟢{{ else if eq (slice .structured_status 0 1) "4" }}{{.structured_status}}🔴{{ else if eq (slice .structured_status 0 1) "5" }}{{.structured_status}}🟠{{ else }}{{.structured_status}}⚪{{ end }} | {{.structured_request_time}} | {{.structured_message}}`
+</code>
+</pre>
 </pre></body></html></div>
 </div>
 </div>
-
-
 </body></html>
