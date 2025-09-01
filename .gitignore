@@ -3,7 +3,6 @@ __pycache__/
 *.pyc
 *.log
 temp-notes.txt
-*searchresults
 .DS_Store
 *.swp
 .vscode/
