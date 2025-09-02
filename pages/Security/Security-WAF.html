@@ -173,7 +173,7 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-modsecurity"><html><head></head><body><pre>- <b>Logs</b>: Can be found at <i>/var/log/apache2/modsec_audit.log</i>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-modsecurity"><pre>- <b>Logs</b>: Can be found at <i>/var/log/apache2/modsec_audit.log</i>
 - Modsecurity can be combined with <b>Project-Honeypod</b>
 
 <h3>How to Disable ModSecurity for a Virtual Host</h3>
@@ -289,7 +289,7 @@ Each matching rule will increase the anomaly score.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-OWASP-CRS-Works-Testing"><pre>To check if ModSecurity is working, you can launch a simple SQL injection attack on your own website.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-OWASP-CRS-Works-Testing"><html><head></head><body><pre>To check if ModSecurity is working, you can launch a simple SQL injection attack on your own website.
 (Please note that it’s illegal to do security testing on other people’s websites without authorization.)
 Enter the following URL in your web browser.
 
@@ -353,7 +353,7 @@ configuration file for ModSecurity.
 
 
 <pre><code class="lang-bash">
-sudo nano /etc/logrotate.d/modsecurity
+sudo vim /etc/logrotate.d/modsecurity
 </code></pre>
 
 
@@ -378,7 +378,7 @@ The previous 14 log files will be kept (rotate 14), and no rotation will occur i
 file is empty (notifempty). Save and close the file.
 
 
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 <!--## OWASP-CRS-Handling-False-Positives #################################################################################################################-->
@@ -736,11 +736,16 @@ Save and close the file. Then restart Apache for the change to take effect. (Rel
 <h4>Step 3: Install the OWASP Core Rule Set (CRS)</h4>
 
 
-To make ModSecurity protect your web applications, you need to define rules to detect malicious actors and block them. For beginners, it’s a good idea to install existing rule sets, so you can get started quickly and then learn the nitty-gritty down the road. There are several free rule sets for ModSecurity. The OWASP Core Rule Set (CRS) is the standard rule set used with ModSecurity.
+To make ModSecurity protect your web applications, you need to define rules to detect malicious actors
+and block them. For beginners, it’s a good idea to install existing rule sets, so you can get started quickly
+and then learn the nitty-gritty down the road. There are several free rule sets for ModSecurity.
+The OWASP Core Rule Set (CRS) is the standard rule set used with ModSecurity.
 
 
-- It's free, community-maintained and the most widely used rule set that provides a sold default configuration for ModSecurity.
-- It contains rules to help stop common attack vectors, including SQL injection (SQLi), cross-site scripting (XSS), and many others.
+- It's free, community-maintained and the most widely used rule set that provides a sold default
+configuration for ModSecurity.
+- It contains rules to help stop common attack vectors, including SQL injection (SQLi),
+cross-site scripting (XSS), and many others.
 - It can integrate with Project Honeypot.
 - It also contains rules to detect bots and scanners.
 - It has been tuned through wide exposure to have very few false positives.
@@ -754,11 +759,11 @@ it can become out of date. If you care about security, you should use the latest
 Download the latest OWASP CRS from GitHub.
 
 
-wget https://github.com/coreruleset/coreruleset/archive/v3.3.0.tar.gz
+<pre><code class="lang-bash">wget https://github.com/coreruleset/coreruleset/archive/v3.3.0.tar.gz</code></pre>
 Extract the file.
 
 
-tar xvf v3.3.0.tar.gz
+<pre><code class="lang-bash">tar xvf v3.3.0.tar.gz</code></pre>
 Create a directory to store CRS files.
 
 
@@ -770,7 +775,7 @@ Move the extracted directory to /etc/apache2/modsecurity-crs/.
 Go to that directory.
 
 
-cd /etc/apache2/modsecurity-crs/coreruleset-3.3.0/
+<pre><code class="lang-bash">cd /etc/apache2/modsecurity-crs/coreruleset-3.3.0/</code></pre>
 Rename the crs-setup.conf.example file.
 
 
@@ -804,7 +809,7 @@ If the syntax is OK, then restart Apache.
 </pre></div>
 </div>
 </div>
-</body></html></div>
+</div>
 </div>
 </div>
 </body></html><!--## Setup-Apache2-Modsecurity #################################################################################################################--><!--## How-OWASP-CRS-Works #################################################################################################################--><!--## Steup-Apache2-Modsecurity #################################################################################################################-->
