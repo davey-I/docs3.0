@@ -50,7 +50,6 @@
 </div>
 <script src="../../prism/prism.js"></script>
 <script src="../../static/script.js"></script>
-
 <!--## add-user-to-group #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-add-user-to-group">
 <h2 class="foldable-title" id="foldable-title-add-user-to-group">add-user-to-group</h2>
@@ -81,10 +80,67 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-add-user-to-group"><html><head></head><body><pre><pre><code class="lang-bash">sudo usermod -a -G ${GROUPNAME} ${USERNAME}</code></pre>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-add-user-to-group"><pre><pre><code class="lang-bash">sudo usermod -a -G ${GROUPNAME} ${USERNAME}</code></pre>
+</pre></div>
+</div>
+</div>
+
+<!--## sudoers #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-sudoers">
+<h2 class="foldable-title" id="foldable-title-sudoers">sudoers</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('sudoers')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('usermanagement','editable-paragraph-sudoers', 'foldable-content-penButton-sudoers')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-sudoers" onclick="add_subdiv('editable-paragraph-sudoers')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-sudoers">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-sudoers" onclick="save_editable_content('usermanagement','editable-paragraph-sudoers', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-sudoers"><html><head></head><body><pre>- sudo stuff can be edited via <b>visudo</b>
+- The sudoers policy plugin determines a user's sudo privileges.
+- sudo will prompt for the password of the user specified by the -u option (defaults to root)
+ instead of the password of the invoking user when running a command or editing a file.
+<h4>Example Entrance</h4>
+<pre><code class="lang-bash">
+dainvirt     ALL=(ALL:ALL) ALL
+</code>
+</pre>
+<ul> 
+ <li><b>dainvirt</b> → The <b>username</b> this rule applies to.</li>
+<li><b>ALL</b> (before the =) → The <b>host(s)</b> where this rule applies. On a single server, it just means <b>this machine</b>.
+</li> <li><b>(ALL:ALL)</b> → <ul> <li>First <b>ALL</b> → User(s) that <b>dainvirt</b> may run commands as (<b>any user</b>).
+</li> <li>Second <b>ALL</b> → Group(s) that <b>dainvirt</b> may run commands as (<b>any group</b>).</li>
+</ul>
+</li>
+<li><b>ALL</b> (after the )) → The <b>commands</b> allowed. Here it means <b>any command</b>.</li> </ul>
+⚡ In plain English:
+<b>dainvirt</b> can run <b>any command</b> as <b>any user</b> and <b>any group</b>,
+on <b>any host</b>, but will be asked for a password unless you add <b>NOPASSWD:</b> is added like so:.
+<pre><code class="lang-bash">
+dainvirt     ALL=(ALL:ALL) NOPASSWD: ALL
+</code>
+</pre>
+
 </pre></body></html></div>
 </div>
 </div>
-
-
 </body></html>

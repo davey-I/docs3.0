@@ -177,8 +177,8 @@
 - Modsecurity can be combined with <b>Project-Honeypod</b>
 
 <h3>How to Disable ModSecurity for a Virtual Host</h3>
-By default, ModSecurity is enabled for all Apache virtual hosts.
-If you want to disable ModSecurity for a specific virtual host,
+By default, ModSecurity is enabled <b>for all Apache virtual hosts</b>.
+If you want to disable ModSecurity for a <b>specific virtual host</b>,
 then edit the virtual host file (<i>/etc/apache2/sites-enabled/example.com.conf</i>)
 and add the following line to the &lt;VirtualHost&gt;...&lt;/VirtualHost&gt; context.
 
@@ -289,7 +289,7 @@ Each matching rule will increase the anomaly score.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-OWASP-CRS-Works-Testing"><html><head></head><body><pre>To check if ModSecurity is working, you can launch a simple SQL injection attack on your own website.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-OWASP-CRS-Works-Testing"><pre>To check if ModSecurity is working, you can launch a simple SQL injection attack on your own website.
 (Please note that it’s illegal to do security testing on other people’s websites without authorization.)
 Enter the following URL in your web browser.
 
@@ -378,7 +378,7 @@ The previous 14 log files will be kept (rotate 14), and no rotation will occur i
 file is empty (notifempty). Save and close the file.
 
 
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 <!--## OWASP-CRS-Handling-False-Positives #################################################################################################################-->
@@ -401,30 +401,24 @@ file is empty (notifempty). Save and close the file.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-OWASP-CRS-Handling-False-Positives"><pre>ModSecurity is a <i>generic</i> web application firewall and not designed for a specific web application.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-OWASP-CRS-Handling-False-Positives"><html><head></head><body><pre>ModSecurity is a <i>generic</i> web application firewall and not designed for a specific web application.
 The OWASP core rule set is also a <i>generic</i> rule set with no particular application in mind,
 so it’s likely that you will see false positives after enabling ModSecurity and OWASP CRS.
 If you increase the paranoia level in the CRS, there will be more false positives.
-
 
 For example, by default, the CRS forbids Unix command injection like entering sudo on a
 web page, which is rather common on my blog. To eliminate false positives, you need to
 add rule exclusions to the CRS.
 
-
 <h4>Application-Specific Rule Exclusions</h4>
-
 
 There are some prebuilt, application-specific exclusions shipped with OWASP CRS. Edit the crs-setup.conf file.
 
-
 <pre><code class="lang-bash">
-sudo nano /etc/apache2/modsecurity-crs/coreruleset-3.3.0/crs-setup.conf
+sudo vim /etc/apache2/modsecurity-crs/coreruleset-3.3.0/crs-setup.conf
 </code></pre>
 
-
 Go to the <b>Application Specific Rule Exclusions</b> section and find the following lines.
-
 
 <pre><code class="lang-bash">
 #SecAction \
@@ -447,7 +441,6 @@ Please be careful about the syntax.
 There should be no comments between <i>t:none,\ and setvar:tx.crs_exclusions_wordpress=1"</i>.
 (The backslash \ character at the end indicates the next line is a continuation of the current line.)
 
-
 <pre><code class="lang-bash">
 SecAction \
   "id:900130,\
@@ -463,90 +456,69 @@ SecAction \
 #  setvar:tx.crs_exclusions_xenforo=1"
 </code></pre>
 
-
 Save and close the file. Then test Apache configurations.
-
 
 <pre><code class="lang-bash">
 sudo apache2ctl -t
 </code></pre>
 
-
 If the test is successful, restart Apache for the change to take effect.
-
 
 <pre><code class="lang-bash">
 sudo systemctl restart apache2
 </code></pre>
-
 
 Note that if you have multiple applications such as (WordPress, Nextcloud, Drupal, etc) installed
 on the same server, then the above rule exclusions will be applied to all applications. To minimize
 the security risks, you should enable a rule exclusion for one application only. To do that, go to the
 <i>/etc/apache2/modsecurity-crs/coreruleset-3.3.0/rules/</i> directory.
 
-
 <pre><code class="lang-bash">
 cd /etc/apache2/modsecurity-crs/coreruleset-3.3.0/rules/
 </code></pre>
 
-
 Rename the <b>REQUEST-900-EXCLUSION-RULES-BEFORE-CRS</b> file.
-
 
 <pre><code class="lang-bash">
 sudo mv REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
 </code></pre>
 
-
 Then edit this file.
 
-
 <pre><code class="lang-bash">
-sudo nano REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+sudo vim REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
 </code></pre>
-
 
 Add the following line at the bottom of this file. If your WordPress is using the
 <b>blog.yourdomain.com</b> sub-domain and the request header sent from visitor’s browser
 contains this sub-domain, then ModSecurity will apply the rule exclusions for WordPress.
 
-
 <b>SecRule REQUEST_HEADERS:Host "@streq blog.yourdomain.com" "id:1000,phase:1,setvar:tx.crs_exclusions_wordpress=1"</b>
-
 
 If you have installed Nextcloud on the same server, then you can also add the following line in
 this file, so if a visitor is accessing your Nextcloud sub-domain, ModSecurity will apply the
 Nextcloud rule exclusions.
 
-
 <b>SecRule REQUEST_HEADERS:Host "@streq nextcloud.yourdomain.com" "id:1001,phase:1,setvar:tx.crs_exclusions_nextcloud=1"</b>
 
-
 Save and close this file. Then test Apache configurations.
-
 
 <pre><code class="lang-bash">
 sudo apache2ctl -t
 </code></pre>
 
-
 If the test is successful, rstart Apache for the change to take effect.
-
 
 <pre><code class="lang-bash">
 sudo systemctl restart apache2
 </code></pre>
 
-
 <h4>Custom Rule Exclusions</h4>
-
 
 Enabling the prebuilt application-specific rule exclusions might not eliminate all false positives.
 If so, you need to examine the ModSecurity audit log (/var/log/apache2/modsec_audit.log), check
 which rule caused the false positive and add your custom rule exclusions in the
 <b>REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf</b> file.
-
 
 Section H in the audit log tells you which rule is matched. For example, If I try to use the
 &lt;code&gt;...&lt;/code&gt; HTML in the comment form, ModSecurity blocks my comment.
@@ -554,24 +526,19 @@ The following log tells me that the HTTP request matched a rule in
 <b>REQUEST-941-APPLICATION-ATTACK-XSS.conf</b> (line 527). The rule <i>ID is 941310</i>.
 The request URI is <i>/wp-comments-post.php</i>.
 
-
 <img src="../../images/modsecurity-Custom-Rule-Exclusions.png"/>
-
 
 It’s detected as malformed encoding XSS filter attack. However, I want users to be able to use
 the &lt;code&gt;...&lt;/code&gt; and &lt;pre&gt;...&lt;/pre&gt; HTML tag in the comment form,
 so I created a rule exclusion. Add the following line at the bottom of the
 <b>REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf</b> file.
 
-
 <pre><code class="lang-bash">
 SecRule REQUEST_URI "@streq /wp-comments-post.php" "id:1002,phase:1,ctl:ruleRemoveById=941310"
 </code></pre>
 
-
 This line tells ModSecurity that if the request URI is /wp-comments-post.php, then don’t apply
 rule <b>ID 941310</b>. Save and close the file. Then test Apache configurations.
-
 
 <pre><code class="lang-bash">
 sudo apache2ctl -t
@@ -579,22 +546,17 @@ sudo apache2ctl -t
 sudo systemctl restart apache2
 </code></pre>
 
-
 If a false positive matches multiple rule IDs, you can add rule exclusions in one line like so:
-
 
 <pre><code class="lang-bash">
 SecRule REQUEST_URI "@streq /wp-admin/post.php" "id:1003,phase:1,ctl:ruleRemoveById=941160,ctl:ruleRemoveById=941310,ctl:ruleRemoveById=942100"
 </code></pre>
 
-
 <b>Note</b>: It’s not recommended to disable too many rules of level 1 in the OWASP CRS, as it
 will make your website be hacked much more easily. Only disable rules if you know what you are doing.
 
 
-
-
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 <!--## OWASP-CRS-IP-Whitelisting #################################################################################################################-->
@@ -642,15 +604,15 @@ sudo systemctl restart apache2
 <h4>Chaining Rules</h4>
 
 If your Apache has multiple virtual hosts, you may want to whitelist your IP address for a
-specific virtual host. You need to chain two rules like so:
+<b>specific virtual host</b>. You need to chain two rules like so:
 
 <pre><code class="lang-bash">
 SecRule REMOTE_ADDR "@ipMatch 12.34.56.78" "id:1004,phase:1,allow,ctl:ruleEngine=off,chain"
 SecRule REQUEST_HEADERS:Host "@streq nextcloud.yourdomain.com" "t:none"
 </code></pre>
 
-The chain keyword at the end of the first rule indicates that the ruleEngine=off action will
-only be taken if the condition in the next rule is also true.
+The <b>chain keyword</b> at the end of the first rule indicates that the <b>ruleEngine=off</b> action will
+only be taken <b>if the condition in the next rule is also true</b>.
 
 </pre></div>
 </div>
@@ -678,69 +640,55 @@ only be taken if the condition in the next rule is also true.
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Setup-Apache2-Modsecurity"><pre>The ModSecurity module for Apache is included in the default Debian/Ubuntu repository. To install it, run
 
-
 <pre><code class="lang-bash">sudo apt install libapache2-mod-security2</code></pre>
 Then enable this module.
-
 
 <pre><code class="lang-bash">sudo a2enmod security2</code></pre>
 Restart Apache for the change to take effect.
 
-
 <pre><code class="lang-bash">sudo systemctl restart apache2</code></pre>
-
 
 <h4>Step 2: Configure ModSecurity</h4>
 In the <b>/etc/apache2/mods-enabled/security2.conf</b> configuration file, you can find the following line.
 
-
 IncludeOptional /etc/modsecurity/*.conf
 
-
 <img alt="blaaa" height="180" src="../../images/sudo-a2enmod-security2.png" width="600"/>
-
 
 This means Apache will include all the <b>*.conf</b> files in <b>/etc/modsecurity/</b> directory. We need to rename
 the <b>modsecurity.conf-recommended</b> file to make it work.
 
-
 <pre><code class="lang-bash">sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf</code></pre>
-Then edit this file with a command-line text editor like Nano.
+Then edit this file with a command-line text editor like VIM.
 
-
-<pre><code class="lang-bash">sudo nano /etc/modsecurity/modsecurity.conf</code></pre>
+<pre><code class="lang-bash">sudo vim /etc/modsecurity/modsecurity.conf</code></pre>
 Find the following line.
 
+<pre><code class="lang-bash">SecRuleEngine DetectionOnly</code></pre>
 
-SecRuleEngine DetectionOnly
 This config tells ModSecurity to log HTTP transactions, but takes no action when an attack is detected.
 Change it to the following, so ModSecurity will detect and block web attacks.
 
-
-SecRuleEngine On
+<pre><code class="lang-bash">SecRuleEngine On</code></pre>
 Then find the following line (line 186), which tells ModSecurity what information should be included in the audit log.
 
+<pre><code class="lang-bash">SecAuditLogParts ABDEFHIJZ</code></pre>
 
-SecAuditLogParts ABDEFHIJZ
 However, the default setting is wrong. You will know why later when I explain how to understand ModSecurity logs.
 The setting should be changed to the following.
 
+<pre><code class="lang-bash">SecAuditLogParts ABCEFHJKZ</code></pre>
 
-SecAuditLogParts ABCEFHJKZ
 Save and close the file. Then restart Apache for the change to take effect. (Reloding the web server isn’t enough.)
-
 
 <pre><code class="lang-bash">sudo systemctl restart apache2</code></pre>
 
-
 <h4>Step 3: Install the OWASP Core Rule Set (CRS)</h4>
-
 
 To make ModSecurity protect your web applications, you need to define rules to detect malicious actors
 and block them. For beginners, it’s a good idea to install existing rule sets, so you can get started quickly
 and then learn the nitty-gritty down the road. There are several free rule sets for ModSecurity.
 The OWASP Core Rule Set (CRS) is the standard rule set used with ModSecurity.
-
 
 - It's free, community-maintained and the most widely used rule set that provides a sold default
 configuration for ModSecurity.
@@ -750,60 +698,45 @@ cross-site scripting (XSS), and many others.
 - It also contains rules to detect bots and scanners.
 - It has been tuned through wide exposure to have very few false positives.
 
-
 When installing ModSecurity from the default Debian/Ubuntu repository, the modsecurity-crs package
 is also installed as a dependency. This package contains the OWASP core rule set version 3.x. However,
 it can become out of date. If you care about security, you should use the latest version of core rule set.
 
-
 Download the latest OWASP CRS from GitHub.
-
 
 <pre><code class="lang-bash">wget https://github.com/coreruleset/coreruleset/archive/v3.3.0.tar.gz</code></pre>
 Extract the file.
 
-
 <pre><code class="lang-bash">tar xvf v3.3.0.tar.gz</code></pre>
 Create a directory to store CRS files.
-
 
 <pre><code class="lang-bash">sudo mkdir /etc/apache2/modsecurity-crs/</code></pre>
 Move the extracted directory to /etc/apache2/modsecurity-crs/.
 
-
 <pre><code class="lang-bash">sudo mv coreruleset-3.3.0/ /etc/apache2/modsecurity-crs/</code></pre>
 Go to that directory.
-
 
 <pre><code class="lang-bash">cd /etc/apache2/modsecurity-crs/coreruleset-3.3.0/</code></pre>
 Rename the crs-setup.conf.example file.
 
-
 <pre><code class="lang-bash">sudo mv crs-setup.conf.example crs-setup.conf</code></pre>
 Edit the /etc/apache2/mods-enabled/security2.conf file.
 
-
-<pre><code class="lang-bash">sudo nano /etc/apache2/mods-enabled/security2.conf</code></pre>
+<pre><code class="lang-bash">sudo vim /etc/apache2/mods-enabled/security2.conf</code></pre>
 Find the following line, which loads the default CRS files.
-
 
 IncludeOptional /usr/share/modsecurity-crs/*.load
 Change it to the following, so the latest OWASP CRS will be used.
 
-
 IncludeOptional /etc/apache2/modsecurity-crs/coreruleset-3.3.0/crs-setup.conf
 IncludeOptional /etc/apache2/modsecurity-crs/coreruleset-3.3.0/rules/*.conf
 
-
 <img alt="blaaa" height="180" src="../../images/apache-Install-the-OWASP-Core-Rule-Set-CRS-debian-ubuntu.png" width="600"/>
-
 
 Save and close the file. Then test Apache configuration.
 
-
 <pre><code class="lang-bash">sudo apache2ctl -t</code></pre>
 If the syntax is OK, then restart Apache.
-
 
 <pre><code class="lang-bash">sudo systemctl restart apache2</code></pre>
 </pre></div>
