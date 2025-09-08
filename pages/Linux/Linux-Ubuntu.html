@@ -106,7 +106,6 @@ Categories=Application;
 </ul></div>
 </div>
 </div>
-
 <!--## semantic-versioning #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-semantic-versioning">
 <h2 class="foldable-title" id="foldable-title-semantic-versioning">semantic-versioning</h2>
@@ -137,7 +136,7 @@ Categories=Application;
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-semantic-versioning"><html><head></head><body><pre>semantic versioning tries to add some semantic / meaning, to the way that
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-semantic-versioning"><pre>semantic versioning tries to add some semantic / meaning, to the way that
 <b>software versions</b> are created. So one can estimate how much impact
 a certain change of version might have on its software.
 
@@ -174,9 +173,56 @@ a certain change of version might have on its software.
 
 - Sometimes one might release something before official release
   date, for this scenario the <b>pre-release-identifier</b> was implemented
+</pre></div>
+</div>
+</div>
+
+<!--## tar #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-tar">
+<h2 class="foldable-title" id="foldable-title-tar">tar</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('tar')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Linux-Ubuntu','editable-paragraph-tar', 'foldable-content-penButton-tar')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-tar" onclick="add_subdiv('editable-paragraph-tar')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-tar">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-tar" onclick="save_editable_content('Linux-Ubuntu','editable-paragraph-tar', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-tar"><html><head></head><body><pre>To <b>tar</b> and <b>gzip</b> a folder, the syntax is:: 
+<pre><code class="lang-bash">
+
+
+tar czf name_of_archive_file.tar.gz name_of_directory_to_tar
+</code>
+</pre>
+Adding - before the options (czf) is optional with tar. The effect of czf is as follows:
+
+
+c — create an archive file (as opposed to extract, which is x)
+f — filename of the archive file
+z — filter archive through gzip (remove this option to create a .tar file)
+
+If you want to tar the current directory, use <b>.</b> to designate that.
 </pre></body></html></div>
 </div>
 </div>
-
-
 </body></html>
