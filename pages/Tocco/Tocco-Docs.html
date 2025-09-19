@@ -220,6 +220,21 @@ To build the <b>tocco-docs</b> check <a href="https://docs.tocco.ch/about/about.
   .. parsed-literal::
      $ oc login -w
      $ oc project nice-${CUSTOMERNAME}
+
+# to avoid strange <b>indent</b> problem use one from underneath ...
+
+* Display Error Logs:
+
+  .. parsed-literal::
+
+     ssh autorestore.tocco.ch 'sudo cat /home/autorestore/info.log'
+
+* Display Info Logs from last run:
+
+  .. parsed-literal::
+
+     ssh autorestore.tocco.ch 'sudo cat /home/autorestore/info.log'
+
 </code>
 </pre>
 <h3>Add global Stuff</h3>
