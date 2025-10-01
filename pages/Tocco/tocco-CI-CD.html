@@ -563,7 +563,6 @@ configuration integrity.</p>
 </pre></div>
 </div>
 </div>
-
 <!--## 4.header_config-script #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-4.header_config-script">
 <h2 class="foldable-title" id="foldable-title-4.header_config-script">4.header_config-script</h2>
@@ -584,7 +583,7 @@ configuration integrity.</p>
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-4.header_config-script"><html><head></head><body><h2>header_config.py explanation</h2>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-4.header_config-script"><h2>header_config.py explanation</h2>
 <pre><h4>Introduction: What are HTTP Headers?</h4>
 <p>HTTP headers are <b>metadata fields</b> that web servers send along with web
 pages to provide additional information to browsers and clients. They control things
@@ -712,10 +711,602 @@ to <b>/etc/nginx/headers.include</b>. This file can then be included in the main
 
 <p>The beauty is that you can configure all these headers through <i>environment variables</i>
 without rebuilding the container image, making deployment across different environments seamless.</p>
+</pre></div>
+</div>
+</div>
+<!--## 5.interation_tests #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-5.interation_tests">
+<h2 class="foldable-title" id="foldable-title-5.interation_tests">5.interation_tests</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('5.interation_tests')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('tocco-CI-CD','editable-paragraph-5.interation_tests', 'foldable-content-penButton-5.interation_tests')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-5.interation_tests">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-5.interation_tests" onclick="save_editable_content('tocco-CI-CD','editable-paragraph-5.interation_tests', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-5.interation_tests"><pre><h4>Introduction: Integration Testing Purpose</h4>
+<p>This integration test suite validates the <b>end-to-end behavior</b> of the Nginx container
+by making real HTTP requests and verifying responses. It tests that all components work
+together correctly: <i>header injection</i>, <b>proxy forwarding</b>, <i>caching behavior</i>,
+<b>WebSocket support</b>, and various edge cases that might occur in production.</p>
+
+<h4>1. Common Assertion Helper Function</h4>
+<pre><code class="lang-python">def assert_response(path, code, *, some_header, some_always_header=True, source_ip='10.0.0.3'):
+headers = { 'X-Forwarded-For': source_ip, 'X-Forwarded-Proto': 'https' }
+r = requests.get('http://localhost:8081/{}'.format(path), allow_redirects=False, headers=headers)
+assert r.status_code == code, 'got code {} but expected {} fetching {!r} with source IP {}'.format(r.status_code, code, path, source_ip)
+assert not some_always_header or r.headers['Some-Always-Header'] == 'some always "value"'
+assert not some_header or r.headers['Some-Header'] == 'some "value"'</code></pre>
+<p>A <b>reusable test helper</b> that validates HTTP responses:</p>
+<ul>
+<li>Makes a request to <i>localhost:8081</i> (the Nginx container)</li>
+<li>Simulates <b>OpenShift's routing headers</b> (X-Forwarded-For, X-Forwarded-Proto)</li>
+<li>Verifies the <i>HTTP status code</i> matches expectations</li>
+<li>Checks if the <b>custom headers</b> configured via environment variables are present</li>
+<li>Tests both <i>conditional headers</i> (some_header) and <b>always headers</b> (some_always_header)</li>
+</ul>
+
+<h4>2. Cache Keying Test (Regression Test)</h4>
+<pre><code class="lang-python">def test_cache_keying():
+abc_net1 = requests.get('http://localhost:8081/cache', headers={'Host': 'abc.net', 'X-Forwarded-Proto': 'https', 'X-Forwarded-For': '10.0.0.3'})
+assert abc_net1.headers['X-Cache'] == 'MISS'
+# same schema, same host, same uri and same method → cached
+abc_net2 = requests.get('http://localhost:8081/cache', headers={'Host': 'abc.net', 'X-Forwarded-Proto': 'https', 'X-Forwarded-For': '10.0.0.3'})
+assert abc_net2.headers['X-Cache'] == 'HIT'</code></pre>
+<p>Tests that <b>Nginx caching works correctly</b> and is properly isolated by:</p>
+<ul>
+<li><b>First request</b>: Cache miss, response gets cached</li>
+<li><b>Second identical request</b>: Cache hit, same content returned</li>
+<li><b>Different protocol</b> (http vs https): Separate cache entry (MISS)</li>
+<li><b>Different hostname</b>: Separate cache entry (MISS)</li>
+<li><b>Different HTTP method</b> (HEAD vs GET): Separate cache entry (MISS)</li>
+</ul>
+<p>This is a <i>regression test for bug #63270</i>, ensuring cache isolation
+prevents data leakage between different virtual hosts.</p>
+
+<h4>3. HTTP Method Preservation Test</h4>
+<pre><code class="lang-python">def test_no_head_rewrite_to_get():
+get = requests.get('http://localhost:8081/method', headers={'Host': 'abc.net', 'X-Forwarded-Proto': 'https', 'X-Forwarded-For': '10.0.0.3'})
+assert get.headers['X-Method-Received'] == 'GET'
+head = requests.head('http://localhost:8081/method', headers={'Host': 'abc.net', 'X-Forwarded-Proto': 'https', 'X-Forwarded-For': '10.0.0.3'})
+assert head.headers['X-Method-Received'] == 'HEAD'</code></pre>
+<p>Verifies that <b>HTTP methods are preserved</b> when proxying to the backend
+application. Some proxy configurations incorrectly convert HEAD requests to GET
+requests, which this test guards against.</p>
+
+<h4>4. Health Endpoint Test</h4>
+<pre><code class="lang-python">def test_unreachable():
+assert_response('status-tocxxxooag-nginx', 200, some_header=False, some_always_header=False)
+assert_response('bad-gateway', 502, some_header=False)</code></pre>
+<p>Tests the <b>health check endpoint</b>:</p>
+<ul>
+<li><i>/status-tocxxxooag-nginx</i> always returns <b>200 OK</b> even if the backend application is down</li>
+<li>This allows <b>OpenShift health checks</b> to distinguish between "Nginx is broken" vs "backend app is broken"</li>
+<li>Other paths return <i>502 Bad Gateway</i> when the backend is unreachable</li>
+<li>Note: No custom headers are added to error responses (some_header=False)</li>
+</ul>
+
+<h4>5. Basic Proxying Test</h4>
+<pre><code class="lang-python">def test_proxying():
+assert_response('200', 200, some_header=True)
+assert_response('404', 404, some_header=False)
+assert_response('500', 500, some_header=False)</code></pre>
+<p>Validates <b>request proxying</b> and header behavior:</p>
+<ul>
+<li><b>Success responses (200)</b>: Custom headers are added</li>
+<li><b>Error responses (404, 500)</b>: Custom headers are NOT added (conditional headers)</li>
+<li>Ensures the backend application's responses are <i>correctly forwarded</i></li>
+</ul>
+
+<h4>6. Timeout Configuration Test</h4>
+<pre><code class="lang-python">def test_timeout():
+print('Testing 4 minute timeout. Be patient.')
+assert_response('time=240', 200, some_header=True)</code></pre>
+<p>Verifies that the <b>proxy timeout is properly configured</b>. The default
+Nginx timeout of 60 seconds would cause this test to fail. This ensures
+<i>long-running requests</i> (like file uploads or complex computations)
+can complete without timing out.</p>
+
+<h4>7. WebSocket Support Test</h4>
+<pre><code class="lang-python">def test_websocket():
+resp = requests.get(
+'http://localhost:8081/websocket',
+allow_redirects=False,
+headers={
+'Connection': 'Upgrade',
+'Upgrade': 'WebSocket',
+'X-Forwarded-For': '10.0.0.3',
+'X-Forwarded-Proto': 'https',
+}
+)
+resp.raise_for_status()</code></pre>
+<p>Tests that <b>WebSocket upgrade headers</b> are correctly forwarded
+to the backend. WebSocket connections require special <i>Connection: Upgrade
+</i> and <i>Upgrade: WebSocket</i> headers to establish the connection.</p>
+
+<h4>8. Header Filtering Test</h4>
+<pre><code class="lang-python">def test_no_websocket():
+resp = requests.get(
+'http://localhost:8081/no-websocket',
+allow_redirects=False,
+headers = {
+'X-Forwarded-For': '10.0.0.3',
+'X-Forwarded-Proto': 'https',
+}
+)
+resp.raise_for_status()</code></pre>
+<p>Verifies that when <b>WebSocket headers are NOT present</b>, they're not
+sent to the backend. This tests proper header filtering and ensures the backend
+doesn't receive unexpected headers.</p>
+
+<h4>9. Security.txt Compliance Test</h4>
+<pre><code class="lang-python">def test_security_txt():
+resp = requests.get('http://localhost:8081/.well-known/security.txt')
+resp.raise_for_status()
+assert 'Expires: 20' in resp.text
+resp = requests.get('http://localhost:8081/security.txt')
+resp.raise_for_status()
+assert 'Expires: 20' in resp.text
+resp = requests.get('http://localhost:8081/security.txt', allow_redirects=False)
+resp.raise_for_status()
+assert resp.headers['Location'] == '/.well-known/security.txt'</code></pre>
+<p>Tests <b>RFC 9116 security.txt</b> implementation:</p>
+<ul>
+<li>Verifies the file is accessible at <i>/.well-known/security.txt</i></li>
+<li>Checks the <b>Expires field</b> was generated (starts with "20" for year 20xx)</li>
+<li>Tests the <i>legacy /security.txt location</i> with redirect to the standard location</li>
+<li>Ensures security contact information is properly exposed</li>
+</ul>
+
+<h4>10. Mock Application Context Manager</h4>
+<pre><code class="lang-python">class mock:
+def __init__(self):
+self.mock = None
+def __enter__(self):
+self.mock = Process(target=nice_mock.run)
+self.mock.start()
+# wait for mock to become ready
+while True:
+try:
+requests.get('http://localhost:8080/200')
+except requests.exceptions.ConnectionError:
+print('waiting for mock …')
+time.sleep(0.5)
+else:
+break
+def __exit__(self, a, b, c):
+if self.mock is not None:
+self.mock.terminate()</code></pre>
+<p>A <b>context manager</b> that manages the mock backend application:</p>
+<ul>
+<li>Starts the <i>nice_mock.py</i> server in a separate process</li>
+<li><b>Waits for readiness</b> by polling until it responds</li>
+<li>Automatically <i>cleans up</i> (terminates) the mock server when tests complete</li>
+<li>Ensures tests have a <b>working backend</b> to proxy to</li>
+</ul>
+
+<h4>11. Main Test Orchestration</h4>
+<pre><code class="lang-python">def main():
+test_security_txt()
+test_unreachable()
+with mock():
+test_cache_keying()
+test_no_head_rewrite_to_get()
+test_proxying()
+test_timeout()
+test_websocket()
+test_no_websocket()</code></pre>
+<p>Orchestrates test execution in <b>logical order</b>:</p>
+<ul>
+<li>First runs tests that <i>don't need the backend</i> (security.txt, health endpoint)</li>
+<li>Then starts the mock backend and runs <b>proxy-dependent tests</b></li>
+<li>Ensures proper <i>setup and teardown</i> of test dependencies</li>
+</ul>
+
+<h4>Overall Integration Test Purpose</h4>
+<p>This comprehensive test suite validates the <b>production readiness</b> of
+your Nginx container:</p>
+<ul>
+<li><b>Header management</b>: Custom headers work correctly</li>
+<li><b>Proxy functionality</b>: Requests are correctly forwarded to backends</li>
+<li><b>Cache isolation</b>: No data leakage between different virtual hosts</li>
+<li><b>WebSocket support</b>: Modern web applications can use WebSockets</li>
+<li><b>Timeout handling</b>: Long-running requests don't fail prematurely</li>
+<li><b>Security compliance</b>: RFC-compliant security.txt implementation</li>
+<li><b>Health monitoring</b>: OpenShift can properly monitor container health</li>
+</ul>
+
+<p>These tests ensure that the <i>dynamically configured Nginx container</i>
+will behave correctly in production OpenShift environments with real applications.</p>
+</pre></div>
+</div>
+</div>
+<!--## 6.mock #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-6.mock">
+<h2 class="foldable-title" id="foldable-title-6.mock">6.mock</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('6.mock')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('tocco-CI-CD','editable-paragraph-6.mock', 'foldable-content-penButton-6.mock')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-6.mock">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-6.mock" onclick="save_editable_content('tocco-CI-CD','editable-paragraph-6.mock', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-6.mock"><pre><h4>Introduction: Mock Backend Server Purpose</h4>
+<p>This is a <b>lightweight test web server</b> that simulates a real backend application.
+It runs on <i>port 8080</i> and provides various endpoints with specific behaviors to
+test different Nginx proxy scenarios. The server's status code and behavior are determined
+by the <b>URL path</b>, making it easy to test different HTTP response scenarios.</p>
+
+
+<h4>1. Request Handler Class Definition</h4>
+<pre><code class="lang-python">class S(BaseHTTPRequestHandler):
+    def do_GET(self):</code></pre>
+<p>Defines the main <b>HTTP request handler</b> that processes GET requests.
+Inherits from Python's BaseHTTPRequestHandler to handle HTTP protocol details
+automatically.</p>
+
+
+<h4>2. Cache Testing Endpoint</h4>
+<pre><code class="lang-python">        if self.path == '/cache':
+            body = str(uuid.uuid4())
+            self.send_response(200)
+            self.send_header('Cache-Control', 'public, max-age=86400')</code></pre>
+<p>Generates <b>unique content for cache testing</b>:</p>
+<ul>
+    <li>Returns a <i>random UUID</i> as the response body</li>
+    <li>Sets <b>Cache-Control header</b> allowing caching for 24 hours (86400 seconds)</li>
+    <li>Enables testing whether Nginx properly caches responses and serves them correctly</li>
+    <li>Each request gets a <i>unique UUID</i>, so cache HITs vs MISSes can be distinguished</li>
+</ul>
+
+
+<h4>3. Timeout Testing Endpoint</h4>
+<pre><code class="lang-python">        elif self.path.startswith('/time='):
+            time.sleep(int(self.path[6:]))
+            self.send_response(200)</code></pre>
+<p>Simulates <b>slow/long-running requests</b>:</p>
+<ul>
+    <li>Extracts the number from the path (e.g., <i>/time=240</i> means 240 seconds)</li>
+    <li><b>Sleeps</b> for the specified duration before responding</li>
+    <li>Used to test that Nginx's <i>proxy timeout</i> is configured correctly</li>
+    <li>Ensures long-running operations don't get cut off prematurely</li>
+</ul>
+
+
+<h4>4. Health Check Endpoint</h4>
+<pre><code class="lang-python">        elif self.path == '/status-tocxxxooag':
+            self.send_response(200)</code></pre>
+<p>Simple <b>health check endpoint</b> that always returns 200 OK. This might
+be used by the backend application's own health checks (separate from Nginx's
+health endpoint).</p>
+
+
+<h4>5. WebSocket Upgrade Testing</h4>
+<pre><code class="lang-python">        elif self.path == '/websocket':
+            if self.headers['Upgrade'].lower() == 'websocket' \
+                    and self.headers['Connection'].lower() == 'upgrade':
+                status = 101
+            else:
+                status = 500
+            self.send_response(status)</code></pre>
+<p>Tests <b>WebSocket header forwarding</b>:</p>
+<ul>
+    <li>Checks if both <i>Upgrade: websocket</i> and <i>Connection: upgrade</i> headers are present</li>
+    <li>Returns <b>101 Switching Protocols</b> if headers are correct (proper WebSocket upgrade)</li>
+    <li>Returns <b>500 Internal Server Error</b> if headers are missing or incorrect</li>
+    <li>Validates that Nginx correctly <i>forwards WebSocket upgrade headers</i> to the backend</li>
+</ul>
+
+
+<h4>6. Header Filtering Validation</h4>
+<pre><code class="lang-python">        elif self.path == '/no-websocket':
+            if 'Upgrade' not in self.headers \
+                    and 'Connection' not in self.headers:
+                status = 200
+            else:
+                status = 500
+            self.send_response(status)</code></pre>
+<p>Tests that <b>WebSocket headers are NOT present</b> when they shouldn't be:</p>
+<ul>
+    <li>Returns <b>200 OK</b> if neither Upgrade nor Connection headers are present</li>
+    <li>Returns <b>500</b> if these headers exist (indicating improper header forwarding)</li>
+    <li>Ensures Nginx doesn't <i>leak or add unexpected headers</i> to normal requests</li>
+</ul>
+
+
+<h4>7. HTTP Method Verification</h4>
+<pre><code class="lang-python">        elif self.path == '/method':
+            self.send_response(200)
+            self.send_header('X-Method-Received','GET')
+            self.end_headers()</code></pre>
+<p>Echoes back the <b>HTTP method received</b>:</p>
+<ul>
+    <li>Returns a custom header <i>X-Method-Received</i> indicating which method was used</li>
+    <li>Allows tests to verify Nginx doesn't <b>transform HTTP methods</b> (e.g., HEAD to GET)</li>
+    <li>Ensures proper <i>method preservation</i> through the proxy</li>
+</ul>
+
+
+<h4>8. Dynamic Status Code Endpoint</h4>
+<pre><code class="lang-python">        else:
+            code = int(self.path[1:])
+            self.send_response(code)
+        self.end_headers()
+        self.wfile.write(body.encode())</code></pre>
+<p>The <b>default behavior</b> for any other path:</p>
+<ul>
+    <li>Extracts the status code from the URL path (e.g., <i>/404</i> returns 404, <i>/200</i> returns 200)</li>
+    <li>Allows testing <i>any HTTP status code</i> by simply changing the URL</li>
+    <li>Writes the response body (if any) and completes the response</li>
+    <li>Makes it easy to test Nginx behavior with different status codes</li>
+</ul>
+
+
+<h4>9. HEAD Request Handler</h4>
+<pre><code class="lang-python">    def do_HEAD(self):
+        if self.path == '/method':
+            self.send_response(200)
+            self.send_header('X-Method-Received', 'HEAD')
+            self.end_headers()
+        elif self.path == '/cache':
+            self.send_response(200)
+            self.send_header('Cache-Control', 'public, max-age=86400')
+        else:
+            raise ValueError(f'unexpected path {self.path!r}')
+        self.end_headers()</code></pre>
+<p>Handles <b>HEAD requests</b> separately:</p>
+<ul>
+    <li>For <i>/method</i>: Returns <b>X-Method-Received: HEAD</b> to verify method preservation</li>
+    <li>For <i>/cache</i>: Returns the same headers as GET (for cache testing)</li>
+    <li>For other paths: Raises an error (forces tests to be explicit about HEAD support)</li>
+    <li>HEAD requests should return <i>headers without a body</i></li>
+</ul>
+
+
+<h4>10. IPv6-Enabled HTTP Server</h4>
+<pre><code class="lang-python">class CustomHTTPServer(HTTPServer):
+    address_family = socket.AF_INET6</code></pre>
+<p>Customizes the HTTP server to support <b>IPv6</b>:</p>
+<ul>
+    <li>Sets the address family to <i>AF_INET6</i> instead of the default AF_INET (IPv4)</li>
+    <li>Enables <b>dual-stack networking</b> (IPv4 and IPv6) on modern systems</li>
+    <li>Ensures compatibility with <i>IPv6-enabled environments</i></li>
+</ul>
+
+
+<h4>11. Server Startup Function</h4>
+<pre><code class="lang-python">def run(server_class=CustomHTTPServer, handler_class=S):
+    server_address = ('', 8080)
+    httpd = server_class(server_address, handler_class)
+    httpd.serve_forever()</code></pre>
+<p>Starts the mock server:</p>
+<ul>
+    <li>Binds to <b>port 8080</b> on all network interfaces</li>
+    <li>Uses the <i>CustomHTTPServer</i> class (IPv6-enabled)</li>
+    <li>Runs <b>indefinitely</b> with serve_forever() until terminated</li>
+    <li>This is the server that Nginx proxies to during integration tests</li>
+</ul>
+
+
+<h4>12. Script Entry Point</h4>
+<pre><code class="lang-python">if __name__ == "__main__":
+    run()</code></pre>
+<p>Starts the server when the script is run directly.</p>
+
+
+<h4>Overall Mock Server Purpose</h4>
+<p>This mock server is a <b>testing Swiss Army knife</b> that provides:</p>
+<ul>
+    <li><b>Dynamic status codes</b>: Test any HTTP response code by changing the URL</li>
+    <li><b>Cache testing</b>: Unique responses to verify cache behavior</li>
+    <li><b>Timeout simulation</b>: Test long-running request handling</li>
+    <li><b>WebSocket validation</b>: Ensure proper header forwarding</li>
+    <li><b>Method preservation</b>: Verify HTTP methods aren't transformed</li>
+    <li><b>Header filtering</b>: Confirm unwanted headers aren't leaked</li>
+</ul>
+
+
+<p>The server's <i>path-based behavior</i> makes it extremely flexible for
+testing different scenarios without needing multiple test servers. It simulates
+a real backend application's behavior patterns, allowing comprehensive integration
+testing of the Nginx proxy configuration.</p>
+</pre></div>
+</div>
+</div>
+
+
+<div class="foldable-container" id="foldcontainer-7.test_header_config">
+<h2 class="foldable-title" id="foldable-title-7.test_header_config">7.test_header_config</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('7.test_header_config')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('tocco-CI-CD','editable-paragraph-7.test_header_config', 'foldable-content-penButton-7.test_header_config')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-7.test_header_config">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-7.test_header_config" onclick="save_editable_content('tocco-CI-CD','editable-paragraph-7.test_header_config', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-7.test_header_config"><html><head></head><body><pre><h4>Introduction: Unit Testing Purpose</h4>
+<p>This is a <b>unit test</b> for the <i>header_config.py</i> script. It validates
+that environment variables are correctly transformed into Nginx configuration
+directives. Unlike integration tests that test the whole system, this tests <b>just
+one component in isolation</b> with controlled inputs and expected outputs.</p>
+
+
+<h4>1. Test Setup and Imports</h4>
+<pre><code class="lang-python">import header_config
+import tempfile
+import textwrap
+import unittest</code></pre>
+<p>Imports necessary modules:</p>
+<ul>
+    <li><b>header_config</b>: The module being tested</li>
+    <li><b>tempfile</b>: Creates temporary files for testing without cluttering the filesystem</li>
+    <li><b>textwrap</b>: Helps format multi-line strings cleanly (removes indentation)</li>
+    <li><b>unittest</b>: Python's built-in testing framework</li>
+</ul>
+
+
+<h4>2. Test Class Definition</h4>
+<pre><code class="lang-python">class Test(unittest.TestCase):
+    def test_main(self):</code></pre>
+<p>Defines a <b>test case class</b> that inherits from unittest.TestCase,
+providing testing utilities and assertion methods.</p>
+
+
+<h4>3. Mock Environment Variables</h4>
+<pre><code class="lang-python">        env = {
+            'NGINX_HEADER_Strict-Transport-Security': 'max-age=86400',
+            'ignored': 'ignored',
+            'NGINX_HEADER_a_name': r'value in need of escaping "\"',
+            'NGINX_HEADER_name-with__hyphens': 'double__underscores__not__replaced__here',
+            'NGINX_ALWAYS_HEADER_Always': 'present even on error pages'
+        }</code></pre>
+<p>Creates a <b>mock environment dictionary</b> to test various scenarios:</p>
+<ul>
+    <li><b>'NGINX_HEADER_Strict-Transport-Security'</b>: Tests a standard security header</li>
+    <li><b>'ignored'</b>: Tests that non-NGINX_HEADER variables are <i>not processed</i></li>
+    <li><b>'NGINX_HEADER_a_name'</b>: Tests <i>special character escaping</i> (quotes and backslashes)</li>
+    <li><b>'NGINX_HEADER_name-with__hyphens'</b>: Tests that <b>double
+underscores in the header NAME</b> become hyphens, but double underscores
+<i>in the VALUE</i> stay unchanged</li>
+    <li><b>'NGINX_ALWAYS_HEADER_Always'</b>: Tests the "always" flag for error page headers</li>
+</ul>
+
+
+<h4>4. Temporary File Creation</h4>
+<pre><code class="lang-python">        with tempfile.NamedTemporaryFile(mode='w+') as f:
+            header_config.main(env, f.name)</code></pre>
+<p>Uses a <b>context manager</b> to create a temporary file:</p>
+<ul>
+    <li>The file is automatically <i>cleaned up</i> when the test completes</li>
+    <li>Calls <b>header_config.main()</b> with the mock environment and temp file path</li>
+    <li>This generates the Nginx configuration file just like in production</li>
+</ul>
+
+
+<h4>5. Output Verification</h4>
+<pre><code class="lang-python">            self.assertEqual(f.read(), textwrap.dedent(r"""
+                # DO NOT EDIT MANUALLY!
+                # content is generated based on NGINX_HEADER_* and NGINX_ALWAYS_HEADER_* environment variables
+                add_header "Always" "present even on error pages" always;
+                add_header "Strict-Transport-Security" "max-age=86400";
+                add_header "a_name" "value in need of escaping \"\\\"";
+                add_header "name-with-hyphens" "double__underscores__not__replaced__here";
+            """).lstrip())</code></pre>
+<p>Asserts that the <b>generated configuration matches expectations exactly</b>. Let's break down what's being verified:</p>
+
+
+<h4>5.1. Comment Headers</h4>
+<pre><code class="lang-nginx"># DO NOT EDIT MANUALLY!
+# content is generated based on NGINX_HEADER_* and NGINX_ALWAYS_HEADER_* environment variables</code></pre>
+<p>Verifies that <b>warning comments</b> are included in the generated file.</p>
+
+
+<h4>5.2. Always Header</h4>
+<pre><code class="lang-nginx">add_header "Always" "present even on error pages" always;</code></pre>
+<p>Confirms that <i>NGINX_ALWAYS_HEADER_Always</i> becomes an
+<b>add_header directive with the "always" flag</b>, meaning it will be sent even on error responses (4xx, 5xx).</p>
+
+
+<h4>5.3. Standard Header</h4>
+<pre><code class="lang-nginx">add_header "Strict-Transport-Security" "max-age=86400";</code></pre>
+<p>Verifies a <b>regular header</b> (without "always" flag) is generated correctly.
+This header will only be sent on successful responses (2xx, 3xx).</p>
+
+
+<h4>5.4. Escaped Characters</h4>
+<pre><code class="lang-nginx">add_header "a_name" "value in need of escaping \"\\\"</code></pre>
+<p>Tests that <b>special characters are properly escaped</b>:</p>
+<ul>
+    <li>Input: <i>'value in need of escaping "\\"'</i></li>
+    <li>Output: <i>"value in need of escaping \"\\\""</i></li>
+    <li>Quotes are escaped as <b>\"</b></li>
+    <li>Backslashes are escaped as <b>\\</b></li>
+    <li>This prevents <i>configuration syntax errors</i> in Nginx</li>
+</ul>
+
+
+<h4>5.5. Underscore Handling</h4>
+<pre><code class="lang-nginx">add_header "name-with-hyphens" "double__underscores__not__replaced__here";</code></pre>
+<p>Validates the <b>selective underscore replacement logic</b>:</p>
+<ul>
+    <li>Header name: <i>name-with__hyphens</i> → <b>name-with-hyphens</b> (double underscores become hyphens)</li>
+    <li>Header value: <i>double__underscores__not__replaced__here</i> → stays unchanged</li>
+    <li>This allows using proper HTTP header names (which use hyphens) while working
+within <i>environment variable naming constraints</i> (which can't contain hyphens)</li>
+</ul>
+
+
+<h4>6. Alphabetical Ordering</h4>
+<p>Notice the headers are <b>sorted alphabetically</b> by name:</p>
+<ul>
+    <li>Always</li>
+    <li>Strict-Transport-Security</li>
+    <li>a_name</li>
+    <li>name-with-hyphens</li>
+</ul>
+<p>This ensures <i>consistent, predictable output</i> regardless of the order environment variables are defined.</p>
+
+
+<h4>7. What's NOT in the Output</h4>
+<p>The test also verifies that:</p>
+<ul>
+    <li>The <b>'ignored'</b> variable is NOT included (doesn't start with NGINX_HEADER_ or NGINX_ALWAYS_HEADER_)</li>
+    <li>Only relevant environment variables are processed</li>
+    <li>The script <i>filters correctly</i></li>
+</ul>
+
+
+<h4>Overall Unit Test Purpose</h4>
+<p>This test validates the <b>core functionality</b> of header_config.py:</p>
+<ul>
+    <li><b>Environment variable parsing</b>: Correctly identifies NGINX_HEADER_* variables</li>
+    <li><b>Name transformation</b>: Double underscores → hyphens in header names only</li>
+    <li><b>Special character escaping</b>: Prevents configuration syntax errors</li>
+    <li><b>Always flag handling</b>: Properly distinguishes conditional vs. always headers</li>
+    <li><b>Filtering</b>: Ignores non-header environment variables</li>
+    <li><b>Output formatting</b>: Generates valid Nginx configuration syntax</li>
+    <li><b>Alphabetical sorting</b>: Ensures consistent output</li>
+</ul>
+
+
+<p>This <i>unit test</i> runs quickly and doesn't require a running Nginx container,
+making it ideal for catching bugs early in development. Combined with the
+<b>integration tests</b>, it ensures the header configuration system works correctly
+both in isolation and in the complete system.</p>
 </pre></body></html></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-</body></html><!--## 1.Pipeline-Trigger-gitlab-ci.yml #################################################################################################################-->
+</body></html><!--## 7.test_header_config #################################################################################################################--><!--## 1.Pipeline-Trigger-gitlab-ci.yml #################################################################################################################-->
