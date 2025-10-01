@@ -193,7 +193,6 @@ Merging to higher versions can sometimes lead to merge conflicts which then need
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-openshift-nginx"><h2>How does the CI/CD Pipeline for the Tocco Nginx Webserver work ?</h2>
-
 <div class="foldable-container" id="foldcontainer-1.Pipeline-Trigger-gitlab-ci.yml">
 <h2 class="foldable-title" id="foldable-title-1.Pipeline-Trigger-gitlab-ci.yml">1.Pipeline-Trigger-gitlab-ci.yml</h2>
 <button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('1.Pipeline-Trigger-gitlab-ci.yml')" type="button">
@@ -213,11 +212,506 @@ Merging to higher versions can sometimes lead to merge conflicts which then need
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-1.Pipeline-Trigger-gitlab-ci.yml"><html><head></head><body><pre>- Whenever you <b>push to GitLab</b>, the .gitlab-ci.yml defines
-  <b>what jobs run</b> (build, test, deploy, etc.).
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-1.Pipeline-Trigger-gitlab-ci.yml"><pre>- Whenever you <b>push to GitLab</b>, the .gitlab-ci.yml defines
+<b>what jobs run</b> (build, test, deploy, etc.).
+
 
 
 - GitLab runners then pick up those jobs.
+
+
+<div>
+<h1>GitLab CI Pipeline Explanation</h1>
+
+<h4>1. Default Configuration</h4>
+- GitLab picks a runner machine that has the "tocxxxoo-podman" tag and loads up
+   a special Debian Linux container that already has Podman installed
+
+
+<pre><code class="lang-yaml">default:
+image: registry.gitlab.com/tocxxxooag/base-images/debian:stable-podman</code></pre>
+<p>This section defines the <b>default Docker image</b> that will be used
+for all jobs in the pipeline unless explicitly overridden. The image
+<i>registry.gitlab.com/tocxxxooag/base-images/debian:stable-podman</i>
+is a custom Debian-based image from a private GitLab registry that includes
+<b>Podman</b> (a Docker alternative) pre-installed. This base image is
+specifically designed for container operations in OpenShift environments.</p>
+
+<h4>2. Job Definition - "tests"</h4>
+<pre><code class="lang-yaml">tests:</code></pre>
+<p>This <b>defines a job named "tests"</b> that will contain all the
+testing and validation steps for the Docker image build process.</p>
+<h4>3. Runner Tags</h4>
+<pre><code class="lang-yaml"> tags:
+- tocxxxoo-podman</code></pre>
+<p>Specifies that this job should run on GitLab runners that have the
+tag <b>tocxxxoo-podman</b>. This ensures the job runs on runners that
+are <b>specifically configured</b> with <i>Podman capabilities</i> and the
+necessary permissions for container operations in an OpenShift environment.</p>
+<h4>4. Script Execution Steps</h4>
+<h4>4.1. System Package Updates</h4>
+The system updates its software packages and installs Python 3 with the requests
+library (needed for making web requests later)
+<pre><code class="lang-yaml"> - apt-get update
+- apt-get install -y python3 python3-requests</code></pre>
+<p>Updates the Debian package lists and installs <b>Python 3</b> along
+with the <i>python3-requests</i> library. The requests library is
+needed for making HTTP calls during testing, particularly for the
+health checks that will follow.</p>
+<h4>4.2. Container Image Build</h4>
+Podman builds a new Docker image called "tocxxxoo-nginx"
+<i>using the Dockerfile</i> in your project folder
+<pre><code class="lang-yaml"> - podman build -t tocxxxoo-nginx .</code></pre>
+<p>Builds a container image using <b>Podman</b> (instead of Docker) from
+the Dockerfile in the current directory. The image is tagged as <i>tocxxxoo-nginx</i>.
+This creates the custom Nginx image that's designed for OpenShift deployment.</p>
+<h4>4.3. Container Deployment and Configuration</h4>
+The freshly built Nginx image gets started as a running container with special settings:
+<pre><code class="lang-yaml"> - |
+podman run -d -u 1234:0 --net=host --name nginx -e NGINX_HEADER_Some-Header='some "value"' \
+-e NGINX_ALWAYS_HEADER_Some__Always__Header='some always "value"' \
+tocxxxoo-nginx</code></pre>
+<p>Starts the Nginx container with specific OpenShift-compatible settings:</p>
+<ul>
+<li><b>-d</b>: Runs the container in detached mode (background)</li>
+<li><b>-u 1234:0</b>: Sets user ID to 1234 and group ID to 0, which is
+<i>OpenShift's security model</i> for running containers as non-root users</li>
+<li><b>--net=host</b>: Uses the host's network stack directly</li>
+<li><b>--name nginx</b>: Names the container "nginx" for easy reference</li>
+<li><b>Environment variables</b>: Sets custom Nginx headers that will be added to responses:
+<ul>
+<li><i>NGINX_HEADER_Some-Header</i>: Adds a conditional header</li>
+<li><i>NGINX_ALWAYS_HEADER_Some__Always__Header</i>: Adds a header that's always present</li>
+</ul>
+</li>
+</ul>
+<h4>4.4. Health Check and Readiness Validation</h4>
+The pipeline waits for Nginx to fully start up by repeatedly checking
+if it responds properly on port 8081 at the "/status-tocxxxoo-nginx" endpoint.
+If it doesn't respond after some time, it shows the container logs and fails
+<pre><code class="lang-yaml"> - |
+while ! [[ $(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8081/status-tocxxxoo-nginx") = 200 ]]; do
+echo "waiting for Nginx to become ready"
+podman exec -it nginx true || { podman logs nginx; exit 1; }
+sleep 1;
+done</code></pre>
+<p>Implements a <b>health check loop</b> that waits for Nginx to become fully operational:</p>
+<ul>
+<li>Makes HTTP requests to <i>http://localhost:8081/status-tocxxxoo-nginx</i> until it returns HTTP 200</li>
+<li>If the container becomes unresponsive, it <b>dumps the container logs</b> and exits with error code 1</li>
+<li>Sleeps for 1 second between attempts to avoid overwhelming the service</li>
+<li>This ensures the container is not just running, but actually <i>serving requests properly</i></li>
+</ul>
+<h4>4.5. Nginx Configuration Validation</h4>
+Once Nginx is running, it tests if the Nginx configuration files are valid by running
+<pre><code class="lang-yaml"> - podman exec nginx nginx -t || { podman logs nginx; false; }</code></pre>
+<p>Validates the Nginx configuration inside the running container by executing
+<b>nginx -t</b>. If the configuration is invalid, it dumps the container logs
+and fails the pipeline. This catches any <i>syntax errors or misconfigurations</i>
+in the Nginx setup.</p>
+<h4>4.6. Unit Test Execution</h4>
+<pre><code class="lang-yaml"> - PYTHONPATH=$PWD python3 -m unittest discover tests</code></pre>
+<p>Runs Python unit tests using the <b>unittest discovery mechanism</b>. Sets
+<i>PYTHONPATH</i> to the current working directory to ensure proper module imports.
+This discovers and executes all unit tests in the "tests" directory.</p>
+<h4>4.7. Integration Test Execution</h4>
+<pre><code class="lang-yaml"> - ./tests/integration_tests.py</code></pre>
+<p>Executes the integration test script that likely tests the <b>end-to-end
+functionality</b> of the Nginx container, including testing the custom headers,
+routing, and other <i>OpenShift-specific features</i>.</p>
+<h4>Overall Pipeline Purpose</h4>
+<p>This GitLab CI pipeline is designed to build, test, and validate a <b>custom
+Nginx Docker image</b> specifically configured for <i>OpenShift deployment</i>.
+The pipeline ensures that:</p>
+<ul>
+<li>The image builds successfully with Podman</li>
+<li>The container runs with OpenShift's security constraints (non-root user)</li>
+<li>Custom header functionality works as expected</li>
+<li>All configuration is valid</li>
+<li>Both unit and integration tests pass</li>
+</ul>
+<p>The use of Podman instead of Docker aligns with OpenShift's container
+runtime, and the specific user ID (1234) and networking configuration
+ensure <i>compatibility with OpenShift's security policies</i>.</p>
+</div>
+</pre></div>
+</div>
+</div>
+<!--## 2.Dockerfile #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-2.Dockerfile">
+<h2 class="foldable-title" id="foldable-title-2.Dockerfile">2.Dockerfile</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('2.Dockerfile')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('tocco-CI-CD','editable-paragraph-2.Dockerfile', 'foldable-content-penButton-2.Dockerfile')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-2.Dockerfile">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-2.Dockerfile" onclick="save_editable_content('tocco-CI-CD','editable-paragraph-2.Dockerfile', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-2.Dockerfile"><pre><h4>1. Base Image Selection</h4>
+<pre><code class="lang-dockerfile">FROM docker.io/library/nginx</code></pre>
+<p>Starts with the <b>official Nginx image</b> from Docker Hub as the foundation.
+This provides a pre-configured Nginx web server with all basic functionality already set up.</p>
+
+<h4>2. System Dependencies Installation</h4>
+<pre><code class="lang-dockerfile">RUN apt-get update \
+    &amp;&amp; apt-get install -y --no-install-recommends python3 python3-jinja2 \
+    &amp;&amp; rm -r /var/cache/apt/*</code></pre>
+<p>Updates the package lists and installs <b>Python 3</b> with the <i>Jinja2 templating library</i>.
+ The <b>--no-install-recommends</b> flag keeps the image size smaller by avoiding suggested
+packages. After installation, it cleans up the package cache to <i>reduce the final image size</i>.</p>
+
+<h4>3. Configuration Files Deployment</h4>
+<pre><code class="lang-dockerfile">ADD nice2.conf.template /etc/nginx/conf.d/
+ADD nginx.conf.template /etc/nginx/</code></pre>
+<p>Copies <b>Nginx configuration templates</b> into the container. These are
+<i>Jinja2 templates</i> that will be processed by Python scripts to generate
+the final configuration files with dynamic values.</p>
+
+<h4>4. Python Scripts Installation</h4>
+<pre><code class="lang-dockerfile">ADD header_config.py /usr/local/bin/
+ADD csp_header_config.py /usr/local/bin/
+ADD entrypoint.py /usr/local/bin/</code></pre>
+<p>Installs custom Python scripts that handle:</p>
+<ul>
+    <li><b>header_config.py</b>: Processes HTTP header configuration from environment variables</li>
+    <li><b>csp_header_config.py</b>: Handles <i>Content Security Policy</i> header generation</li>
+    <li><b>entrypoint.py</b>: Main startup script that coordinates template processing and Nginx startup</li>
+</ul>
+
+<h4>5. Security and Static Files</h4>
+<pre><code class="lang-dockerfile">ADD security.txt /var/www/.well-known/security.txt
+ADD *.include /etc/nginx/</code></pre>
+<p>Adds a <b>security.txt file</b> (RFC 9116 compliance for security contact information)
+and copies all <i>.include files</i> to the Nginx configuration directory. These include
+files likely contain reusable Nginx configuration snippets.</p>
+
+<h4>6. OpenShift Permission Configuration</h4>
+<pre><code class="lang-dockerfile">RUN chmod -R 777 /var/log/nginx /var/cache/nginx /var/run \
+    &amp;&amp; chgrp -R 0 /etc/nginx \
+    &amp;&amp; chmod -R g+rwX /etc/nginx</code></pre>
+<p>Critical <b>OpenShift compatibility settings</b>:</p>
+<ul>
+    <li>Sets <i>777 permissions</i> on log, cache, and run directories so non-root users can write to them</li>
+    <li>Changes group ownership to <b>group 0 (root group)</b> for the Nginx config directory</li>
+    <li>Gives the root group <i>read, write, and execute permissions</i> on config files</li>
+    <li>This allows OpenShift's arbitrary user IDs to function properly</li>
+</ul>
+
+<h4>7. Default Configuration Cleanup</h4>
+<pre><code class="lang-dockerfile">    &amp;&amp; rm -f /etc/nginx/conf.d/default.conf</code></pre>
+<p>Removes the <b>default Nginx configuration</b> to ensure only custom configurations
+are active, preventing conflicts with the templated configuration.</p>
+
+<h4>8. Script Permissions and Security.txt Processing</h4>
+<pre><code class="lang-dockerfile">    &amp;&amp; chmod +x /usr/local/bin/header_config.py /usr/local/bin/header_config.py /usr/local/bin/entrypoint.py \
+    &amp;&amp; : expiry date is required by spec for unknown reasons, so adding it \
+    &amp;&amp; sed -i "s/{{ expiry_date }}/$(date -d +180days +%FTT%T.000Z)/g" /var/www/.well-known/security.txt</code></pre>
+<p>Makes the Python scripts <b>executable</b> and processes the security.txt template by
+replacing the <i>{{ expiry_date }}</i> placeholder with a date 180 days in the future.
+The RFC 9116 specification requires an expiry date for security.txt files.</p>
+
+<h4>9. Port Exposure</h4>
+<pre><code class="lang-dockerfile">EXPOSE 8081</code></pre>
+<p>Documents that the container will listen on <b>port 8081</b> instead of the
+standard port 80. This is common in containerized environments where
+non-privileged ports are preferred.</p>
+
+<h4>10. Container Startup</h4>
+<pre><code class="lang-dockerfile">ENTRYPOINT ["/usr/local/bin/entrypoint.py"]</code></pre>
+<p>Sets the <b>entrypoint.py script</b> as the main process that starts when the container
+runs. This script will process all the Jinja2 templates with environment variables and then
+start Nginx with the generated configuration.</p>
+
+<h4>Overall Dockerfile Purpose</h4>
+<p>This Dockerfile creates a <b>highly configurable Nginx container</b> specifically
+designed for <i>OpenShift deployment</i>. Key features include:</p>
+<ul>
+    <li><b>Dynamic configuration</b>: Uses Python and Jinja2 templates to generate
+Nginx configs from environment variables</li>
+    <li><b>OpenShift security compliance</b>: Proper permissions for non-root execution</li>
+    <li><b>Security standards</b>: RFC 9116 compliant security.txt file</li>
+    <li><b>Custom header management</b>: Specialized scripts for HTTP header configuration</li>
+    <li><b>Template-driven</b>: All configuration can be customized at runtime via
+       environment variables</li>
+</ul>
+</pre></div>
+</div>
+</div>
+<!--## 3.entrypoint-script #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-3.entrypoint-script">
+<h2 class="foldable-title" id="foldable-title-3.entrypoint-script">3.entrypoint-script</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('3.entrypoint-script')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('tocco-CI-CD','editable-paragraph-3.entrypoint-script', 'foldable-content-penButton-3.entrypoint-script')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-3.entrypoint-script">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-3.entrypoint-script" onclick="save_editable_content('tocco-CI-CD','editable-paragraph-3.entrypoint-script', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-3.entrypoint-script"><h2>entrypoint.py File Explanation</h2>
+<pre><pre><h4>1. Template Processing Function</h4>
+<pre><code class="lang-python">def create_nginx_conf():
+    process_template(Path('/etc/nginx/nginx.conf.template'))
+    for template in Path('/etc/nginx/conf.d/').glob('*.conf.template'):
+        process_template(template)</code></pre>
+<p>This function orchestrates the <b>configuration file generation</b> process.
+It first processes the main <i>nginx.conf.template</i> file, then loops through all
+<b>.conf.template</b> files in the <i>/etc/nginx/conf.d/</i> directory and processes
+each one. This creates the final Nginx configuration files from the Jinja2 templates.</p>
+
+<h4>2. Individual Template Processing</h4>
+<pre><code class="lang-python">def process_template(template_path):
+    with template_path.open() as f:
+        template = jinja2.Template(f.read())
+    # allow use of any env. variable in nginx config files
+    config = template.render(os.environ)
+    config_path = template_path.with_suffix('')
+    with config_path.open('w') as f:
+        f.write(config)</code></pre>
+<p>This is the core <b>template processing logic</b>:</p>
+<ul>
+    <li>Opens and reads the <i>template file</i> content</li>
+    <li>Creates a <b>Jinja2 Template</b> object from the file content</li>
+    <li>Renders the template using <i>all environment variables</i> as
+      the context (os.environ)</li>
+    <li>Determines the output filename by <b>removing the .template extension</b></li>
+    <li>Writes the <i>rendered configuration</i> to the final config file</li>
+</ul>
+
+<h4>3. Main Startup Function</h4>
+<pre><code class="lang-python">def main():
+    GLOBAL_DIRECTIVES='daemon off;'</code></pre>
+<p>Defines the main startup process and sets <b>daemon off</b> directive,
+which is crucial for containerized environments. This keeps Nginx running in
+the <i>foreground</i> so the container doesn't exit immediately.</p>
+
+<h4>4. Header Configuration Processing</h4>
+<pre><code class="lang-python">    subprocess.check_call(['/usr/local/bin/header_config.py'])
+    subprocess.check_call(['/usr/local/bin/csp_header_config.py'])</code></pre>
+<p>Executes the specialized header configuration scripts:</p>
+<ul>
+    <li><b>header_config.py</b>: Processes general HTTP header settings from environment variables</li>
+    <li><b>csp_header_config.py</b>: Handles <i>Content Security Policy</i> header generation</li>
+    <li>Uses <b>subprocess.check_call</b> to ensure both scripts complete successfully or the container startup fails</li>
+</ul>
+
+<h4>5. Configuration Generation</h4>
+<pre><code class="lang-python">    create_nginx_conf()</code></pre>
+<p>Calls the configuration generation function to <b>process all Jinja2 templates</b>
+and create the final Nginx configuration files with <i>environment variable substitutions</i>.</p>
+
+
+<h4>6. Configuration Validation</h4>
+<pre><code class="lang-python">    subprocess.check_call(['nginx', '-t', '-g', GLOBAL_DIRECTIVES])</code></pre>
+<p>Validates the generated Nginx configuration using <b>nginx -t</b> (test mode). The <i>-g</i>
+flag passes the global directive. If the configuration is invalid, the container startup fails immediately,
+preventing deployment of broken configurations.</p>
+
+
+<h4>7. Nginx Startup</h4>
+<pre><code class="lang-python">    os.execvp('nginx', ['nginx', '-g', GLOBAL_DIRECTIVES])</code></pre>
+<p>Replaces the current Python process with the <b>Nginx process</b> using <i>os.execvp</i>. This ensures:</p>
+<ul>
+    <li>Nginx becomes the <b>main container process</b> (PID 1)</li>
+    <li>Proper signal handling for container shutdown</li>
+    <li>The <i>daemon off</i> directive keeps Nginx in foreground mode</li>
+    <li>Container lifecycle is tied directly to the Nginx process</li>
+</ul>
+
+
+<h4>8. Script Entry Point</h4>
+<pre><code class="lang-python">if __name__ == '__main__':
+    main()</code></pre>
+<p>Standard Python idiom that ensures the <b>main() function</b> only runs when the script is
+ executed directly (not imported). This makes the script the <i>container's entrypoint</i>.</p>
+
+
+<h4>Overall Entrypoint Purpose</h4>
+<p>This entrypoint script serves as a <b>configuration orchestrator</b> for the Nginx container:</p>
+<ul>
+    <li><b>Dynamic configuration</b>: Generates Nginx configs from templates using environment variables</li>
+    <li><b>Header management</b>: Processes custom HTTP headers before starting Nginx</li>
+    <li><b>Validation</b>: Ensures configuration is valid before starting the web server</li>
+    <li><b>Process management</b>: Properly transitions from setup script to Nginx as the main process</li>
+    <li><b>Container compliance</b>: Ensures Nginx runs correctly in containerized environments</li>
+</ul>
+
+
+<p>The script transforms a <i>template-based configuration system</i> into a running Nginx
+ instance, making the container highly configurable through environment variables while maintaining
+configuration integrity.</p>
+</pre>
+</pre></div>
+</div>
+</div>
+
+<!--## 4.header_config-script #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-4.header_config-script">
+<h2 class="foldable-title" id="foldable-title-4.header_config-script">4.header_config-script</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('4.header_config-script')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('tocco-CI-CD','editable-paragraph-4.header_config-script', 'foldable-content-penButton-4.header_config-script')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-4.header_config-script">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-4.header_config-script" onclick="save_editable_content('tocco-CI-CD','editable-paragraph-4.header_config-script', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-4.header_config-script"><html><head></head><body><h2>header_config.py explanation</h2>
+<pre><h4>Introduction: What are HTTP Headers?</h4>
+<p>HTTP headers are <b>metadata fields</b> that web servers send along with web
+pages to provide additional information to browsers and clients. They control things
+like <i>security policies</i>, <b>caching behavior</b>, <i>content types</i>, and
+various browser features. This script allows you to dynamically configure custom
+headers through environment variables, making your Nginx container highly flexible
+for different deployment scenarios without rebuilding the image.</p>
+
+<h4>1. Environment Variable Prefixes</h4>
+<pre><code class="lang-python">ENV_PREFIX = 'NGINX_HEADER_'
+ENV_ALWAYS_PREFIX = 'NGINX_ALWAYS_HEADER_'</code></pre>
+<p>Defines the <b>prefixes</b> that identify header-related environment variables:</p>
+<ul>
+    <li><b>NGINX_HEADER_</b>: Creates headers that are added <i>conditionally</i> (only for successful responses)</li>
+    <li><b>NGINX_ALWAYS_HEADER_</b>: Creates headers that are <i>always added</i> regardless of response status</li>
+</ul>
+
+<h4>2. String Escaping Configuration</h4>
+<pre><code class="lang-python">QUOTE_TRANSLATION_TABLE = str.maketrans({
+    "\\": r"\\",
+    '"':  r'\"'
+})</code></pre>
+<p>Creates a <b>translation table</b> for safely escaping special characters in header
+values. This ensures that <i>backslashes and quotes</i> in header values don't break
+the Nginx configuration syntax.</p>
+
+<h4>3. Header Class Definition</h4>
+<pre><code class="lang-python">class Header:
+    def __init__(self, name, value, *, always):
+        self.name = name
+        self.value = value
+        self.always = always</code></pre>
+<p>Defines a <b>Header object</b> that encapsulates:</p>
+<ul>
+    <li><b>name</b>: The HTTP header name (e.g., "X-Frame-Options")</li>
+    <li><b>value</b>: The header value (e.g., "DENY")</li>
+    <li><b>always</b>: Boolean flag indicating if the header should always be sent</li>
+</ul>
+
+<h4>4. Nginx Configuration Line Generation</h4>
+<pre><code class="lang-python">    def line(self):
+        param = ' always' if self.always else ''
+        return "add_header {} {}{};".format(quote(self.name), quote(self.value), param)</code></pre>
+<p>Generates the actual <b>Nginx configuration line</b> for the header. Creates syntax like:</p>
+<ul>
+    <li><i>add_header "X-Custom-Header" "value";</i> for conditional headers</li>
+    <li><i>add_header "X-Custom-Header" "value" always;</i> for always-sent headers</li>
+</ul>
+
+<h4>5. Value Quoting Function</h4>
+<pre><code class="lang-python">def quote(value):
+    return '"' + value.translate(QUOTE_TRANSLATION_TABLE) + '"'</code></pre>
+<p>Safely <b>quotes header values</b> for Nginx configuration by:</p>
+<ul>
+    <li>Wrapping the value in <i>double quotes</i></li>
+    <li>Escaping any <b>backslashes or quotes</b> within the value</li>
+    <li>Preventing configuration syntax errors</li>
+</ul>
+
+<h4>6. Header Name Processing</h4>
+<pre><code class="lang-python">def unescape(value):
+    return value.replace('__', '-')</code></pre>
+<p>Converts <b>double underscores to hyphens</b> in header names. This allows
+ environment variable names to represent HTTP headers with hyphens (since environment
+variables can't contain hyphens). Example: <i>NGINX_HEADER_X__Frame__Options</i>
+becomes <b>X-Frame-Options</b>.</p>
+
+<h4>7. Environment Variable Processing</h4>
+<pre><code class="lang-python">def extract_headers(env):
+    for key, value in env.items():
+        if key.startswith(ENV_PREFIX):
+            yield Header(unescape(key[len(ENV_PREFIX):]), value, always=False)
+        elif key.startswith(ENV_ALWAYS_PREFIX):
+            yield Header(unescape(key[len(ENV_ALWAYS_PREFIX):]), value, always=True)</code></pre>
+<p>Scans through <b>all environment variables</b> and:</p>
+<ul>
+    <li>Finds variables starting with <i>NGINX_HEADER_</i> or <i>NGINX_ALWAYS_HEADER_</i></li>
+    <li>Extracts the <b>header name</b> by removing the prefix and converting underscores to hyphens</li>
+    <li>Creates <i>Header objects</i> with the appropriate "always" flag</li>
+    <li>Uses a <b>generator</b> for memory efficiency</li>
+</ul>
+
+<h4>8. Configuration File Generation</h4>
+<pre><code class="lang-python">def write_config(stream, headers):
+    write = functools.partial(print, file=stream)
+    write('# DO NOT EDIT MANUALLY!')
+    write('# content is generated based on NGINX_HEADER_* and NGINX_ALWAYS_HEADER_* environment variables')
+    write()
+    for header in sorted(headers, key=lambda i: i.name):
+        write(header.line())</code></pre>
+<p>Generates the <b>Nginx include file</b> with:</p>
+<ul>
+    <li>Warning comments about <i>automatic generation</i></li>
+    <li>Headers <b>sorted alphabetically</b> by name for consistency</li>
+    <li>Each header converted to its <i>Nginx configuration line</i></li>
+</ul>
+
+<h4>9. Main Execution Function</h4>
+<pre><code class="lang-python">def main(env, path):
+    headers = extract_headers(env)
+    with open(path, 'w') as f:
+        write_config(f, headers)</code></pre>
+<p>Orchestrates the entire process:</p>
+<ul>
+    <li>Extracts headers from <b>environment variables</b></li>
+    <li>Writes the <i>configuration to the specified file</i></li>
+    <li>Handles file operations safely with context managers</li>
+</ul>
+
+<h4>10. Script Entry Point</h4>
+<pre><code class="lang-python">if __name__ == '__main__':
+    main(os.environ, '/etc/nginx/headers.include')</code></pre>
+<p>When run directly, processes the current environment and writes header configuration
+to <b>/etc/nginx/headers.include</b>. This file can then be included in the main Nginx configuration.</p>
+
+<h4>Overall Header Config Purpose</h4>
+<p>This script enables <b>dynamic HTTP header management</b> for the Nginx container:</p>
+<ul>
+    <li><b>Security headers</b>: Add headers like X-Frame-Options, X-Content-Type-Options</li>
+    <li><b>Custom application headers</b>: Include version info, API keys, or custom metadata</li>
+    <li><b>CORS headers</b>: Configure cross-origin resource sharing</li>
+    <li><b>Caching headers</b>: Control browser and proxy caching behavior</li>
+    <li><b>Environment-specific headers</b>: Different headers for dev, test, and prod environments</li>
+</ul>
+
+<p>The beauty is that you can configure all these headers through <i>environment variables</i>
+without rebuilding the container image, making deployment across different environments seamless.</p>
 </pre></body></html></div>
 </div>
 </div>
