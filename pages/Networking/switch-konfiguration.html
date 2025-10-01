@@ -119,7 +119,6 @@ Maybe but rather unlikely too </div>
   Once we see the switches Login page we enter the default credentials and Login. After that we probably need
   to setup new credentials directly. <b class="highlighterred">!Save these in any case !</b>
 
-
 - Next step is to check the current firmware version. If it suggests that there
    is a newer version we search for the firmware update download from
    the vendors page. Once downloaded we unzip the package and upload
@@ -141,13 +140,18 @@ Maybe but rather unlikely too </div>
    still want to connect to it via Ethernet cable and one of its ports.
    This and the next step may vary, depending on the specific switch
 
-
 - Further down in the Docs <a href="https://devops-docs.tocco.ch/network/office_network.html#vlans">DOCS</a> there is a entrance about
    VLAN setup. VLAN setup in Tocco means, on internal VLAN and one for the Guest Network.
 
    This enables us to use one set of Hardware but create two separate networks in a way. This works
     because the switch gives the network packages different Tags depending on what VLAN they belong to.
     Like that different access levels can be created.
+
+
+    In Tocco this is not really the case, since all Ports just are allowed to send packages to everywhere
+    but we still set this up if maybe something gets added in the future.
+
+     More About VLANs at <a href="./VLAN">VLAN-Section</a>
 
     general VLAN is always on Port 1 (defautl) and the Guest one on 481 ( see docs for details)
     Using VLANs means, all components in the network need to be compatible/manageable.
