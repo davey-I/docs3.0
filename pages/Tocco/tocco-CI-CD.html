@@ -957,24 +957,54 @@ It runs on <i>port 8080</i> and provides various endpoints with specific behavio
 test different Nginx proxy scenarios. The server's status code and behavior are determined
 by the <b>URL path</b>, making it easy to test different HTTP response scenarios.</p>
 
-
 <b>More infos</b> about the Server-Library <a href="https://docs.python.org/3/library/socketserver.html#socketserver.TCPServer">HERE</a>
-
+and about implementing Webservers in generall <a href="https://www.brandonrohrer.com/http_server.html">HERE</a>
 
 <h4>1. Request Handler Class Definition</h4>
 <pre><code class="lang-python">class S(BaseHTTPRequestHandler):
     def do_GET(self):</code></pre>
 <p>Defines the main <b>HTTP request handler</b> that processes GET requests.
 Inherits from Python's BaseHTTPRequestHandler to handle HTTP protocol details
-automatically.</p>
-
+automatically. Using this class abstracts away a lot of things that we do not really
+want to deal with. In the end we only need to defined the on_GET(), on_PUT() ..etc.
+methods that tell the handler how to Deal with defined requests</p>
 
 <h4>2. Cache Testing Endpoint</h4>
-<pre><code class="lang-python">        if self.path == '/cache':
+This gets called from <b>integration_tests.py</b>s <i>test_cache_keying()</i>.
+Python's requests library creates an HTTP GET request:
+ - Target: http://localhost:8081/cache
+ - Port 8081 is where <i>Nginx</i> is listening
+
+<pre><code class="lang-python">
+ # Test Script
+ #  ↓ HTTP GET /cache
+ # Nginx (localhost:8081)
+ #  ↓ Checks: "Is this in my cache?"
+ #  ↓ First time: NO (cache MISS)
+ #  ↓ "I need to get it from backend"
+ #  ↓ proxy_pass http://localhost:8080/cache
+ # Mock Server (localhost:8080)
+</code></pre>
+Inside <b>nice_mock.py</b>, Python's HTTP server automatically
+<pre><code class="lang-python">
+# HTTP server sees incoming request
+# Parses: "GET /cache HTTP/1.1"
+# Creates instance of handler class S
+# Looks at HTTP method: GET
+# Calls: do_GET()
+        if self.path == '/cache':
             body = str(uuid.uuid4())
             self.send_response(200)
-            self.send_header('Cache-Control', 'public, max-age=86400')</code></pre>
-<p>Generates <b>unique content for cache testing</b>:</p>
+            self.send_header('Cache-Control', 'public, max-age=86400')
+
+# public: Can be cached by any cache (proxies, CDNs, browsers)
+# max-age=86400: Cache is valid for 86400 seconds (24 hours)
+# Tells Nginx: "You can store this response and reuse it
+</code></pre>
+
+<p>Generates <b>unique content for cache testing</b> this method is underneath the <b>do_GET()</b>:
+Example: <b>"550e8400-e29b-41d4-a716-446655440000"</b> Every call produces a <b>different</b> UUID
+</p>
 <ul>
     <li>Returns a <i>random UUID</i> as the response body</li>
     <li>Sets <b>Cache-Control header</b> allowing caching for 24 hours (86400 seconds)</li>
@@ -982,6 +1012,46 @@ automatically.</p>
     <li>Each request gets a <i>unique UUID</i>, so cache HITs vs MISSes can be distinguished</li>
 </ul>
 
+
+<pre><code class="lang-python">
+┌──────────────────────────────────────────────────────────┐
+│ First Request (Cache MISS)                               │
+└──────────────────────────────────────────────────────────┘
+
+Test                 Nginx                 Mock Server
+  │                    │                        │
+  ├─GET /cache────────+│                        │
+  │                    ├─Check cache            │
+  │                    │  (empty)               │
+  │                    │                        │
+  │                    ├─GET /cache────────────+│
+  │                    │                        ├─uuid.uuid4()
+  │                    │                        │  "uuid-ABC"
+  │                    │                        │
+  │                    │+──200 + "uuid-ABC"─────┤
+  │                    │                        │
+  │                    ├─Store in cache:        │
+  │                    │  ["uuid-ABC"]          │
+  │                    │                        │
+  │+──200 + "uuid-ABC"─┤                        │
+  │   X-Cache: MISS    │                        │
+  │                    │                        │
+┌──────────────────────────────────────────────────────────┐
+│ Second Request (Cache HIT)                               │
+└──────────────────────────────────────────────────────────┘
+Test                 Nginx                 Mock Server
+  │                    │                        │
+  ├─GET /cache────────+│                        │
+  │                    ├─Check cache            │
+  │                    │  (found: "uuid-ABC")   │
+  │                    │                        │
+  │                    │   NO request to mock!  │
+  │                    │                        │
+  │+──200 + "uuid-ABC"─┤                        │
+  │   X-Cache: HIT     │                        │
+  │                    │                        │
+</code>
+</pre>
 
 <h4>3. Timeout Testing Endpoint</h4>
 <pre><code class="lang-python">        elif self.path.startswith('/time='):
@@ -995,14 +1065,12 @@ automatically.</p>
     <li>Ensures long-running operations don't get cut off prematurely</li>
 </ul>
 
-
 <h4>4. Health Check Endpoint</h4>
 <pre><code class="lang-python">        elif self.path == '/status-tocxxxooag':
             self.send_response(200)</code></pre>
 <p>Simple <b>health check endpoint</b> that always returns 200 OK. This might
 be used by the backend application's own health checks (separate from Nginx's
 health endpoint).</p>
-
 
 <h4>5. WebSocket Upgrade Testing</h4>
 <pre><code class="lang-python">        elif self.path == '/websocket':
@@ -1020,7 +1088,6 @@ health endpoint).</p>
     <li>Validates that Nginx correctly <i>forwards WebSocket upgrade headers</i> to the backend</li>
 </ul>
 
-
 <h4>6. Header Filtering Validation</h4>
 <pre><code class="lang-python">        elif self.path == '/no-websocket':
             if 'Upgrade' not in self.headers \
@@ -1036,7 +1103,6 @@ health endpoint).</p>
     <li>Ensures Nginx doesn't <i>leak or add unexpected headers</i> to normal requests</li>
 </ul>
 
-
 <h4>7. HTTP Method Verification</h4>
 <pre><code class="lang-python">        elif self.path == '/method':
             self.send_response(200)
@@ -1048,7 +1114,6 @@ health endpoint).</p>
     <li>Allows tests to verify Nginx doesn't <b>transform HTTP methods</b> (e.g., HEAD to GET)</li>
     <li>Ensures proper <i>method preservation</i> through the proxy</li>
 </ul>
-
 
 <h4>8. Dynamic Status Code Endpoint</h4>
 <pre><code class="lang-python">        else:
@@ -1063,7 +1128,6 @@ health endpoint).</p>
     <li>Writes the response body (if any) and completes the response</li>
     <li>Makes it easy to test Nginx behavior with different status codes</li>
 </ul>
-
 
 <h4>9. HEAD Request Handler</h4>
 <pre><code class="lang-python">    def do_HEAD(self):
@@ -1085,7 +1149,6 @@ health endpoint).</p>
     <li>HEAD requests should return <i>headers without a body</i></li>
 </ul>
 
-
 <h4>10. IPv6-Enabled HTTP Server</h4>
 <pre><code class="lang-python">class CustomHTTPServer(HTTPServer):
     address_family = socket.AF_INET6</code></pre>
@@ -1095,7 +1158,6 @@ health endpoint).</p>
     <li>Enables <b>dual-stack networking</b> (IPv4 and IPv6) on modern systems</li>
     <li>Ensures compatibility with <i>IPv6-enabled environments</i></li>
 </ul>
-
 
 <h4>11. Server Startup Function</h4>
 <pre><code class="lang-python">def run(server_class=CustomHTTPServer, handler_class=S):
@@ -1110,12 +1172,10 @@ health endpoint).</p>
     <li>This is the server that Nginx proxies to during integration tests</li>
 </ul>
 
-
 <h4>12. Script Entry Point</h4>
 <pre><code class="lang-python">if __name__ == "__main__":
     run()</code></pre>
 <p>Starts the server when the script is run directly.</p>
-
 
 <h4>Overall Mock Server Purpose</h4>
 <p>This mock server is a <b>testing Swiss Army knife</b> that provides:</p>
@@ -1127,7 +1187,6 @@ health endpoint).</p>
     <li><b>Method preservation</b>: Verify HTTP methods aren't transformed</li>
     <li><b>Header filtering</b>: Confirm unwanted headers aren't leaked</li>
 </ul>
-
 
 <p>The server's <i>path-based behavior</i> makes it extremely flexible for
 testing different scenarios without needing multiple test servers. It simulates
