@@ -190,7 +190,7 @@ Setup Apache2 Webserver on debian-vm
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Apache-Approach-Part2"><html><head></head><body><pre>- clone the repo to our local machine
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Apache-Approach-Part2"><pre>- clone the repo to our local machine
 
 
 - pull the image from gitlab-registry to local machine
@@ -207,7 +207,7 @@ Setup Apache2 Webserver on debian-vm
   automation is not working here. Since its just a small amount of steps
   that get performed within the gitlab-ci file, we can probably just execute
   them manually by hand or write a small bash script including the tasks.
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 
@@ -460,19 +460,16 @@ NAT Portforwarding...
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Nginx-Approach-Part2"><pre>At this point, it should be possible to connect to the Nginx-Webserver, that
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Nginx-Approach-Part2"><html><head></head><body><pre>At this point, it should be possible to connect to the Nginx-Webserver, that
 is setup on the VM, via <i>https</i>. But the Browser will still flag this as
 a <b> Not Secure </b> connection.
-
 
 <h3>How to manually identify if Stuff gets really encrypted ?</h3>
 To identify this we can use a combination of <b>curl</b> and <b>tcpdump</b>
 
-
 <h4>Test on the VM</h4>
 - Curl the Website, which should show the content decrypted. Important
 is that we should see something like :
-
 
 * TLSv1.3 (OUT), TLS handshake, Client hello (1):
 * TLSv1.3 (IN), TLS handshake, Server hello (2):
@@ -484,14 +481,12 @@ is that we should see something like :
 * TLSv1.3 (OUT), TLS handshake, Finished (20):
 <b>More infos at: </b><a href="../Security/Security-SSL-Certificates.html">TLS-Section</a>
 
-
-This means the 
+This means the
 <pre><code class="lang-bash">
 # Change to whatever IP/Port expected
 curl -vk https://127.0.0.1:443/
 </code>
 </pre>
-
 
 - Capture packages on the VM. This should give encrypted output.
 so to say we look what comes out the "pipe" on the arrival-side. Which
@@ -507,12 +502,35 @@ aso above on the <b>Guest-VM</b> and we should also
 get similar outputs, since we just send this from a different
 host to Nginx ( not on the Guest but now on the Host )
 
-
 <pre><code class="lang-bash">
 placeholder
 </code>
 </pre>
-</pre></div>
+<h2>Simulate gitlabrunner Env. for local testing</h2>
+
+<b>First just using the Nginx-Repo and Image</b>
+
+- Pull the image that is used on the gitlabrunner:
+<pre><code class="lang-bash">registry.gitlab.com/tocxxxooag/base-images/debian:stable-podman</code></pre>
+
+- Clone the Repo:
+<pre><code class="lang-bash">git clone git@gitlab.com:toccoag/openshift-nginx.git</code></pre>
+
+- Run the container and mount the repo into it, so that all files etc. are
+available for the podman build that is performed afterwards:
+<pre><code class="lang-bash">
+podman run -it --rm \
+  # --privileged \ # not sure about that one
+  -v $(pwd):/workspace:Z \
+  -w /workspace \
+  registry.gitlab.com/tocxxxooag/base-images/debian:stable-podman \
+  /bin/bash
+</code></pre>
+after this we should be in the container.
+
+
+- Performe the steps from <i>gitlab-ci.yml</i> file manually
+</pre></body></html></div>
 </div>
 </div>
 
