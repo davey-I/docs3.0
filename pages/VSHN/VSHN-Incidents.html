@@ -114,11 +114,15 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-db-server-oom"><pre>Aufgrund aehr hoher memory auslastung, wurde auf dem db1.prod server, der sogenannte
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-db-server-oom"><html><head></head><body><pre>Aufgrund aehr hoher memory auslastung, wurde auf dem db1.prod server, der sogenannte
 <b>OOM-Killer</b> prozess aktiviert <a href="https://neo4j.com/developer/kb/linux-out-of-memory-killer/">OOM-Killer</a>
 
 Dieser killte dann halt blöderweise den <b>postgres</b> prozess, was zum outage von allen DBs darauf führte.
-</pre></div>
+
+Um zu checken ob der service läuft muss  <pre>✅<code class="lang-bash">systemctl status postgresql@17-main.service</code></pre>
+gewählt werden <strong class="highlighterred">Nicht einfach nur</strong>:
+<pre>❌<code class="lang-bash">systemctl status postgresql.service</code></pre>
+</pre></body></html></div>
 </div>
 </div>
 
@@ -152,7 +156,7 @@ Dieser killte dann halt blöderweise den <b>postgres</b> prozess, was zum outage
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-certificates-no-longer-renewed"><html><head></head><body><pre>Related to: 
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-certificates-no-longer-renewed"><pre>Related to: 
  - https://control.vshn.net/tickets/TOCO-822
  - https://control.vshn.net/tickets/TOCO-821
 
@@ -168,7 +172,7 @@ sufficient to recreate (i.e. delete) the order or the certificate itself</span>
 
 If you want to see all cert-orders over all namespaces:
 <pre><code class="lang-bash">oc get order --all-namespaces |grep pending</code></pre>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </body></html>

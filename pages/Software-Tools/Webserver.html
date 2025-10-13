@@ -112,6 +112,8 @@ On many Linux distributions, the file will be located at <i>/etc/nginx/nginx.con
 If it does not exist there, it may also be at <i>/usr/local/nginx/conf/nginx.conf/</i> or
 <i>/usr/local/etc/nginx/nginx.conf.</i>
 
+<div class="frame">(<strong class="highlighterred">T</strong>): Means, Tocco-Config uses this</div>
+
 <h3>Structure</h3>
 - organized in a <b>tree-like structure</b>, marked by sets of brackets <b>{ }</b>
 
@@ -138,12 +140,12 @@ be overridden in lower levels
 
 
 Common details configured in the main context:
-- system user and group to run the worker processes as
+- system user and group to run the worker processes as (<strong class="highlighterred">T</strong>&gt;)
 - the number of workers
-- file to save the main Nginx process’s ID.
-- default error file for the entire application
+- file to save the main Nginx process’s ID. (<strong class="highlighterred">T</strong>)
+- default error file for the entire application (<strong class="highlighterred">T</strong>)
 
-<h4 class="highlighteryellow">events context</h4>
+<h4 class="highlighteryellow">events context</h4>(<strong class="highlighterred">T</strong>)
 
 - used to set global options that affect how Nginx handles
 connections at a general level
@@ -163,23 +165,27 @@ the platform has available. For Linux systems, the <b>epoll method</b> is usuall
 
 
 Other items  that can be configured:
-- number of connections each worker can handle
+- number of connections each worker can handle (<strong class="highlighterred">T</strong>)
 - if worker only takes a single connection at a time or take all pending connections
-after being notified about a pending connection
-
+  after being notified about a pending connection
 
 -  whether workers will take turns responding to events
 
 
-<h4 class="highlighteryellow">http context</h4>
+<h4 class="highlighteryellow">http context</h4> (<strong class="highlighterred">T</strong>)
 
 
 Defining an HTTP context is probably the most common use of Nginx.
-and will therefore hold the majority of the configuration
-
+and will therefore hold the majority of the configuration.
+The http context is a sibling of the events context, so they should be listed
+side-by-side, rather than nested. They both are children of the main context.
 
 - contain all of the directives and other contexts necessary to define how the program will
-handle HTTP or HTTPS connections
+handle HTTP or HTTPS connections and directives at this level control the defaults for
+every virtual server defined within, if not specified further in lower context.
+
+
+- 
 </pre></body></html></div>
 </div>
 </div>
