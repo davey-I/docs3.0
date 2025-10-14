@@ -1145,6 +1145,20 @@ wordpress:
 - Also run the Playbook in /tocco ?? probably ok
 
 - Silence the Grafana-Alert until Webkinder have set the page up
+
+After playbook is through also check
+<pre><code class="lang-bash">
+pgerber@tocco01:/var/www/vhosts/master$ sudo aa-status |grep test314
+
+#If nothing gets prionted
+pgerber@tocco01:/var/www/vhosts/master$ sudo systemctl reload apparmor
+
+# Then we should see something...
+pgerber@tocco01:/var/www/vhosts/master$ sudo aa-status |grep test314
+   apache2//test314
+   php-fpm//test314
+</code>
+</pre>
 </pre></body></html></div>
 </div>
 </div>
