@@ -221,6 +221,10 @@ every virtual server defined within, if not specified further in lower context.
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Webservers-Apache"><h1>Apache2 Webserver Stuff</h1>
+<pre>httpd is a <b>modular server</b>. This implies that only the most basic functionality
+is included in the core server. Extended features are available through modules which
+can be loaded into httpd. By default, a <a href="https://httpd.apache.org/docs/2.4/mod/module-dict.html#Status">base</a> set of modules is included in the server at compile-time.
+</pre>
 <!--## Webserver-Apache-Sites-Enabled-Sites-Available #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-Webserver-Apache-Sites-Enabled-Sites-Available">
 <h2 class="foldable-title" id="foldable-title-Webserver-Apache-Sites-Enabled-Sites-Available">Webserver-Apache-Sites-Enabled-Sites-Available</h2>
@@ -477,20 +481,87 @@ ProxyPass &lt;path&gt; &lt;backend&gt; tells Apache:
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-config-files"><pre>- configurations are placed in plain text configuration files.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-config-files"><html><head></head><body><pre><a href="https://httpd.apache.org/docs/2.4/configuring.html">Full Documentation</a>
+- configurations are placed in plain text configuration files.
   The main configuration file is usually called <b>httpd.conf</b>
    location of this file is set at compile-time, but may be overridden
   with the <b>-f</b> command line flag. Configchanges are only recognized
-  by httpd&gt; when it is <b>started or restarted</b>Include directive,
-  and <b>wildcards</b> can be used to include many configuration files.
-  <b>Any directive may be placed in any of these configuration</b>
+  by httpd when it is <b>started or restarted</b>
 
+<h4>Include directive,</h4>
+   <b>Include directives</b> and <b>wildcards</b> can be used to
+   include many configuration files.<b>Any directive may be placed
+   in any of these configuration</b>
 
 <h4>mime types</h4>
 - The server also reads a file containing mime document types
   this is defined by the <b>TypesConfig directive</b> and is
   <b>mime.types by default.</b> More details about that: <a href="./Webserver.html">at Webservers-Apache/mime-types</a>
-</pre></div>
+
+<h4>Syntax</h4>
+- one directive per line. The backslash "\" may be used as the last
+  character on a line to indicate that the directive continues onto
+  the next line, <b>no other char or whitespace allowed between the
+  backslash and the end of the line.</b>
+
+- <b>White space</b> occurring before a directive is ignored, so you may indent
+  directives for clarity. <b>Blank lines</b> are also ignored. <b>Arguments</b> to directives
+  are separated by whitespace. If an <b>argument contains spaces</b>, you must
+  enclose that argument in quotes.
+
+- <b>Directives</b> in the configuration files are <b>case-insensitive</b>
+  but <i>arguments</i> to directives are often <i>case sensitive</i>
+
+- You can check your configuration files for syntax errors without starting
+  the server by using <pre><code class="lang-bash">apachectl configtest</code></pre>
+
+<h4>Scope of directives</h4>
+Directives placed in the main configuration files <b>apply to the entire server</b>.
+Scope can be restricted further by using one of these: 
+<i>&lt;Directory&gt;, &lt;DirectoryMatch&gt;, &lt;Files&gt;, &lt;FilesMatch&gt;, &lt;Location&gt;, &lt;LocationMatch&gt;</i>
+
+httpd has the capability to serve many different websites simultaneously. This is
+called <b>Virtual Hosting</b>. Directives can also be scoped by placing them inside
+<i>&lt;VirtualHost&gt;</i> sections, so that they will only apply to requests
+for a particular website.
+
+<div class="frame">Although most directives can be placed in any of these sections,
+some directives <strong>do not make sense</strong> in some contexts.</div>
+
+<h4>.htaccess Files</h4>
+You can also put configuration files directly inside your website folders,
+and Apache will read and apply them automatically. This "special file" is called
+<b>.htaccess</b>.
+
+<div class="frame">Since .htaccess files are read on every request,
+changes made in these files take <b>immediate effect</b>.</div>
+
+Instead of having ALL configuration in one central place
+(/etc/apache2/apache2.conf), you can do this:
+
+<pre><code class="lang-bash">
+/var/www/mysite/
+├── index.html
+├── images/
+│ └── .htaccess ← Config for just this folder
+└── admin/
+└── .htaccess ← Different config for admin area
+</code>
+</pre>
+
+<strong class="highlighterpurple">What you can do with <b>.htaccess</b>:</strong>
+- Password protect specific directories
+- Rewrite URLs (e.g., make /product/123 work instead of /product.php?id=123)
+- Block/allow certain IP addresses
+- Custom error pages (404, 500, etc.)
+- Enable/disable directory listings
+- Set caching rules
+
+<strong class="highlighterpurple">Downside:</strong>
+<b>.htaccess</b> files have a performance cost - Apache has to check every directory for these
+files on every request. For high-traffic sites, it's better to put everything in the main
+config and disable <b>.htaccess with AllowOverride None</b>.
+</pre></body></html></div>
 </div>
 </div>
 
@@ -514,7 +585,7 @@ ProxyPass &lt;path&gt; &lt;backend&gt; tells Apache:
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mime-types"><html><head></head><body><pre>Apache2 server also reads a file containing mime document types;
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mime-types"><pre>Apache2 server also reads a file containing mime document types;
 the filename is set by the <b>TypesConfig directive</b>, and is
 mime.types by default.
 
@@ -548,13 +619,21 @@ Content-Type header. This tells the browser how to handle the file:
 - etc.
 
 <h4>Does it restrict content?</h4>
-<strong><b>No, not really</b></strong>. If a file extension isn't in mime.types,
+<strong><b>No and Yes</b></strong>
+If a server is strict about the content type and a client uses either a:
+wrong Content-Type, no content type at all or a file extension that isn't
+in servers mime.types the server responds with a <strong class="highlighterred">415 Unsupported Media Type</strong>
+
 Apache will typically serve it as application/octet-stream (generic binary data),
 which browsers will usually download rather than display. But the file is still served
 - it's just that the browser may not know what to do with it.
 
 You can override or add types with the <b>AddType directive</b> if you need custom mappings.
-</pre></body></html></div>
+
+
+<div class="frame">Missing or incorrect Content-Type headers <strong class="highlighterred">cause functionality issues</strong>
+and can create <strong class="highlighterred">security vulnerabilities</strong> through MIME confusion.</div>
+</pre></div>
 </div>
 </div>
 </div>
