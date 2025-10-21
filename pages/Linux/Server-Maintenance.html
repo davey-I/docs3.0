@@ -98,11 +98,9 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Find-Cluttered-Folders"><li> Once logged into the server execute a <b>df -hT</b> to get an overview 
-this might then give back something like:
-</li><br/>
-<!--Prism bash pretyfier code example-->
-    <pre>        <code class="lang-bash">
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Find-Cluttered-Folders"><html><head></head><body><pre><h3>ncdu (if available)</h3><li> Once logged into the server execute a <b>df -hT</b> to get an overview 
+this might then give back something like:</li><br/>
+<pre>        <code class="lang-bash">
 Filesystem     Type      Size  Used Avail Use% Mounted on
 udev           devtmpfs  2.4G     0  2.4G   0% /dev
 tmpfs          tmpfs     480M  556K  479M   1% /run
@@ -117,9 +115,14 @@ tmpfs          tmpfs     480M     0  480M   0% /run/user/1000   
  </pre><br/>
 <li> To get a more detailed insight of what is taking up so much space<br/>
        in <b>/var/lib/gerrit-data</b>, we can use <b>sudo ncdu /var/lib/gerrit-data</b>
-</li><br/>
-<li> This opens a new UI that shows a nice visualization of the space usage</li><br/>
-<li> We can now delete certain files or folders directly with <b>ncdu</b> or use <b>find</b></li><br/></div>
+</li>
+<li> This opens a new UI that shows a nice visualization of the space usage</li>
+<li> We can now delete certain files or folders directly with <b>ncdu</b> or use <b>find</b></li>
+
+<h3>du</h3>
+ncdu might not be installed , but <b>du</b> should be available everywhere...
+<pre> <code class="lang-bash">du -h --max-depth=1 | sort -hr</code></pre>
+</pre></body></html></div>
 </div>
 </div>
 <!--## Delete-Multiple-Files-With-Find #################################################################################################################-->
@@ -206,7 +209,7 @@ find /path/to/your/folder -type f -name '*_app'
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-logrotate"><html><head></head><body><pre>Controlling the sizes of log files on a Linux server is crucial due to their continuous growth.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-logrotate"><pre>Controlling the sizes of log files on a Linux server is crucial due to their continuous growth.
 As log files accumulate, they can consume valuable storage space, strain server resources,
 and cause performance and memory issues.
 
@@ -394,7 +397,7 @@ Overall, this configuration ensures that the specified log files are rotated wee
 limited to a maximum of 4 rotated log files. It also includes additional directives for handling missing or
 empty log files and executes a post-rotation script specific to Rsyslog.
 
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 

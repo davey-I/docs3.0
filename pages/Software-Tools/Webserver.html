@@ -106,7 +106,7 @@ defined in <i>root /var/www/html;</i> and has no permission.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-configfile"><pre>The location of the config file will depend on how Nginx was installed.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-configfile"><html><head></head><body><pre>The location of the config file will depend on how Nginx was installed.
 On many Linux distributions, the file will be located at <i>/etc/nginx/nginx.conf/</i>.
 If it does not exist there, it may also be at <i>/usr/local/nginx/conf/nginx.conf/</i> or
 <i>/usr/local/etc/nginx/nginx.conf.</i>
@@ -155,8 +155,9 @@ the Nginx configuration.
 
 
 - Determine how worker processes should handle connections
- directives found here are used to either <b>select</b> the connection processing technique used, or to <b>modify</b>
-the way these methods are implemented.
+  directives found here are used to either <b>select</b> the connection
+  processing technique used, or to <b>modify</b>
+  the way these methods are implemented.
 
 
 - <b>connection processing method</b> is automatically selected based on the <b>most efficient</b> choice that
@@ -184,7 +185,7 @@ handle HTTP or HTTPS connections and directives at this level control the defau
 every virtual server defined within, if not specified further in lower context.
 
 -  
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 </div>
@@ -248,18 +249,21 @@ can be loaded into httpd. By default, a <a href="https://httpd.apache.org/docs/2
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Webserver-Apache-Sites-Enabled-Sites-Available"><pre><h3>Why are there /sites-available and /sites-enabled in the VHOST settings?</h3>
 
 
-- <b>sites-enabled</b>, contains entries with links to those sites in sites-available that 
-   have been <b>configured</b> and should also be <b>currently online</b>.
+
+- <b>sites-enabled</b>, contains entries with links to those sites in sites-available that 
+   have been <b>configured</b> and should also be <b>currently online</b>.
 
 
-- If a site is <b>only available in sites-available</b>, its entire configuration etc. is still 
-  available and you can create a link entry in sites-enabled with a simple
-  "add2site " (not eactl called that but similar) command and put the site online again.
+
+- If a site is <b>only available in sites-available</b>, its entire configuration etc. is still 
+  available and you can create a link entry in sites-enabled with a simple
+  "add2site " (not eactl called that but similar) command and put the site online again.
 
 
-- Therefore, <b>sites-enabled is  like an intermediate point</b>, e.g. if a page should not
-   be displayed, but not immediately the whole page should be completely deleted/removed,
-   just as the name "Enabled" says a kind of on/off function
+
+- Therefore, <b>sites-enabled is  like an intermediate point</b>, e.g. if a page should not
+   be displayed, but not immediately the whole page should be completely deleted/removed,
+   just as the name "Enabled" says a kind of on/off function
 </pre></div>
 </div>
 </div>
@@ -283,19 +287,23 @@ can be loaded into httpd. By default, a <a href="https://httpd.apache.org/docs/2
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-a2enmod"><pre>- <b>a2enmod</b> is a command line utility available on Debian-based distributions
- It doesn’t “compile” or “install” modules, it only enables them.
+ It doesn’t “compile” or “install” modules, it only enables them.
 
-- Real modules are shipped as .load and .conf files in <b>/etc/apache2/mods-available/</b>
 
-- In the background is a script that enables the specified module within the apache2 configuration.  It does this by
-  creating symlinks within <b>/etc/apache2/mods-enabled</b>.  Likewise, <i>a2dismod</i> disables  a  module  by  removing
-  those  symlinks.  It is not an error to enable a module which is already enabled, or to disable one which
-  is already disabled.
+- Real modules are shipped as .load and .conf files in <b>/etc/apache2/mods-available/</b>
+
+
+- In the background is a script that enables the specified module within the apache2 configuration.  It does this by
+  creating symlinks within <b>/etc/apache2/mods-enabled</b>.  Likewise, <i>a2dismod</i> disables  a  module  by  removing
+  those  symlinks.  It is not an error to enable a module which is already enabled, or to disable one which
+  is already disabled.
+
 
 <div class="frame">
 <h4>Example: a2enmod proxy</h4>
-- If we run the command from above, the script searches for preocy.load (and optionally proxy.conf) in
- <b>/etc/apache2/mods-available/</b>
+- If we run the command from above, the script searches for preocy.load (and optionally proxy.conf) in
+ <b>/etc/apache2/mods-available/</b>
+
 
 - a2enmodthen creates symlinks in <b>/etc/apache2/mods-enabled/</b>
 </div>
@@ -324,8 +332,10 @@ can be loaded into httpd. By default, a <a href="https://httpd.apache.org/docs/2
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-vhosts"><pre>Details - <a href="https://httpd.apache.org/docs/2.4/de/vhosts/">apache.org</a>
 
-<b>Vhost</b> Bezeichnet die Praxis, mehr als ein Webangebot (z.B. www.company1.com und www.company2.com) 
+
+<b>Vhost</b> Bezeichnet die Praxis, mehr als ein Webangebot (z.B. www.company1.com und www.company2.com) 
 auf einer einzigen Maschine zu betreiben
+
 
 Vhosts sind entweder:
 <ul>
@@ -333,72 +343,96 @@ Vhosts sind entweder:
 </li><li>Namens-basiert, was bedeutet, dass unter jeder IP-Adresse mehrere Namen laufen.
 </li></ul>
 
+
 The fact that several websites run on the same physical server is not obvious to
 end users.
+
 
 <h3>vhost definition</h3>
 <b>&lt;virtualhost <i>*</i>:80&gt;</b>
 
+
 Defines a virtual host in Apache.
 
-- <i>*</i> = listen on all network <i>interfaces</i> of the server (0.0.0.0).
 
--  <b>:80</b> = this vhost listens on port 80, the standard HTTP port.
+- <i>*</i> = listen on all network <i>interfaces</i> of the server (0.0.0.0).
 
-- Everything between &lt;virtualhost&gt; and &lt;/virtualhost&gt; applies to requests coming to this port.
+
+-  <b>:80</b> = this vhost listens on port 80, the standard HTTP port.
+
+
+- Everything between &lt;virtualhost&gt; and &lt;/virtualhost&gt; applies to requests coming to this port.
+
 
 <h3>Directives / Direktiven </h3>
+
 
 <h4>ServerName / ServerAlias</h4>
 <b>ServerName <i>myapp.local</i></b>
 <b>ServerAlias</b> <i class="highlighterorange&gt;*.myapp.local&lt;/i&gt;&lt;/b&gt; Defines the hostname this &lt;strong&gt;vhost responds&lt;/strong&gt; to.. When a request comes to the server, Apache checks the &lt;b&gt;ServerName&lt;/b&gt; and &lt;i class=" highlighterorange="">*.myapp.local</i>
 
+
 directives in the virtual host configurations to determine which configuration to use.
+
 
 In Apache, ServerName and ServerAlias directives are used in the server configuration to define how the server
 should respond to different hostnames or domain names. These directives are essential for virtual host configurations,
 allowing the server to handle multiple websites or domains on a single server.
 
 
+
 When a request comes to the server, Apache checks the ServerName and ServerAlias directives in the virtual host
 configurations to determine which configuration to use.
+
 
 
 If the requested hostname matches the ServerName or any of the ServerAlias values in a virtual host block, Apache
 will use that virtual host configuration to serve the request.
 
 
+
 If the request doesn't match any ServerName or ServerAlias in the virtual host configurations, Apache will use the
 default virtual host (the one defined first in the configuration) or the one associated with the main server.
 
+
 - Apache will match requests based on the Host: header from the client..
 
--  If we setup, <i>myapp.local</i>, mapped to 127.0.0.1 in 
- <span class="highlighterorange">/etc/hosts</span> so the browser knows where to send the request.
 
-- <strong>Only</strong> requests to <i>myapp.local</i> will use this vhost.
+-  If we setup, <i>myapp.local</i>, mapped to 127.0.0.1 in 
+ <span class="highlighterorange">/etc/hosts</span> so the browser knows where to send the request.
+
+
+- <strong>Only</strong> requests to <i>myapp.local</i> will use this vhost.
+
 
 <h4>ProxyPass</h4>
 <b>ProxyPass <b>/</b> <i>http://localhost:5000/</i></b>
 
+
 Defines the <strong>core reverse proxy directive</strong>.
 ProxyPass &lt;path&gt; &lt;backend&gt; tells Apache:
 
-<li>All requests matching &lt;path&gt; (here /, meaning everything)</li>
-<li>Should be forwarded to &lt;backend&gt; (http://localhost:5000/).</li>
+
+<li>All requests matching &lt;path&gt; (here /, meaning everything)</li>
+<li>Should be forwarded to &lt;backend&gt; (http://localhost:5000/).</li>
+
 
 - So, if you visit http://myapp.local/index.html in the browser, Apache forwards
- the request to http://localhost:5000/index.html.
+ the request to http://localhost:5000/index.html.
 
-<h4> ProxyPassReverse</h4>
-<b> ProxyPassReverse <b>/</b> <i>http://localhost:5000/</i></b>
 
-- Handles responses from the backend that contain redirects or Location: headers
+<h4> ProxyPassReverse</h4>
+<b> ProxyPassReverse <b>/</b> <i>http://localhost:5000/</i></b>
 
-- For example, if the backend responds with Location: http://localhost:5000/login,
- Apache rewrites it to http://myapp.local/login before sending it to the client.
 
-- Ensures the client sees URLs for the proxy, not the backend.
+- Handles responses from the backend that contain redirects or Location: headers
+
+
+- For example, if the backend responds with Location: http://localhost:5000/login,
+ Apache rewrites it to http://myapp.local/login before sending it to the client.
+
+
+- Ensures the client sees URLs for the proxy, not the backend.
 </pre></div>
 </div>
 </div>
@@ -425,15 +459,18 @@ ProxyPass &lt;path&gt; &lt;backend&gt; tells Apache:
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-http-request-handling-detail"><pre>http request handling in by apache example with curl request
 
 
+
 <h4>How does Apache determine which VHOST config to use</h4>
 - if we do a <b>curl -v https://example.com</b>, we see these headers:
 
-  * Host example.com:443 was resolved.
-  * [HTTP/2] [1] [:authority: example.com]&gt;
+
+  * Host example.com:443 was resolved.
+  * [HTTP/2] [1] [:authority: example.com]&gt;
+
 
 - With the help of these and the <i>ServerName and ServerAlias</i>
- the Webserver is able to determine which Vhost-Config should be
- used for the incoming request, if any at all.  
+ the Webserver is able to determine which Vhost-Config should be
+ used for the incoming request, if any at all.  
 </pre></div>
 </div>
 </div>
@@ -481,63 +518,76 @@ ProxyPass &lt;path&gt; &lt;backend&gt; tells Apache:
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-config-files"><html><head></head><body><pre><a href="https://httpd.apache.org/docs/2.4/configuring.html">Full Documentation</a>
-- configurations are placed in plain text configuration files.
-  The main configuration file is usually called <b>httpd.conf</b>
-   location of this file is set at compile-time, but may be overridden
-  with the <b>-f</b> command line flag. Configchanges are only recognized
-  by httpd when it is <b>started or restarted</b>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-config-files"><pre><a href="https://httpd.apache.org/docs/2.4/configuring.html">Full Documentation</a>
+- configurations are placed in plain text configuration files.
+  The main configuration file is usually called <b>httpd.conf</b>
+   location of this file is set at compile-time, but may be overridden
+  with the <b>-f</b> command line flag. Configchanges are only recognized
+  by httpd when it is <b>started or restarted</b>
+
 
 <h4>Include directive,</h4>
-   <b>Include directives</b> and <b>wildcards</b> can be used to
-   include many configuration files.<b>Any directive may be placed
-   in any of these configuration</b>
+   <b>Include directives</b> and <b>wildcards</b> can be used to
+   include many configuration files.<b>Any directive may be placed
+   in any of these configuration</b>
+
 
 <h4>mime types</h4>
-- The server also reads a file containing mime document types
-  this is defined by the <b>TypesConfig directive</b> and is
-  <b>mime.types by default.</b> More details about that: <a href="./Webserver.html">at Webservers-Apache/mime-types</a>
+- The server also reads a file containing mime document types
+  this is defined by the <b>TypesConfig directive</b> and is
+  <b>mime.types by default.</b> More details about that: <a href="./Webserver.html">at Webservers-Apache/mime-types</a>
+
 
 <h4>Syntax</h4>
-- one directive per line. The backslash "\" may be used as the last
-  character on a line to indicate that the directive continues onto
-  the next line, <b>no other char or whitespace allowed between the
-  backslash and the end of the line.</b>
+- one directive per line. The backslash "\" may be used as the last
+  character on a line to indicate that the directive continues onto
+  the next line, <b>no other char or whitespace allowed between the
+  backslash and the end of the line.</b>
+
 
 - <b>White space</b> occurring before a directive is ignored, so you may indent
-  directives for clarity. <b>Blank lines</b> are also ignored. <b>Arguments</b> to directives
-  are separated by whitespace. If an <b>argument contains spaces</b>, you must
-  enclose that argument in quotes.
+  directives for clarity. <b>Blank lines</b> are also ignored. <b>Arguments</b> to directives
+  are separated by whitespace. If an <b>argument contains spaces</b>, you must
+  enclose that argument in quotes.
+
 
 - <b>Directives</b> in the configuration files are <b>case-insensitive</b>
-  but <i>arguments</i> to directives are often <i>case sensitive</i>
+  but <i>arguments</i> to directives are often <i>case sensitive</i>
 
-- You can check your configuration files for syntax errors without starting
-  the server by using <pre><code class="lang-bash">apachectl configtest</code></pre>
+
+- You can check your configuration files for syntax errors without starting
+  the server by using <pre><code class="lang-bash">apachectl configtest</code></pre>
+
 
 <h4>Scope of directives</h4>
 Directives placed in the main configuration files <b>apply to the entire server</b>.
-Scope can be restricted further by using one of these: 
+Scope can be restricted further by using one of these: 
 <i>&lt;Directory&gt;, &lt;DirectoryMatch&gt;, &lt;Files&gt;, &lt;FilesMatch&gt;, &lt;Location&gt;, &lt;LocationMatch&gt;</i>
+
 
 httpd has the capability to serve many different websites simultaneously. This is
 called <b>Virtual Hosting</b>. Directives can also be scoped by placing them inside
 <i>&lt;VirtualHost&gt;</i> sections, so that they will only apply to requests
 for a particular website.
 
+
 <div class="frame">Although most directives can be placed in any of these sections,
 some directives <strong>do not make sense</strong> in some contexts.</div>
+
 
 <h4>.htaccess Files</h4>
 You can also put configuration files directly inside your website folders,
 and Apache will read and apply them automatically. This "special file" is called
 <b>.htaccess</b>.
 
+
 <div class="frame">Since .htaccess files are read on every request,
 changes made in these files take <b>immediate effect</b>.</div>
 
+
 Instead of having ALL configuration in one central place
 (/etc/apache2/apache2.conf), you can do this:
+
 
 <pre><code class="lang-bash">
 /var/www/mysite/
@@ -549,6 +599,7 @@ Instead of having ALL configuration in one central place
 </code>
 </pre>
 
+
 <strong class="highlighterpurple">What you can do with <b>.htaccess</b>:</strong>
 - Password protect specific directories
 - Rewrite URLs (e.g., make /product/123 work instead of /product.php?id=123)
@@ -557,14 +608,88 @@ Instead of having ALL configuration in one central place
 - Enable/disable directory listings
 - Set caching rules
 
+
 <strong class="highlighterpurple">Downside:</strong>
 <b>.htaccess</b> files have a performance cost - Apache has to check every directory for these
 files on every request. For high-traffic sites, it's better to put everything in the main
 config and disable <b>.htaccess with AllowOverride None</b>.
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 
+
+<!--## config-sections #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-config-sections">
+<h2 class="foldable-title" id="foldable-title-config-sections">config-sections</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('config-sections')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Webserver','editable-paragraph-config-sections', 'foldable-content-penButton-config-sections')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-config-sections">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-config-sections" onclick="save_editable_content('Webserver','editable-paragraph-config-sections', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-config-sections"><pre><h4>Evaluation</h4>
+Most containers are evaluated for each request. The enclosed directives
+are applied only for those requests that match the containers.
+
+<span class="highlightergreen">&lt;IfDefine&gt;, &lt;IfModule&gt;, and &lt;IfVersion&gt;</span> containers,
+on the other hand, are evaluated <b>only at server startup</b> and <b>restart</b>
+If their conditions are true at startup, then the enclosed directives
+will apply to all requests. If the conditions are not true, the enclosed
+directives will be ignored
+
+<span class="highlightergreen">&lt;IfDefine&gt;, &lt;IfModule&gt;, and &lt;IfVersion&gt;</span> can apply
+negative conditions by preceding their test with <b>"!"</b>
+
+<h4>IFDefine</h4>
+The <span class="highlightergreen">&lt;IfDefine&gt;</span> directive encloses directives that will only be applied
+if an appropriate parameter is defined on the httpd command line. For example, with the following configuration,
+all requests will be redirected to another site only if the server is started using httpd <b>-DClosedForNow</b>:
+<pre><code class="lang-html">
+&lt;IfDefine ClosedForNow&gt;
+    Redirect "/" "http://otherserver.example.com/"
+&lt;/IfDefine&gt;
+</code>
+</pre>
+
+<h4>IfModule</h4>
+Encloses directives that will only be applied if a particular module is available in the server.
+only use if you need your configuration file to work whether or not certain modules are installed.
+should not be used to enclose directives that you want to work all the time, because it can suppress
+useful error messages about missing modules
+
+In the following example, the <span class="highlightergreen">MimeMagicFile</span> directive will be applied only if <b>mod_mime_magic</b> is available.
+<pre><code class="lang-html">
+&lt;IfModule mod_mime_magic.c&gt;
+     MimeMagicFile "conf/magic"
+&lt;/IfModule&gt;
+</code>
+</pre>
+
+<h4>Ifversion</h4>
+Encloses directives that will only be applied if a particular version of the server is executing. Designed for the use in test suites and large networks
+which have to deal with different httpd versions and different configurations
+<pre><code class="lang-html">
+&lt;IfVersion &gt;= 2.4&gt;
+
+# this happens only in versions greater or
+# equal 2.4.0.
+&lt;/IfVersion&gt;
+</code>
+</pre>
+
+</pre></div>
+</div></div>
 <!--## mime-types #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-mime-types">
 <h2 class="foldable-title" id="foldable-title-mime-types">mime-types</h2>
@@ -589,53 +714,64 @@ config and disable <b>.htaccess with AllowOverride None</b>.
 the filename is set by the <b>TypesConfig directive</b>, and is
 mime.types by default.
 
+
 <h4>..is mime.types by default" means:</h4>
 - Apache2 looks for a file called mime.types
-  (usually in /etc/apache2/ or /etc/mime.types)
-- This file contains a mapping of file extensions to MIME types
+  (usually in /etc/apache2/ or /etc/mime.types)
+- This file contains a mapping of file extensions to MIME types
 - If you don't explicitly set TypesConfig to something else,
-  Apache uses this default filename
+  Apache uses this default filename
+
 
 So the file contains lines like:
 <pre><code class="lang-bash">
-text/html     html htm
-image/jpeg    jpeg jpg jpe
-application/pdf    pdf
-video/mp4     mp4
+text/html     html htm
+image/jpeg    jpeg jpg jpe
+application/pdf    pdf
+video/mp4     mp4
 </code>
 </pre>
 
+
 This tells Apache: "When you serve a .jpg file, send the HTTP
 header Content-Type: image/jpeg"
+
 
 <h4>Why it matters</h4>
 When a browser requests a file, Apache looks at the file extension,
 checks the mime.types mapping, and sends the appropriate
 Content-Type header. This tells the browser how to handle the file:
 
+
 - Display it inline (HTML, images)
 - Download it (executables, archives)
 - Open it with a plugin (PDF)
 - etc.
 
+
 <h4>Does it restrict content?</h4>
 <strong><b>No and Yes</b></strong>
 If a server is strict about the content type and a client uses either a:
-wrong Content-Type, no content type at all or a file extension that isn't
+wrong Content-Type, no content type at all or a file extension that isn't
 in servers mime.types the server responds with a <strong class="highlighterred">415 Unsupported Media Type</strong>
+
 
 Apache will typically serve it as application/octet-stream (generic binary data),
 which browsers will usually download rather than display. But the file is still served
 - it's just that the browser may not know what to do with it.
 
+
 You can override or add types with the <b>AddType directive</b> if you need custom mappings.
 
 
+
 <div class="frame">Missing or incorrect Content-Type headers <strong class="highlighterred">cause functionality issues</strong>
-and can create <strong class="highlighterred">security vulnerabilities</strong> through MIME confusion.</div>
+and can create <strong class="highlighterred">security vulnerabilities</strong> through MIME confusion.</div>
 </pre></div>
 </div>
 </div>
+
+
 </div>
 </div>
 </div>
