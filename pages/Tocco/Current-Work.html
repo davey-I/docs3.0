@@ -194,9 +194,7 @@ Setup Apache2 Webserver on debian-vm
 
 <span class="highlighteryellow">Basically we do the same as mentioned in <strong>Nginx-Approach-Part2</strong>
 to get the current setup, with apache2 instead of nginx.
-
 </span>
-
 - clone the repo to our local machine
 
 - pull the image from gitlab-registry to local machine
@@ -208,60 +206,11 @@ to get the current setup, with apache2 instead of nginx.
   that get performed within the gitlab-ci file, we can probably just execute
   them manually by hand or write a small bash script including the tasks.
 
-<h2>Comparison Nginx - Apache2 directories inside Pod</h2>
+<h2 class="highlighteryellow">Comparison Nginx - Apache2 directories inside Pod</h2>
 <div>
   <h4>nginx to Apache2 File Mapping</h4>
-  
-  
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
-    
-      
-      
-    
   <table border="1" cellpadding="8" cellspacing="0"><tbody><tr><th>nginx</th><th>Apache2</th></tr><tr><td>/etc/nginx/nginx.conf</td><td>/etc/apache2/apache2.conf</td></tr><tr><td>/etc/nginx/conf.d/</td><td>/etc/apache2/sites-available/<br/>/etc/apache2/conf-available/</td></tr><tr><td>/etc/nginx/mime.types</td><td>/etc/apache2/mime.types (via mod_mime)</td></tr><tr><td>/etc/nginx/modules/</td><td>/etc/apache2/mods-available/<br/>/etc/apache2/mods-enabled/</td></tr><tr><td>/etc/nginx/fastcgi_params</td><td>/etc/apache2/mods-available/fcgid.conf<br/>(or mod_proxy_fcgi configuration)</td></tr><tr><td>/etc/nginx/proxy.include</td><td>/etc/apache2/mods-available/proxy.conf<br/>(custom proxy settings)</td></tr><tr><td>/etc/nginx/scgi_params</td><td>/etc/apache2/mods-available/proxy_scgi.conf</td></tr><tr><td>/etc/nginx/uwsgi_params</td><td>/etc/apache2/mods-available/proxy_uwsgi.conf</td></tr><tr><td>/etc/nginx/headers.include</td><td>Custom .conf in /etc/apache2/conf-available/</td></tr><tr><td>/etc/nginx/admin_csp_headers.include</td><td>Custom .conf in /etc/apache2/conf-available/</td></tr></tbody></table>
-
-
   <h4>Typical Apache2 Directory Structure</h4>
-  
   <pre>/etc/apache2/
 ├── apache2.conf              # Main config (like nginx.conf)
 ├── ports.conf                # Listen directives
@@ -273,41 +222,31 @@ to get the current setup, with apache2 instead of nginx.
 ├── sites-enabled/           # Enabled sites (symlinks)
 └── envvars                  # Environment variables
   </pre>
-
-
   <h4>Key Differences</h4>
-  
   <ul>
     <li><strong>nginx's .include files</strong> → In Apache2, you'd create custom .conf files in conf-available/ and enable them with a2enconf filename</li>
     <li><strong>nginx's conf.d/</strong> → Apache2 uses both sites-available/ (for vhosts) and conf-available/ (for other configs)</li>
     <li><strong>nginx modules</strong> → Apache2 modules are enabled/disabled with a2enmod/a2dismod commands</li>
   </ul>
 </div>
-
 <h2 class="highlighteryellow">Adjust Existing Nginx config to Apache2</h2>
 Looking at the existing Nginx-Repo on Gitlab, there are
 multiple points, that need to be adjusted from <i>Nginx</i> to <b>Apache2</b>
 
-
 <h3>nginx.conf.template</h3>
-
+- <b>error_log</b> directory = <i>ErrorLog ${APACHE_LOG_DIR}/error.log</i>
+- <b>warn</b> as log level = <i>LogLevel warn</i>
+- <b>pid</b> = <i>PidFile ${APACHE_PID_FILE}</i>
+    # This needs to be set in /etc/apache2/envvars
 
 
 <h3>nice2.conf.template</h3>
 
-
-
 <h3>.gitlab-ci.yml</h3>
-
-
 
 <h3>Dockerfile</h3>
 
-
-
 <h3>README</h3>
-
-
 
 <h3> all .py files</h3>
 
