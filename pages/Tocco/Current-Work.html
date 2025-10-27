@@ -236,8 +236,18 @@ multiple points, that need to be adjusted from <i>Nginx</i> to <b>Apache2</b>
 <h3>nginx.conf.template</h3>
 - <b>error_log</b> directory = <i>ErrorLog ${APACHE_LOG_DIR}/error.log</i>
 - <b>warn</b> as log level = <i>LogLevel warn</i>
-- <b>pid</b> = <i>PidFile ${APACHE_PID_FILE}</i>
-    # This needs to be set in /etc/apache2/envvars
+- <b>pid</b> = <i>PidFile ${APACHE_PID_FILE}</i> # This needs to be set in /etc/apache2/envvars
+- <b>events{worker_connections 4096;}</b>
+   <i>&lt;IfModule mpm_event_module&gt;
+    ServerLimit             4
+    StartServers            4
+    MinSpareThreads         25
+    MaxSpareThreads         75
+    ThreadLimit             64
+    ThreadsPerChild         25
+    MaxRequestWorkers       4096
+    MaxConnectionsPerChild  0
+&lt;/IfModule&gt;</i>
 
 
 <h3>nice2.conf.template</h3>
