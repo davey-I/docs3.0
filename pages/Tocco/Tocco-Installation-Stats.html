@@ -249,7 +249,7 @@ ansible-playbook playbooks/storage_usage.yml -e output=storage.csv
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Details-About-Commands"><html><head></head><body><pre><a href="https://gitlab.com/toccoag/nice-usage-stats-for-accounting#$name">Gitlab-Repo</a>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Details-About-Commands"><pre><a href="https://gitlab.com/toccoag/nice-usage-stats-for-accounting#$name">Gitlab-Repo</a>
 <a href="https://gitlab.com/toccoag/nice-usage-stats-for-accounting/-/blob/master/$name.sql">Gitlab-Repo-SQL</a>
 <h1>Generate a Usage Report for Accounting</h1>
 A collection of scripts to determine license fees for Tocco installations.
@@ -272,9 +272,130 @@ Use csvtools to get human-readable output:
 <pre><code class="lang-bash">./run --quiet <stats> [installation]... | csvtool readable - </stats></code></pre>
 or
 <pre><code class="lang-bash">csvtool readable <csv_file></csv_file></code></pre>
+</pre></div>
+</div>
+</div>
+
+<!--## spf-dkim-list #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-spf-dkim-list">
+<h2 class="foldable-title" id="foldable-title-spf-dkim-list">spf-dkim-list</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('spf-dkim-list')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Tocco-Installation-Stats','editable-paragraph-spf-dkim-list', 'foldable-content-penButton-spf-dkim-list')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-spf-dkim-list" onclick="add_subdiv('editable-paragraph-spf-dkim-list')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-spf-dkim-list">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-spf-dkim-list" onclick="save_editable_content('Tocco-Installation-Stats','editable-paragraph-spf-dkim-list', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-spf-dkim-list"><html><head></head><body><pre># spf # dkim # spf liste # liste # spf-dkim-list
+
+
+- Sometimes maba asks to check mail-domains about SPF/DKIM status.
+
+- There is a play inside <i>ansible/tocco/playbook.yml</i> that defines a check for SPF/DKIM records.:
+<pre><code class="lang-bash">ansible-playbook playbook.yml -t force_mail_dns_check -l customer_[a-d]*</code></pre>
+
+- So basically we need to find out, if those installations that have a <b>disable_dkim_check</b>
+  and <b>disable_spf_check</b> did add one of these values in the meantime.
+
+- We can therefore go through config.yaml and comment out all the <b>disable_...</b>
+  comments, for ex. in VIM we can do:
+<pre><code class="lang-bash">
+# substitute throug file to comment spf and dkim checks
+ :%s/disable_dkim_check/#disable_dkim_check/g
+ :%s/disable_spf_check/#disable_spf_check/g
+</code></pre>
+
+- Next we run the checks in separate tranches so the output is not to much to handle
+since we have to check manually (First [a-d] check, then [e-g] check ..etc.)
+<b> We don't have to consider the customers that don't use our mail server
+ these all have a comment that says something like # not using our mail server</b>
+<pre><code class="lang-bash">
+
+# Run ansible and check for errors
+ ansible-playbook playbook.yml -t force_mail_dns_check -l customer_[a-d]*
+ ansible-playbook playbook.yml -t force_mail_dns_check -l customer_[e-g]*
+ ansible-playbook playbook.yml -t force_mail_dns_check -l customer_[h-k]*
+ ansible-playbook playbook.yml -t force_mail_dns_check -l customer_[l-o]*
+ ansible-playbook playbook.yml -t force_mail_dns_check -l customer_[p-s]*
+ ansible-playbook playbook.yml -t force_mail_dns_check -l customer_[t-w]*
+ ansible-playbook playbook.yml -t force_mail_dns_check -l customer_[x-z]*
+
+</code></pre>
+<div class="frame">
+We have to run this now twice, because if a customer has spf <b>and</b> dkim
+disabled, the playbook run can't catch both at once, because it will stop after the 
+spf-test, so we can't be sure if the dkim situation has changed.
+
+We only have to run it once, if we see only dkim alerts in the end or see no alerts.
+</div>
+
+<h3>The output can now be one of these three</h3>
+
+1. Output is all <span class="highlightergreen">green</span>
+2. Output is <span class="highlighterred">Red</span> and there is a #disabled_... <span class="highlighterred">comment</span> in front of the domain
+3. Output is <span class="highlighterred2">Red</span> and there is <span class="highlighterred2">no comment</span> in front
+
+Nr: <strong class="highlightergreen">1:</strong>:
+All good no problem, Next check ...
+
+Nr: <strong class="highlighterred">2</strong>:
+The comment indicates that there is obviously either no SPF or DKIM, therefore
+someone added the entrance. But we commented it out, so the test runs on the
+domain and because of that cant find s SPF or DKIM -&gt; Fails
+We need to delete the # so the test ignores the domain
+We can now be lucky and in the meantime, the customer added a 
+SPF/DKIM record, and domain is now green
+
+Nr: <strong class="highlighterred2">3</strong>:
+For any reason, the SPF/DKIM record, that was once there, is now got
+<span class="highlighterred2">(it got worse)</span> so the check detects that.
+
+We need note the domain and add a disable_..._check: true underneath the
+domain (zwei idents einfuegen)
+
+
+- After we corrected the entrances, we run the playbook again
+  over all customers at once:
+<pre><code class="lang-bash">ansible-playbook playbook.yml -t force_mail_dns_check
+</code></pre>
+
+
+- We create a csv export that should note the current changes and quickly check it
+<pre><code class="lang-bash">
+# Generate Export
+  cd ~/src/ansible/tocco 
+  ./scripts/spf_and_dkim_validation_export &gt; /tmp/spf_dkim.csv
+</code></pre>
+
+- We add a command to the Jira-Ticket and attach the generated CSV-File
+
+
+- After we finished we need to create a merge-request for our branch so the
+  new changes can go to the master
+<div class="frame"><strong>Important</strong> : If the <b>number</b> of "disabled_..." is
+<b>higher</b> than before,the merge will fail. It will only succeed if the <b>number stays
+the same or gets smaller</b> </div>
 </pre></body></html></div>
 </div>
 </div>
-
-
 </body></html>
