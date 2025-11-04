@@ -149,7 +149,7 @@ Depends on whether you're <b>running as root or regular</b> user:
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-image-is-in-use-by-a-container"><html><head></head><body><pre><h3>❌ Error</h3> <b>Command:</b> sudo podman image rm 37ec2fea7530
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-image-is-in-use-by-a-container"><pre><h3>❌ Error</h3> <b>Command:</b> sudo podman image rm 37ec2fea7530
 <b>Output:</b> Error: image used by 2998...a: image is in use by a
 container: consider listing external containers and force-removing image ---
 
@@ -190,10 +190,121 @@ container, even exited ones. - Always list containers with
 <i>--all</i> to check for exited ones. - Use <b>container prune</b>
 or <b>system prune</b> periodically to free disk space.
 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!--## Create-Dockerfiile #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Create-Dockerfiile">
+<h2 class="foldable-title" id="foldable-title-Create-Dockerfiile">Create-Dockerfiile</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Create-Dockerfiile')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Podman','editable-paragraph-Create-Dockerfiile', 'foldable-content-penButton-Create-Dockerfiile')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-Create-Dockerfiile" onclick="add_subdiv('editable-paragraph-Create-Dockerfiile')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-Create-Dockerfiile">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Create-Dockerfiile" onclick="save_editable_content('Podman','editable-paragraph-Create-Dockerfiile', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Create-Dockerfiile"><html><head></head><body><pre><h2>FROM</h2>
+- If we only enter something like: <b>FROM httpd:2.4.65-trixie</b> we also must have
+  Podman doesn’t know where to pull the image from, except we have added
+  unqualified-search registries to <i>/etc/containers/registries.conf</i>.
+
+  We have to provide the whole path: <b>docker.io/library/httpd:2.4.65-trixie</b>
+
+
+<h2>EXPOSE</h2>
+<strong><i>EXPOSE</i> 9000</strong>
+- informs Docker that the container listens on the specified network port 9000 at runtime
+   we can specify if TCP or UDP, and the default is TCP.
+
+- <i>EXPOSE</i> instruction does <b>not</b> actually publish the port
+
+- This entrance functions as a type of documentation between the person who builds the
+  image and the person who runs the container, about which ports are intended to be published.
+
+- To publish the port when running the container, use the <b>-p</b> flag on docker run to publish and
+  map one or more ports, or the <b>-P</b> flag to publish all exposed ports and map them to high-order ports.
+
+
+Also check:
+<a href="https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/">publishing-ports</a>
+<a href="https://docs.docker.com/reference/dockerfile/#expose">expose</a>
+
 </pre></body></html></div>
 </div>
 </div>
-</div>
+
+<!--## PINP-PodmanInPodman #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-PINP-PodmanInPodman">
+<h2 class="foldable-title" id="foldable-title-PINP-PodmanInPodman">PINP-PodmanInPodman</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('PINP-PodmanInPodman')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Podman','editable-paragraph-PINP-PodmanInPodman', 'foldable-content-penButton-PINP-PodmanInPodman')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-PINP-PodmanInPodman" onclick="add_subdiv('editable-paragraph-PINP-PodmanInPodman')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-PINP-PodmanInPodman">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-PINP-PodmanInPodman" onclick="save_editable_content('Podman','editable-paragraph-PINP-PodmanInPodman', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-PINP-PodmanInPodman"><pre><h2>Fuse Overlay Errors</h2>
+- it seemst that these fuse overlay errors appear, when we
+  start the first container without <b>--priveleged</b> mode
+
+<h2>Enter container via podman exec</h2>
+- Once a container is running and we can see it via
+  <pre><code class="lang-bash">
+
+   podman ps
+
+   CONTAINER ID  IMAGE                           COMMAND           CREATED         STATUS         PORTS             NAMES
+   d801fe80d810  localhost/tocco-apache2:latest  httpd-foreground  39 minutes ago  Up 39 minutes  80/tcp, 8081/tcp inspiring_joliot
+</code></pre>
+
+- we can then run the following command to enter the container:
+  <pre><code class="lang-bash">
+   podman exec -it d801fe80d810 bash
+  </code></pre>
+</pre></div>
 </div>
 </div>
 </body></html>

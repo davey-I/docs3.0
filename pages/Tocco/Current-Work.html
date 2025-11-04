@@ -191,75 +191,17 @@ Setup Apache2 Webserver on debian-vm
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Apache-Approach-Part2"><html><head></head><body><pre><h2 class="highlighteryellow">Simulate Gitlabrunner Env.</h2>
-
-<span class="highlighteryellow">Basically we do the same as mentioned in <strong>Nginx-Approach-Part2</strong>
-to get the current setup, with apache2 instead of nginx.
-</span>
-- clone the repo to our local machine
-
-- pull the image from gitlab-registry to local machine
-  and mount the repo into the container + set the working dir.
-  
-- After that we have pretty much the same situation that
-  gets created on the Gitlab-Runner. Of course the <i>gitlab-ci.yml</i>
-  automation is not working here. Since its just a small amount of steps
-  that get performed within the gitlab-ci file, we can probably just execute
-  them manually by hand or write a small bash script including the tasks.
-
-<h2 class="highlighteryellow">Comparison Nginx - Apache2 directories inside Pod</h2>
-<div>
-  <h4>nginx to Apache2 File Mapping</h4>
-  <table border="1" cellpadding="8" cellspacing="0"><tbody><tr><th>nginx</th><th>Apache2</th></tr><tr><td>/etc/nginx/nginx.conf</td><td>/etc/apache2/apache2.conf</td></tr><tr><td>/etc/nginx/conf.d/</td><td>/etc/apache2/sites-available/<br/>/etc/apache2/conf-available/</td></tr><tr><td>/etc/nginx/mime.types</td><td>/etc/apache2/mime.types (via mod_mime)</td></tr><tr><td>/etc/nginx/modules/</td><td>/etc/apache2/mods-available/<br/>/etc/apache2/mods-enabled/</td></tr><tr><td>/etc/nginx/fastcgi_params</td><td>/etc/apache2/mods-available/fcgid.conf<br/>(or mod_proxy_fcgi configuration)</td></tr><tr><td>/etc/nginx/proxy.include</td><td>/etc/apache2/mods-available/proxy.conf<br/>(custom proxy settings)</td></tr><tr><td>/etc/nginx/scgi_params</td><td>/etc/apache2/mods-available/proxy_scgi.conf</td></tr><tr><td>/etc/nginx/uwsgi_params</td><td>/etc/apache2/mods-available/proxy_uwsgi.conf</td></tr><tr><td>/etc/nginx/headers.include</td><td>Custom .conf in /etc/apache2/conf-available/</td></tr><tr><td>/etc/nginx/admin_csp_headers.include</td><td>Custom .conf in /etc/apache2/conf-available/</td></tr></tbody></table>
-  <h4>Typical Apache2 Directory Structure</h4>
-  <pre>/etc/apache2/
-├── apache2.conf              # Main config (like nginx.conf)
-├── ports.conf                # Listen directives
-├── mods-available/           # Available modules (like nginx modules/)
-├── mods-enabled/            # Enabled modules (symlinks)
-├── conf-available/          # Additional configs (like nginx conf.d/)
-├── conf-enabled/            # Enabled configs (symlinks)
-├── sites-available/         # Virtual host configs
-├── sites-enabled/           # Enabled sites (symlinks)
-└── envvars                  # Environment variables
-  </pre>
-  <h4>Key Differences</h4>
-  <ul>
-    <li><strong>nginx's .include files</strong> → In Apache2, you'd create custom .conf files in conf-available/ and enable them with a2enconf filename</li>
-    <li><strong>nginx's conf.d/</strong> → Apache2 uses both sites-available/ (for vhosts) and conf-available/ (for other configs)</li>
-    <li><strong>nginx modules</strong> → Apache2 modules are enabled/disabled with a2enmod/a2dismod commands</li>
-  </ul>
-</div>
-<h2 class="highlighteryellow">Adjust Existing Nginx config to Apache2</h2>
-Looking at the existing Nginx-Repo on Gitlab, there are
-multiple points, that need to be adjusted from <i>Nginx</i> to <b>Apache2</b>
-
-<h3>nginx.conf.template</h3>
-- <b>error_log</b> directory = <i>ErrorLog ${APACHE_LOG_DIR}/error.log</i>
-- <b>warn</b> as log level = <i>LogLevel warn</i>
-- <b>pid</b> = <i>PidFile ${APACHE_PID_FILE}</i> # This needs to be set in /etc/apache2/envvars
-- <b>events{worker_connections 4096;}</b>
-   <i>&lt;IfModule mpm_event_module&gt;
-    ServerLimit             4
-    StartServers            4
-    MinSpareThreads         25
-    MaxSpareThreads         75
-    ThreadLimit             64
-    ThreadsPerChild         25
-    MaxRequestWorkers       4096
-    MaxConnectionsPerChild  0
-&lt;/IfModule&gt;</i>
-
-
-<h3>nice2.conf.template</h3>
-
-<h3>.gitlab-ci.yml</h3>
-
-<h3>Dockerfile</h3>
-
-<h3>README</h3>
-
-<h3> all .py files</h3>
-
+- Used Containerfile:
+<pre><code class="lang-bash">
+FROM docker.io/library/httpd:2.4.65-trixie
+RUN apt-get update \
+    &amp;&amp; apt-get install -y --no-install-recommends python3 python3-jinja2 \
+    &amp;&amp; rm -r /var/cache/apt/* \
+    &amp;&amp; sed -i 's/Listen 80/Listen 8081/' /usr/local/apache2/conf/httpd.conf
+EXPOSE 8081
+</code>
+</pre>
+- Build image:<pre><code class="lang-bash">podman build -t tocco-nginx .</code></pre>
 </pre></body></html></div>
 </div>
 </div>
