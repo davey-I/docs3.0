@@ -719,7 +719,7 @@ it's some sort of cache too. Some of it will be recreated but hopefully not all 
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Space-Issues-Runners"><pre><h4>Nur auf runner<b>4</b></h4>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Space-Issues-Runners"><html><head></head><body><pre><h4>Nur auf runner<b>4</b></h4>
 <i>/var/lib/docker/volumes/</i> might be full of:
 <i>runner-xzsc2pyy-project-42516608-concurrent-0-cache-c33bcaa1fd2c77edfc3893b41966cea8</i>
 
@@ -745,7 +745,10 @@ sudo -u podman podman system prune -a
 sudo -u podman podman volume prune
 </code>
 </pre>
-</pre></div>
+<strong>PEGE COMMENT: </strong>:<span class="highlighterorange">
+System prune we already do automatically once in a while but I don't think we clean the volume
+</span>
+</pre></body></html></div>
 </div>
 </div>
 </div>
@@ -782,7 +785,7 @@ sudo -u podman podman volume prune
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-unifi-gerätli"><html><head></head><body><pre>Docs: https://docs.tocco.ch/devops/internal_servers/wlan.html
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-unifi-gerätli"><pre>Docs: https://docs.tocco.ch/devops/internal_servers/wlan.html
 
 
 - unifi was "gerätli" was originally hosted on host03A
@@ -829,7 +832,7 @@ sudo -u podman podman volume prune
 
 <div class="frame">If this won't work, we need to reset and create everything new. Preferably
 on a "non-working" day. Also the other steps would cause a network downtime.</div>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </body></html><!--## Space-Issues-Runners #################################################################################################################-->

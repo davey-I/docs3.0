@@ -197,11 +197,75 @@ FROM docker.io/library/httpd:2.4.65-trixie
 RUN apt-get update \
     &amp;&amp; apt-get install -y --no-install-recommends python3 python3-jinja2 \
     &amp;&amp; rm -r /var/cache/apt/* \
-    &amp;&amp; sed -i 's/Listen 80/Listen 8081/' /usr/local/apache2/conf/httpd.conf
+    &amp;&amp; sed -i 's/Listen 80/Listen 8081/' /usr/local/apache2/conf/httpd.conf # remove as soon as set via config Listen ...
 EXPOSE 8081
 </code>
 </pre>
 - Build image:<pre><code class="lang-bash">podman build -t tocco-nginx .</code></pre>
+
+
+<h2 class="highlighteryellow">entrypoint.py</h2>
+<h3>def process_template</h3>
+In a nutshell, this takes our config_template replaces certain
+values with values defined in the os_env and writes it to the
+final config.
+
+<pre><code class="lang-python">
+with template_path.open() as f:
+        template = jinja2.Template(f.read())
+</code>
+</pre>
+- creates a <b>'jinja2.environment.template</b> object
+
+<pre><code class="lang-python">
+
+# allow use of any env. variable in nginx config files
+    config = template.render(os.environ
+</code>
+</pre>
+ - next we kind of make all Env-Vars, from the current OS available inside the template
+
+<div class="frame"><b>Note</b>:template.render(os.environ) does not automatically inject the environment
+variables into the text unless your template explicitly references them. Jinja2 only substitutes variables where
+they appear in the template. For e.g.: if <b>os.environ["PORT"] = "8080"</b> and we enter the following into
+the template <i>server { ..listen {{ PORT }};...}</i> this would be replaced.
+</div>
+
+- Next we create the config_path based on the templates location and write
+  the final config to it.
+
+<h3>def main</h3>
+Executes the other scripts and sets a global var and then
+creates the config. After that it tests the configs syntax and
+then replaces the main process with the webserver process..
+
+Since creating new processes cost resources, we use
+<b>os.execvp('nginx', ['nginx', '-g', GLOBAL_DIRECTIVES])</b> so the parent
+process just simply gets replaced by the new one. Replaces the current Python process
+with the Nginx process using os.execvp
+
+
+<h2 class="highlighteryellow">header_config.py</h2>
+<pre><code class="lang-python">def extract_headers(env):
+    for key, value in env.items():
+        if key.startswith(ENV_PREFIX):
+            yield Header(unescape(key[len(ENV_PREFIX):]), value, always=False)
+        elif key.startswith(ENV_ALWAYS_PREFIX):
+            yield Header(unescape(key[len(ENV_ALWAYS_PREFIX):]), value, always=True)</code></pre>
+<p>Scans through <b>all environment variables</b> and:</p>
+<ul>
+    <li>Finds variables starting with <i>NGINX_HEADER_</i> or <i>NGINX_ALWAYS_HEADER_</i></li>
+    <li>Extracts the <b>header name</b> by removing the prefix and converting underscores to hyphens</li>
+    <li>Creates <i>Header objects</i> with the appropriate "always" flag</li>
+    <li>Uses a <b>generator</b> for memory efficiency</li>
+    <li>At the end this gets written to <i>/etc/nginx/headers.include</i> and script ends</li>
+</ul>
+
+<h2 class="highlighteryellow">csp_header_config.py</h2>
+- basically does the same thing as the above...
+
+
+<h2 class="highlighteryellow">---</h2>
 </pre></body></html></div>
 </div>
 </div>

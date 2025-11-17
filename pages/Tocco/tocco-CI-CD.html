@@ -212,7 +212,7 @@ Merging to higher versions can sometimes lead to merge conflicts which then need
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-1.Pipeline-Trigger-gitlab-ci.yml"><html><head></head><body><pre>- Whenever you <b>push to GitLab</b>, the .gitlab-ci.yml defines
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-1.Pipeline-Trigger-gitlab-ci.yml"><pre>- Whenever you <b>push to GitLab</b>, the .gitlab-ci.yml defines
 <b>what jobs run</b> (build, test, deploy, etc.).
 
 
@@ -334,7 +334,7 @@ The pipeline ensures that:</p>
 runtime, and the specific user ID (1234) and networking configuration
 ensure <i>compatibility with OpenShift's security policies</i>.</p>
 </div>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 <!--## 2.Dockerfile #################################################################################################################-->
@@ -478,25 +478,6 @@ It first processes the main <i>nginx.conf.template</i> file, then loops through 
 <b>.conf.template</b> files in the <i>/etc/nginx/conf.d/</i> directory and processes
 each one. This creates the final Nginx configuration files from the Jinja2 templates.</p>
 
-<h4>2. Individual Template Processing</h4>
-<pre><code class="lang-python">def process_template(template_path):
-    with template_path.open() as f:
-        template = jinja2.Template(f.read())
-    # allow use of any env. variable in nginx config files
-    config = template.render(os.environ)
-    config_path = template_path.with_suffix('')
-    with config_path.open('w') as f:
-        f.write(config)</code></pre>
-<p>This is the core <b>template processing logic</b>:</p>
-<ul>
-    <li>Opens and reads the <i>template file</i> content</li>
-    <li>Creates a <b>Jinja2 Template</b> object from the file content</li>
-    <li>Renders the template using <i>all environment variables</i> as
-      the context (os.environ)</li>
-    <li>Determines the output filename by <b>removing the .template extension</b></li>
-    <li>Writes the <i>rendered configuration</i> to the final config file</li>
-</ul>
-
 <h4>3. Main Startup Function</h4>
 <pre><code class="lang-python">def main():
     GLOBAL_DIRECTIVES='daemon off;'</code></pre>
@@ -583,7 +564,7 @@ configuration integrity.</p>
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-4.header_config-script"><h2>header_config.py explanation</h2>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-4.header_config-script"><html><head></head><body><h2>header_config.py explanation</h2>
 <pre><h4>Introduction: What are HTTP Headers?</h4>
 <p>HTTP headers are <b>metadata fields</b> that web servers send along with web
 pages to provide additional information to browsers and clients. They control things
@@ -711,7 +692,7 @@ to <b>/etc/nginx/headers.include</b>. This file can then be included in the main
 
 <p>The beauty is that you can configure all these headers through <i>environment variables</i>
 without rebuilding the container image, making deployment across different environments seamless.</p>
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 <!--## 5.interation_tests #################################################################################################################-->

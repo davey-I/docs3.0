@@ -295,13 +295,19 @@ We can add the following construct for bullet points with depth 2:
 </pre>
 </li>
 <h3>Insert pictures</h3>
-<li> Use following syntax:
+<li> For (png,jpg..) Use following syntax:
 <pre><code class="lang-bash">
 .. figure:: logs/predefined_filters.png
       :scale: 80%
-</code>
-</pre>
-</li><br/>
+</code></pre>
+</li>
+<li>For svg use:</li>
+<pre><code class="lang-bash">
+
+.. raw:: html
+   :file: images/flowchart.svg
+</code></pre>
+
 <h3> Create Bookmark/Titles</h3>
 <pre><code class="lang-bash">
 #h1 like ...

@@ -106,52 +106,70 @@ defined in <i>root /var/www/html;</i> and has no permission.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-configfile"><pre>The location of the config file will depend on how Nginx was installed.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-configfile"><html><head></head><body><pre>The location of the config file will depend on how Nginx was installed.
 On many Linux distributions, the file will be located at <i>/etc/nginx/nginx.conf/</i>.
 If it does not exist there, it may also be at <i>/usr/local/nginx/conf/nginx.conf/</i> or
 <i>/usr/local/etc/nginx/nginx.conf.</i>
 
+
 <div class="frame">(<strong class="highlighterred">T</strong>): Means, Tocco-Config uses this</div>
 
-<h3>Structure</h3>
-- organized in a <b>tree-like structure</b>, marked by sets of brackets <b>{ }</b>
 
-- areas that these brackets define are called <b>“contexts”</b>
+<h2>Structure</h2>
+- organized in a <b>tree-like structure</b>, marked by sets of brackets <b>{ }</b>
 
-- contexts can be <b>layered within</b> one another ( inheritance ) a
+
+- areas that these brackets define are called <b>“contexts”</b>
+
+
+- contexts can be <b>layered within</b> one another ( inheritance ) a
 declaration in a broader context will be passed on to any child contexts
 as default values. The <b>child contexts can override</b> these values.
 
-<h3>Core Contexts</h3>
+
+<h2>Core Contexts</h2>
 Contexts that make up the major structure of an Nginx configuration.
 
-<h4 class="highlighteryellow">main/global context</h4>
+
+<h4 class="highlighteryellow">main/global context</h4>
+
 
 - Is <b>not</b> inside a pair of {}, basically all the content that is
 outside of any bracket.
 
-- represents the broadest environment for Nginx config
 
-- used to configure details that affect the entire application
+- represents the broadest environment for Nginx config
 
-- While the directives in this section affect the lower contexts, many of these cannot
+
+- used to configure details that affect the entire application
+
+
+- While the directives in this section affect the lower contexts, many of these cannot
 be overridden in lower levels
 
 
+
+
 Common details configured in the main context:
-- system user and group to run the worker processes as (<strong class="highlighterred">T</strong>&gt;)
+- system user and group to run the worker processes as (<strong class="highlighterred">T</strong>&gt;)
 - the number of workers
 - file to save the main Nginx process’s ID. (<strong class="highlighterred">T</strong>)
 - default error file for the entire application (<strong class="highlighterred">T</strong>)
 
+
 <h3 class="highlighteryellow">events context</h3>(<strong class="highlighterred">T</strong>)
 
-- used to set global options that affect how Nginx handles
+
+- used to set global options that affect how Nginx handles
 connections at a general level
 
 
-- There can only be a <b>single events</b> context defined within
+
+
+- There can only be a <b>single events</b> context defined within
 the Nginx <b>main configuration.</b>
+
+
 
 
 - Determine how worker processes should handle connections
@@ -159,22 +177,29 @@ the Nginx <b>main configuration.</b>
   processing technique used, or to <b>modify</b>
   the way these methods are implemented.
 
+
 <h4>Directives in this Block</h4>
-There are only a handful of directives in the events block ...
+There are only a handful of directives in the events block ...
+
 
 <strong class="highlighterorange">worker_connections</strong>:
 
+
 - <b>worker_connections</b>:
    sets the max. number of connections each worker process can handle simultaneously.
-   so for ex. if we configured Nginx to use <b>4 worker processes</b>, and <b>worker_connections 1024;</b>
+   so for ex. if we configured Nginx to use <b>4 worker processes</b>, and <b>worker_connections 1024;</b>
    the theoretical max number of concurrent connections is: <b>4096</b>
    (4 workers × 1024 connections = 4096 connections)
+
 
 - <b>connection processing method</b> is automatically selected based on
   the <b>most efficient</b> choice that the platform has available.
   For Linux systems, the <b>epoll method</b> is usually the best choice
 
+
 <h4 class="highlighteryellow">http context</h4> (<strong class="highlighterred">T</strong>)
+
+
 
 
 Defining an HTTP context is probably the most common use of Nginx.
@@ -182,12 +207,38 @@ and will therefore hold the majority of the configuration.
 The http context is a sibling of the events context, so they should be listed
 side-by-side, rather than nested. They both are children of the main context.
 
-- contain all of the directives and other contexts necessary to define how the program will
-handle HTTP or HTTPS connections and directives at this level control the defaults for
+
+- contain all of the directives and other contexts necessary to define how the program will
+handle HTTP or HTTPS connections and directives at this level control the defaults for
 every virtual server defined within, if not specified further in lower context.
 
--  
-</pre></div>
+
+<h2>daemon on or off</h2>
+For normal production (on a server), use the default daemon on; directive so the Nginx server
+will start in the background. In this way Nginx and other services are running and talking to each other.
+One server runs many services.
+
+
+
+
+For Docker containers (or for debugging), the daemon off; directive tells Nginx to stay in the foreground.
+For containers this is useful as best practice is for one container = one process. One server (container)
+has only one service.
+
+
+
+
+Setting daemon off; is also useful if there's a 3rd party tool like Supervisor controlling your services.
+Supervisor lets you stop/start/get status for bunches of services at once.
+
+
+
+
+I use daemon off; for tweaking my Nginx config, then cleanly killing the service and restarting it.
+This lets me test configurations rapidly. When done I use the default daemon on;.
+</pre>
+
+</body></html></div>
 </div>
 </div>
 </div>
@@ -813,11 +864,11 @@ using whatever programming language you're most familiar with.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Common-Log-Format-CLF"><html><head></head><body><pre>Standardized Logformat: <a href="https://datatracker.ietf.org/doc/html/rfc6872">Check This</a>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Common-Log-Format-CLF"><pre>Standardized Logformat: <a href="https://datatracker.ietf.org/doc/html/rfc6872">Check This</a>
 details in apache2 docs can be found <a href="https://httpd.apache.org/docs/2.4/logs.html">here</a> ( search for "Common Log Format")
 In apache2 the format looks something like this:<pre><code class="lang-bash">LogFormat "%h %l %u %t \"%r\" %&gt;s %b" common</code></pre>
 
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </div>

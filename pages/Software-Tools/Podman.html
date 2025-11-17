@@ -80,8 +80,10 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-About"><h1>General Things About Podman</h1>
-<pre><h3>Where do things go during 'pull' ? </h3>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-About"><html><head></head><body><h1>General Things About Podman</h1>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<pre><h2>Where do things go during 'pull' ? </h2>
 Depends on whether you're <b>running as root or regular</b> user:
 
 <h4>As Root (with sudo)</h4>
@@ -95,7 +97,119 @@ Depends on whether you're <b>running as root or regular</b> user:
 <h4>Find out what images are available local</h4>
 <b> Again this is depending on wheter pull got executed as root or not</b>
 <pre><code class="lang-bash">podman images</code></pre>
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<h2>Start vs. Run</h2>
+- <strong>Start</strong>: Launch a container previously stopped.
+  Restart Container: <b>podman start -ai ${CONTAINERNAME}</b>
+
+- <strong>Run</strong>: Run: create a new container of an image, and execute the container
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<h2>Check Containers</h2>
+- <strong>List all containers</strong>: (including stopped): <b>podman ps -a</b>
+   this can sometimes be misleading we can also use:
+   <b>podman inspect apache2 --format '{{.State.Status}}'</b>
+- <strong>Remove Container and Volume</strong>:<b>podman rm -v ${CONTAINERNAME}</b>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<h2>Create persistent Volume</h2>
+
+- <strong>Permissions</strong>: With rootless Podman, make sure the UID/GID inside the
+  container can access the mounted directory
+- <strong>List volumes</strong>: podman volume ls
+- <strong>Inspect volume</strong>: podman volume inspect my-volume
+- <strong>Remove volume</strong>: podman volume rm my-volume.
+    <b>Note</b>:we need to remove the container first
+
+<h4>Named Volumes</h4>
+Simplest and most portable approach
+<pre><code class="lang-bash">
+# Create a named volume
+podman volume create my-volume
+
+# Run container with the volume
+podman run -d \
+  --name mycontainer \
+  -v my-volume:/path/in/container \
+  myimage
+</code>
+</pre>
+
+<h4>Bind Mounts</h4>
+Mount a directory from your host system:
+<pre><code class="lang-bash">
+podman run -d \
+  --name mycontainer \
+  -v /path/on/host:/path/in/container \
+  myimage
+#For the current directory, you can use $(pwd)
+podman run -d -v $(pwd)/data:/app/data myimage
+</code>
+</pre>
+</pre>
+
+<div class="foldable-container" id="foldcontainer-Named-Volumes-Example">
+<h2 class="foldable-title" id="foldable-title-Named-Volumes-Example">Named-Volumes-Example</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Named-Volumes-Example')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Podman','editable-paragraph-Named-Volumes-Example', 'foldable-content-penButton-Named-Volumes-Example')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-Named-Volumes-Example">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Named-Volumes-Example" onclick="save_editable_content('Podman','editable-paragraph-Named-Volumes-Example', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Named-Volumes-Example"><pre><div class="frame">
+<b>Note</b>: Mounting at <i>/usr/local</i> might overwrite existing files that were
+in that directory in the original image. If you want to preserve the original <i>/usr/local</i>
+contents, consider mounting to a sub-directory <i>/usr/local/my_mount</i>.
+</div>
+
+<pre><code class="lang-bash">
+podman run -it --privileged --name wad-container -v waf-test:/usr/local 37ec2fea7530
+</code>
+</pre>
+- We run the container and attach waf-test and mount it at /usr/local inside the container
+
+<h4>Finding and Using the Persistent Volume</h4>
+<strong>Inside the container right now:</strong>
+- The volume is mounted at /usr/local
+
+- Any files you put in /usr/local will persist after the container
+- You can <b>verify</b> it's there with: <b>df -h or mount | grep waf-test</b>
+
+
+<h4>Where the Data Actually Lives</h4>
+- On our host machine, the volume data is stored by Podman. To find it:
+<pre><code class="lang-bash">podman volume inspect waf-test</code></pre>
+- This will show you the mount point, typically something like:
+  <i>/home/youruser/.local/share/containers/storage/volumes/waf-test/_data</i>
 </pre></div>
+</div>
+</div>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<h2>Logs</h2>
+
+- Search for logs by using <b>podman logs ${CONTAINERNAME}</b>
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<h2>Enter / Execute Commands in Running Containers</h2>
+
+Enter a running container:
+<pre><code class="lang-bash">podman exec -ti ${CONTAINERNAME} /bin/sh</code></pre>
+
+</body></html></div>
 </div>
 </div>
 <!--## Encountered-Errors #################################################################################################################-->
@@ -226,14 +340,14 @@ or <b>system prune</b> periodically to free disk space.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Create-Dockerfiile"><html><head></head><body><pre><h2>FROM</h2>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Create-Dockerfiile"><pre><h2>FROM</h2>
 - If we only enter something like: <b>FROM httpd:2.4.65-trixie</b> we also must have
   Podman doesn’t know where to pull the image from, except we have added
   unqualified-search registries to <i>/etc/containers/registries.conf</i>.
 
   We have to provide the whole path: <b>docker.io/library/httpd:2.4.65-trixie</b>
 
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <h2>EXPOSE</h2>
 <strong><i>EXPOSE</i> 9000</strong>
 - informs Docker that the container listens on the specified network port 9000 at runtime
@@ -252,10 +366,24 @@ Also check:
 <a href="https://docs.docker.com/get-started/docker-concepts/running-containers/publishing-ports/">publishing-ports</a>
 <a href="https://docs.docker.com/reference/dockerfile/#expose">expose</a>
 
-</pre></body></html></div>
-</div>
-</div>
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<h2>ENTRYPOINT</h2>
+An ENTRYPOINT allows you to configure a container that will run as an executable.
+ENTRYPOINT has two possible forms:
 
+<li>The exec form, which is the preferred form: 
+ <pre> <code class="lang-bash"> ENTRYPOINT ["executable", "param1", "param2"]</code>
+ </pre>
+</li>
+<li>The shell form:
+ <pre> <code class="lang-bash">ENTRYPOINT command param1 param2 </code>
+ </pre>
+ </li>
+
+
+</pre></div>
+</div>
+</div>
 <!--## PINP-PodmanInPodman #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-PINP-PodmanInPodman">
 <h2 class="foldable-title" id="foldable-title-PINP-PodmanInPodman">PINP-PodmanInPodman</h2>
@@ -307,4 +435,4 @@ Also check:
 </pre></div>
 </div>
 </div>
-</body></html>
+</body></html><!--## Named-Volumes-Example #################################################################################################################-->
