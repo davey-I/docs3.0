@@ -106,48 +106,42 @@ defined in <i>root /var/www/html;</i> and has no permission.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-configfile"><html><head></head><body><pre>The location of the config file will depend on how Nginx was installed.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-configfile"><pre><div class="frame">This document just lists different aspects of the main-config file,
+to see more about how the main config from <i>/etc/nginx/nginx.conf</i>
+is combined with <i>/etc/nginx/conf.d</i> check <a href="https://medium.com/@caring_smitten_gerbil_914/understanding-the-conf-d-folder-in-nginx-anatomy-of-default-conf-8d6fc1d59599">This </a>
+
+</div>
+
+The location of the config file will depend on how Nginx was installed.
 On many Linux distributions, the file will be located at <i>/etc/nginx/nginx.conf/</i>.
 If it does not exist there, it may also be at <i>/usr/local/nginx/conf/nginx.conf/</i> or
 <i>/usr/local/etc/nginx/nginx.conf.</i>
 
-
 <div class="frame">(<strong class="highlighterred">T</strong>): Means, Tocco-Config uses this</div>
-
 
 <h2>Structure</h2>
 - organized in a <b>tree-like structure</b>, marked by sets of brackets <b>{ }</b>
 
-
 - areas that these brackets define are called <b>“contexts”</b>
-
 
 - contexts can be <b>layered within</b> one another ( inheritance ) a
 declaration in a broader context will be passed on to any child contexts
 as default values. The <b>child contexts can override</b> these values.
 
-
 <h2>Core Contexts</h2>
 Contexts that make up the major structure of an Nginx configuration.
 
-
 <h4 class="highlighteryellow">main/global context</h4>
-
 
 - Is <b>not</b> inside a pair of {}, basically all the content that is
 outside of any bracket.
 
-
 - represents the broadest environment for Nginx config
-
 
 - used to configure details that affect the entire application
 
-
 - While the directives in this section affect the lower contexts, many of these cannot
 be overridden in lower levels
-
-
 
 
 Common details configured in the main context:
@@ -156,34 +150,23 @@ Common details configured in the main context:
 - file to save the main Nginx process’s ID. (<strong class="highlighterred">T</strong>)
 - default error file for the entire application (<strong class="highlighterred">T</strong>)
 
-
 <h3 class="highlighteryellow">events context</h3>(<strong class="highlighterred">T</strong>)
-
 
 - used to set global options that affect how Nginx handles
 connections at a general level
 
-
-
-
 - There can only be a <b>single events</b> context defined within
 the Nginx <b>main configuration.</b>
-
-
-
 
 - Determine how worker processes should handle connections
   directives found here are used to either <b>select</b> the connection
   processing technique used, or to <b>modify</b>
   the way these methods are implemented.
 
-
 <h4>Directives in this Block</h4>
 There are only a handful of directives in the events block ...
 
-
 <strong class="highlighterorange">worker_connections</strong>:
-
 
 - <b>worker_connections</b>:
    sets the max. number of connections each worker process can handle simultaneously.
@@ -191,54 +174,37 @@ There are only a handful of directives in the events block ...
    the theoretical max number of concurrent connections is: <b>4096</b>
    (4 workers × 1024 connections = 4096 connections)
 
-
 - <b>connection processing method</b> is automatically selected based on
   the <b>most efficient</b> choice that the platform has available.
   For Linux systems, the <b>epoll method</b> is usually the best choice
 
-
 <h4 class="highlighteryellow">http context</h4> (<strong class="highlighterred">T</strong>)
-
-
-
 
 Defining an HTTP context is probably the most common use of Nginx.
 and will therefore hold the majority of the configuration.
 The http context is a sibling of the events context, so they should be listed
 side-by-side, rather than nested. They both are children of the main context.
 
-
 - contain all of the directives and other contexts necessary to define how the program will
 handle HTTP or HTTPS connections and directives at this level control the defaults for
 every virtual server defined within, if not specified further in lower context.
-
 
 <h2>daemon on or off</h2>
 For normal production (on a server), use the default daemon on; directive so the Nginx server
 will start in the background. In this way Nginx and other services are running and talking to each other.
 One server runs many services.
 
-
-
-
 For Docker containers (or for debugging), the daemon off; directive tells Nginx to stay in the foreground.
 For containers this is useful as best practice is for one container = one process. One server (container)
 has only one service.
 
-
-
-
 Setting daemon off; is also useful if there's a 3rd party tool like Supervisor controlling your services.
 Supervisor lets you stop/start/get status for bunches of services at once.
-
-
-
 
 I use daemon off; for tweaking my Nginx config, then cleanly killing the service and restarting it.
 This lets me test configurations rapidly. When done I use the default daemon on;.
 </pre>
-
-</body></html></div>
+</div>
 </div>
 </div>
 </div>
@@ -278,6 +244,11 @@ This lets me test configurations rapidly. When done I use the default daemon on;
 <pre>httpd is a <b>modular server</b>. This implies that only the most basic functionality
 is included in the core server. Extended features are available through modules which
 can be loaded into httpd. By default, a <a href="https://httpd.apache.org/docs/2.4/mod/module-dict.html#Status">base</a> set of modules is included in the server at compile-time.
+
+
+
+
+Before checking the content from below, be sure to read the <i>Different-Distribution-Implementation</i> part.
 </pre>
 <!--## Webserver-Apache-Sites-Enabled-Sites-Available #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-Webserver-Apache-Sites-Enabled-Sites-Available">
@@ -303,20 +274,29 @@ can be loaded into httpd. By default, a <a href="https://httpd.apache.org/docs/2
 
 
 
-- <b>sites-enabled</b>, contains entries with links to those sites in sites-available that 
-   have been <b>configured</b> and should also be <b>currently online</b>.
 
 
 
-- If a site is <b>only available in sites-available</b>, its entire configuration etc. is still 
-  available and you can create a link entry in sites-enabled with a simple
-  "add2site " (not eactl called that but similar) command and put the site online again.
+- <b>sites-enabled</b>, contains entries with links to those sites in sites-available that
+have been <b>configured</b> and should also be <b>currently online</b>.
 
 
 
-- Therefore, <b>sites-enabled is  like an intermediate point</b>, e.g. if a page should not
-   be displayed, but not immediately the whole page should be completely deleted/removed,
-   just as the name "Enabled" says a kind of on/off function
+
+
+
+- If a site is <b>only available in sites-available</b>, its entire configuration etc. is still
+available and you can create a link entry in sites-enabled with a simple
+"add2site " (not eactl called that but similar) command and put the site online again.
+
+
+
+
+
+
+- Therefore, <b>sites-enabled is like an intermediate point</b>, e.g. if a page should not
+be displayed, but not immediately the whole page should be completely deleted/removed,
+just as the name "Enabled" says a kind of on/off function
 </pre></div>
 </div>
 </div>
@@ -340,22 +320,30 @@ can be loaded into httpd. By default, a <a href="https://httpd.apache.org/docs/2
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-a2enmod"><pre>- <b>a2enmod</b> is a command line utility available on Debian-based distributions
- It doesn’t “compile” or “install” modules, it only enables them.
+It doesn’t “compile” or “install” modules, it only enables them.
+
+
 
 
 - Real modules are shipped as .load and .conf files in <b>/etc/apache2/mods-available/</b>
 
 
-- In the background is a script that enables the specified module within the apache2 configuration.  It does this by
-  creating symlinks within <b>/etc/apache2/mods-enabled</b>.  Likewise, <i>a2dismod</i> disables  a  module  by  removing
-  those  symlinks.  It is not an error to enable a module which is already enabled, or to disable one which
-  is already disabled.
+
+
+- In the background is a script that enables the specified module within the apache2 configuration. It does this by
+creating symlinks within <b>/etc/apache2/mods-enabled</b>. Likewise, <i>a2dismod</i> disables a module by removing
+those symlinks. It is not an error to enable a module which is already enabled, or to disable one which
+is already disabled.
+
+
 
 
 <div class="frame">
 <h4>Example: a2enmod proxy</h4>
 - If we run the command from above, the script searches for preocy.load (and optionally proxy.conf) in
- <b>/etc/apache2/mods-available/</b>
+<b>/etc/apache2/mods-available/</b>
+
+
 
 
 - a2enmodthen creates symlinks in <b>/etc/apache2/mods-enabled/</b>
@@ -386,8 +374,12 @@ can be loaded into httpd. By default, a <a href="https://httpd.apache.org/docs/2
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-vhosts"><pre>Details - <a href="https://httpd.apache.org/docs/2.4/de/vhosts/">apache.org</a>
 
 
-<b>Vhost</b> Bezeichnet die Praxis, mehr als ein Webangebot (z.B. www.company1.com und www.company2.com) 
+
+
+<b>Vhost</b> Bezeichnet die Praxis, mehr als ein Webangebot (z.B. www.company1.com und www.company2.com)
 auf einer einzigen Maschine zu betreiben
+
+
 
 
 Vhosts sind entweder:
@@ -397,27 +389,43 @@ Vhosts sind entweder:
 </li></ul>
 
 
+
+
 The fact that several websites run on the same physical server is not obvious to
 end users.
+
+
 
 
 <h3>vhost definition</h3>
 <b>&lt;virtualhost <i>*</i>:80&gt;</b>
 
 
+
+
 Defines a virtual host in Apache.
+
+
 
 
 - <i>*</i> = listen on all network <i>interfaces</i> of the server (0.0.0.0).
 
 
--  <b>:80</b> = this vhost listens on port 80, the standard HTTP port.
+
+
+- <b>:80</b> = this vhost listens on port 80, the standard HTTP port.
+
+
 
 
 - Everything between &lt;virtualhost&gt; and &lt;/virtualhost&gt; applies to requests coming to this port.
 
 
+
+
 <h3>Directives / Direktiven </h3>
+
+
 
 
 <h4>ServerName / ServerAlias</h4>
@@ -425,7 +433,11 @@ Defines a virtual host in Apache.
 <b>ServerAlias</b> <i class="highlighterorange&gt;*.myapp.local&lt;/i&gt;&lt;/b&gt; Defines the hostname this &lt;strong&gt;vhost responds&lt;/strong&gt; to.. When a request comes to the server, Apache checks the &lt;b&gt;ServerName&lt;/b&gt; and &lt;i class=" highlighterorange="">*.myapp.local</i>
 
 
+
+
 directives in the virtual host configurations to determine which configuration to use.
+
+
 
 
 In Apache, ServerName and ServerAlias directives are used in the server configuration to define how the server
@@ -434,8 +446,14 @@ allowing the server to handle multiple websites or domains on a single server.
 
 
 
+
+
+
 When a request comes to the server, Apache checks the ServerName and ServerAlias directives in the virtual host
 configurations to determine which configuration to use.
+
+
+
 
 
 
@@ -444,45 +462,70 @@ will use that virtual host configuration to serve the request.
 
 
 
+
+
+
 If the request doesn't match any ServerName or ServerAlias in the virtual host configurations, Apache will use the
 default virtual host (the one defined first in the configuration) or the one associated with the main server.
+
+
 
 
 - Apache will match requests based on the Host: header from the client..
 
 
--  If we setup, <i>myapp.local</i>, mapped to 127.0.0.1 in 
- <span class="highlighterorange">/etc/hosts</span> so the browser knows where to send the request.
+
+
+- If we setup, <i>myapp.local</i>, mapped to 127.0.0.1 in
+<span class="highlighterorange">/etc/hosts</span> so the browser knows where to send the request.
+
+
 
 
 - <strong>Only</strong> requests to <i>myapp.local</i> will use this vhost.
+
+
 
 
 <h4>ProxyPass</h4>
 <b>ProxyPass <b>/</b> <i>http://localhost:5000/</i></b>
 
 
+
+
 Defines the <strong>core reverse proxy directive</strong>.
 ProxyPass &lt;path&gt; &lt;backend&gt; tells Apache:
+
+
 
 
 <li>All requests matching &lt;path&gt; (here /, meaning everything)</li>
 <li>Should be forwarded to &lt;backend&gt; (http://localhost:5000/).</li>
 
 
+
+
 - So, if you visit http://myapp.local/index.html in the browser, Apache forwards
- the request to http://localhost:5000/index.html.
+the request to http://localhost:5000/index.html.
+
+
 
 
 <h4> ProxyPassReverse</h4>
 <b> ProxyPassReverse <b>/</b> <i>http://localhost:5000/</i></b>
 
 
+
+
 - Handles responses from the backend that contain redirects or Location: headers
 
 
+
+
 - For example, if the backend responds with Location: http://localhost:5000/login,
- Apache rewrites it to http://myapp.local/login before sending it to the client.
+Apache rewrites it to http://myapp.local/login before sending it to the client.
+
+
 
 
 - Ensures the client sees URLs for the proxy, not the backend.
@@ -513,17 +556,24 @@ ProxyPass &lt;path&gt; &lt;backend&gt; tells Apache:
 
 
 
+
+
+
 <h4>How does Apache determine which VHOST config to use</h4>
 - if we do a <b>curl -v https://example.com</b>, we see these headers:
 
 
-  * Host example.com:443 was resolved.
-  * [HTTP/2] [1] [:authority: example.com]&gt;
+
+
+* Host example.com:443 was resolved.
+* [HTTP/2] [1] [:authority: example.com]&gt;
+
+
 
 
 - With the help of these and the <i>ServerName and ServerAlias</i>
- the Webserver is able to determine which Vhost-Config should be
- used for the incoming request, if any at all.  
+the Webserver is able to determine which Vhost-Config should be
+used for the incoming request, if any at all.
 </pre></div>
 </div>
 </div>
@@ -573,49 +623,65 @@ ProxyPass &lt;path&gt; &lt;backend&gt; tells Apache:
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-config-files"><pre><a href="https://httpd.apache.org/docs/2.4/configuring.html">Full Documentation</a>
 - configurations are placed in plain text configuration files.
-  The main configuration file is usually called <b>httpd.conf</b>
-   location of this file is set at compile-time, but may be overridden
-  with the <b>-f</b> command line flag. Configchanges are only recognized
-  by httpd when it is <b>started or restarted</b>
+The main configuration file is usually called <b>httpd.conf</b>
+location of this file is set at compile-time, but may be overridden
+with the <b>-f</b> command line flag. Configchanges are only recognized
+by httpd when it is <b>started or restarted</b>
+
+
 
 
 <h4>Include directive,</h4>
-   <b>Include directives</b> and <b>wildcards</b> can be used to
-   include many configuration files.<b>Any directive may be placed
-   in any of these configuration</b>
+<b>Include directives</b> and <b>wildcards</b> can be used to
+include many configuration files.<b>Any directive may be placed
+in any of these configuration</b>
+
+
 
 
 <h4>mime types</h4>
 - The server also reads a file containing mime document types
-  this is defined by the <b>TypesConfig directive</b> and is
-  <b>mime.types by default.</b> More details about that: <a href="./Webserver.html">at Webservers-Apache/mime-types</a>
+this is defined by the <b>TypesConfig directive</b> and is
+<b>mime.types by default.</b> More details about that: <a href="./Webserver.html">at Webservers-Apache/mime-types</a>
+
+
 
 
 <h4>Syntax</h4>
 - one directive per line. The backslash "\" may be used as the last
-  character on a line to indicate that the directive continues onto
-  the next line, <b>no other char or whitespace allowed between the
-  backslash and the end of the line.</b>
+character on a line to indicate that the directive continues onto
+the next line, <b>no other char or whitespace allowed between the
+backslash and the end of the line.</b>
+
+
 
 
 - <b>White space</b> occurring before a directive is ignored, so you may indent
-  directives for clarity. <b>Blank lines</b> are also ignored. <b>Arguments</b> to directives
-  are separated by whitespace. If an <b>argument contains spaces</b>, you must
-  enclose that argument in quotes.
+directives for clarity. <b>Blank lines</b> are also ignored. <b>Arguments</b> to directives
+are separated by whitespace. If an <b>argument contains spaces</b>, you must
+enclose that argument in quotes.
+
+
 
 
 - <b>Directives</b> in the configuration files are <b>case-insensitive</b>
-  but <i>arguments</i> to directives are often <i>case sensitive</i>
+but <i>arguments</i> to directives are often <i>case sensitive</i>
+
+
 
 
 - You can check your configuration files for syntax errors without starting
-  the server by using <pre><code class="lang-bash">apachectl configtest</code></pre>
+the server by using <pre><code class="lang-bash">apachectl configtest</code></pre>
+
+
 
 
 <h4>Scope of directives</h4>
 Directives placed in the main configuration files <b>apply to the entire server</b>.
-Scope can be restricted further by using one of these: 
+Scope can be restricted further by using one of these:
 <i>&lt;Directory&gt;, &lt;DirectoryMatch&gt;, &lt;Files&gt;, &lt;FilesMatch&gt;, &lt;Location&gt;, &lt;LocationMatch&gt;</i>
+
+
 
 
 httpd has the capability to serve many different websites simultaneously. This is
@@ -624,8 +690,12 @@ called <b>Virtual Hosting</b>. Directives can also be scoped by placing them ins
 for a particular website.
 
 
+
+
 <div class="frame">Although most directives can be placed in any of these sections,
 some directives <strong>do not make sense</strong> in some contexts.</div>
+
+
 
 
 <h4>.htaccess Files</h4>
@@ -634,12 +704,18 @@ and Apache will read and apply them automatically. This "special file" is called
 <b>.htaccess</b>.
 
 
+
+
 <div class="frame">Since .htaccess files are read on every request,
 changes made in these files take <b>immediate effect</b>.</div>
 
 
+
+
 Instead of having ALL configuration in one central place
 (/etc/apache2/apache2.conf), you can do this:
+
+
 
 
 <pre><code class="lang-bash">
@@ -653,6 +729,8 @@ Instead of having ALL configuration in one central place
 </pre>
 
 
+
+
 <strong class="highlighterpurple">What you can do with <b>.htaccess</b>:</strong>
 - Password protect specific directories
 - Rewrite URLs (e.g., make /product/123 work instead of /product.php?id=123)
@@ -660,6 +738,8 @@ Instead of having ALL configuration in one central place
 - Custom error pages (404, 500, etc.)
 - Enable/disable directory listings
 - Set caching rules
+
+
 
 
 <strong class="highlighterpurple">Downside:</strong>
@@ -690,20 +770,23 @@ config and disable <b>.htaccess with AllowOverride None</b>.
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-config-sections"><pre><h4>Evaluation</h4>
-Most containers are evaluated for each request. The enclosed directives
+Most containers are evaluated for each request. The enclosed directives
 are applied only for those requests that match the containers.
 
+
 <span class="highlightergreen">&lt;IfDefine&gt;, &lt;IfModule&gt;, and &lt;IfVersion&gt;</span> containers,
-on the other hand, are evaluated <b>only at server startup</b> and <b>restart</b>
+on the other hand, are evaluated <b>only at server startup</b> and <b>restart</b>
 If their conditions are true at startup, then the enclosed directives
 will apply to all requests. If the conditions are not true, the enclosed
 directives will be ignored
 
-<span class="highlightergreen">&lt;IfDefine&gt;, &lt;IfModule&gt;, and &lt;IfVersion&gt;</span> can apply
+
+<span class="highlightergreen">&lt;IfDefine&gt;, &lt;IfModule&gt;, and &lt;IfVersion&gt;</span> can apply
 negative conditions by preceding their test with <b>"!"</b>
 
+
 <h4>IFDefine</h4>
-The <span class="highlightergreen">&lt;IfDefine&gt;</span> directive encloses directives that will only be applied
+The <span class="highlightergreen">&lt;IfDefine&gt;</span> directive encloses directives that will only be applied
 if an appropriate parameter is defined on the httpd command line. For example, with the following configuration,
 all requests will be redirected to another site only if the server is started using httpd <b>-DClosedForNow</b>:
 <pre><code class="lang-html">
@@ -713,31 +796,36 @@ all requests will be redirected to another site only if the server is started us
 </code>
 </pre>
 
+
 <h4>IfModule</h4>
 Encloses directives that will only be applied if a particular module is available in the server.
 only use if you need your configuration file to work whether or not certain modules are installed.
 should not be used to enclose directives that you want to work all the time, because it can suppress
 useful error messages about missing modules
 
-In the following example, the <span class="highlightergreen">MimeMagicFile</span> directive will be applied only if <b>mod_mime_magic</b> is available.
+
+In the following example, the <span class="highlightergreen">MimeMagicFile</span> directive will be applied only if <b>mod_mime_magic</b> is available.
 <pre><code class="lang-html">
-&lt;IfModule mod_mime_magic.c&gt;
+&lt;IfModule mod_mime_magic.c&gt;
      MimeMagicFile "conf/magic"
 &lt;/IfModule&gt;
 </code>
 </pre>
 
+
 <h4>Ifversion</h4>
 Encloses directives that will only be applied if a particular version of the server is executing. Designed for the use in test suites and large networks
 which have to deal with different httpd versions and different configurations
 <pre><code class="lang-html">
-&lt;IfVersion &gt;= 2.4&gt;
+&lt;IfVersion &gt;= 2.4&gt;
+
 
 # this happens only in versions greater or
 # equal 2.4.0.
 &lt;/IfVersion&gt;
 </code>
 </pre>
+
 
 </pre></div>
 </div></div>
@@ -761,15 +849,17 @@ which have to deal with different httpd versions and different configurations
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mime-types"><pre>In generall, The <b>character</b> set, <b>language</b>, <b>encoding</b> and <strong class="highlighterblue">mime type</strong> are
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mime-types"><pre>In generall, The <b>character</b> set, <b>language</b>, <b>encoding</b> and <strong class="highlighterblue">mime type</strong> are
 all used in the process of <b>content negotiation</b> to determine which
 document to give to the client, when there are alternative documents in more
 than one character set, language, encoding or mime type.
 More Infos about content negotiation: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Content_negotiation">mdn-content-negotiation</a>
 
+
 Apache2 server also reads a file containing mime document types;
 the filename is set by the <b>TypesConfig directive</b>, and is
 mime.types by default.
+
 
 <h4>..is mime.types by default" means:</h4>
 - Apache2 looks for a file called mime.types
@@ -777,6 +867,7 @@ mime.types by default.
 - This file contains a mapping of file extensions to MIME types
 - If you don't explicitly set TypesConfig to something else,
 Apache uses this default filename
+
 
 So the file contains lines like:
 <pre><code class="lang-bash">
@@ -787,18 +878,22 @@ video/mp4 mp4
 </code>
 </pre>
 
+
 This tells Apache: "When you serve a .jpg file, send the HTTP
 header Content-Type: image/jpeg"
+
 
 <h4>Why it matters</h4>
 When a browser requests a file, Apache looks at the file extension,
 checks the mime.types mapping, and sends the appropriate
 Content-Type header. This tells the browser how to handle the file:
 
+
 - Display it inline (HTML, images)
 - Download it (executables, archives)
 - Open it with a plugin (PDF)
 - etc.
+
 
 <h4>Does it restrict content?</h4>
 <strong><b>No and Yes</b></strong>
@@ -806,11 +901,14 @@ If a server is strict about the content type and a client uses either a:
 wrong Content-Type, no content type at all or a file extension that isn't
 in servers mime.types the server responds with a <strong class="highlighterred">415 Unsupported Media Type</strong>
 
+
 Apache will typically serve it as application/octet-stream (generic binary data),
 which browsers will usually download rather than display. But the file is still served
 - it's just that the browser may not know what to do with it.
 
+
 You can override or add types with the <b>AddType directive</b> if you need custom mappings.
+
 
 <div class="frame">Missing or incorrect Content-Type headers <strong class="highlighterred">cause functionality issues</strong>
 and can create <strong class="highlighterred">security vulnerabilities</strong> through MIME confusion.</div>
@@ -843,7 +941,6 @@ using whatever programming language you're most familiar with.
 </pre></div>
 </div>
 </div>
-
 <!--## Common-Log-Format-CLF #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-Common-Log-Format-CLF">
 <h2 class="foldable-title" id="foldable-title-Common-Log-Format-CLF">Common-Log-Format-CLF</h2>
@@ -868,6 +965,102 @@ using whatever programming language you're most familiar with.
 details in apache2 docs can be found <a href="https://httpd.apache.org/docs/2.4/logs.html">here</a> ( search for "Common Log Format")
 In apache2 the format looks something like this:<pre><code class="lang-bash">LogFormat "%h %l %u %t \"%r\" %&gt;s %b" common</code></pre>
 
+
+</pre></div>
+</div>
+</div>
+<div class="foldable-container" id="foldcontainer-Different-Distribution-Implementation">
+<h2 class="foldable-title" id="foldable-title-Different-Distribution-Implementation">Different-Distribution-Implementation</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Different-Distribution-Implementation')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Webserver','editable-paragraph-Different-Distribution-Implementation', 'foldable-content-penButton-Different-Distribution-Implementation')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-Different-Distribution-Implementation">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Different-Distribution-Implementation" onclick="save_editable_content('Webserver','editable-paragraph-Different-Distribution-Implementation', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Different-Distribution-Implementation"><pre>The Apache2 implementation, configuration usage etc. differs quit a bit, depending on what
+Linux Distribution you use it. Starting with the most obvious, the name <i>httpd (RHEL,CentOS, Fedora etc.)</i>
+<strong class="highlighterorange">apache2(Debian, Ubuntu)</strong>
+
+______________________________________________________________________________________________________________
+
+<h2>Load Modules</h2>
+
+<strong class="highlighterorange">apache2</strong>
+No direct entrance to the config. If you want to use a Module, you have enable it via <strong class="highlighterorange">a2enmod</strong>
+
+<i>httpd</i>
+If you want to use a Module, you have to enter that into the config-file via <i>LoadModule xyz</i>
+______________________________________________________________________________________________________________
+
+</pre></div>
+</div>
+</div>
+<!--## apache2ctl #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-apache2ctl">
+<h2 class="foldable-title" id="foldable-title-apache2ctl">apache2ctl</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('apache2ctl')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Webserver','editable-paragraph-apache2ctl', 'foldable-content-penButton-apache2ctl')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-apache2ctl">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-apache2ctl" onclick="save_editable_content('Webserver','editable-paragraph-apache2ctl', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-apache2ctl"><pre>Get Infos about apache2: <pre><code class="lang-bash">apache2 apache2ctl -V</code></pre>
+or <pre><code class="lang-bash">apache2 apache2ctl -S</code></pre>
+More - <a href="https://manpages.ubuntu.com/manpages/focal/man8/apache2ctl.8.html#:~:text=apache2ctl%20is%20a%20front%20end,of%20the%20Apache%20apache2%20daemon.">Here</a>
+
+</pre></div>
+</div>
+</div>
+
+<!--## apache2-general-caching #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-apache2-general-caching">
+<h2 class="foldable-title" id="foldable-title-apache2-general-caching">apache2-general-caching</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('apache2-general-caching')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Webserver','editable-paragraph-apache2-general-caching', 'foldable-content-penButton-apache2-general-caching')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-apache2-general-caching">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-apache2-general-caching" onclick="save_editable_content('Webserver','editable-paragraph-apache2-general-caching', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-apache2-general-caching"><pre>There are three basic ways of caching, which have different modules involved:
+<ul>
+<li>File-Caching: mod_file_cache</li>
+<li>KeyValue-Caching: mod_socache_dbm, mod_socache_dc, mod_socache_memcache, mod_socache_shmcb</li>
+<li>Standard-HTTP-Caching: mod_cache</li>
+</ul>
+More infos: <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-apache-content-caching-on-ubuntu-14-04#standard-http-caching">Article-About-Caching</a>
 </pre></div>
 </div>
 </div>
@@ -1014,4 +1207,140 @@ If you're using the Apache web server, check the <b>Media Types</b> and <b>Chara
 </div>
 </div>
 </div>
-</body></html><!--## mime-type-settings #################################################################################################################--><!--## nginx-configfile #################################################################################################################--><!--## a2enmod #################################################################################################################-->
+<!--## apache2-mods #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-apache2-mods">
+<h2 class="foldable-title" id="foldable-title-apache2-mods">apache2-mods</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('apache2-mods')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Webserver','editable-paragraph-apache2-mods', 'foldable-content-penButton-apache2-mods')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-apache2-mods" onclick="add_subdiv('editable-paragraph-apache2-mods')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-apache2-mods">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-apache2-mods" onclick="save_editable_content('Webserver','editable-paragraph-apache2-mods', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-apache2-mods"><!--## mod_cache #################################################################################################################--><div class="foldable-container" id="foldcontainer-mod_cache">
+<h2 class="foldable-title" id="foldable-title-mod_cache">mod_cache</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('mod_cache')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Webserver','editable-paragraph-mod_cache', 'foldable-content-penButton-mod_cache')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-mod_cache">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-mod_cache" onclick="save_editable_content('Webserver','editable-paragraph-mod_cache', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mod_cache"><html><head></head><body><pre><a href="https://httpd.apache.org/docs/current/mod/mod_cache.html">DOCS</a>
+<a href="https://www.digitalocean.com/community/tutorials/how-to-configure-apache-content-caching-on-ubuntu-14-04#standard-http-caching">Article about mod_cache usage</a>
+
+
+- Enable with: <b>a2enmod cache (debian-based)</b>
+
+- <strong>mod_cache</strong> requires the services of one or more (also eines von beiden oder beide)
+   <i>storage management modules</i>: <i>mod_cache_disk</i> / <i>mod_cache_socache</i>
+
+- Apache’s HTTP cache is also known as a <i>“three state”</i> cache. This is because the content it has stored
+  can be in one of three states. It can be <i>fresh</i>, meaning it is allowed to be served to clients with no further
+  checking, it can be <i>stale</i>, meaning that the TTL on the content has expired, or it can be <i>non-existent</i> if the
+  content is not found in the cache.
+
+  If the content becomes stale, at the next request, the cache can re-validate it by checking the content at the origin.
+  If it hasn’t changed, it can reset the freshness date and serve the current content. Otherwise, it fetches the changed
+  content and stores that for the length of time allowed by its caching policy.
+
+
+-  Apache’s HTTP cache can be deployed in two different configurations depending on your needs.
+
+   If the <b>CacheQuickHandler</b> is set to “on”, the cache will be checked very early in the request handling process.
+   If content is found, it will be served directly without any further handling. This means that it is incredibly
+   quick, but it also means that it does not allow for processes like authentication for content. If there is content
+   in your cache that normally requires authentication or access control, it will be accessible to anyone without
+   authentication if the <b>CacheQuickHandler</b> is set to “on”.
+
+   Basically, this emulates a separate cache in front of your web server. If your web server needs to do any kind
+   of conditional checking, authentication, or    authorization, this will not happen. Apache will not even evaluate
+   directives within &lt;Location&gt; or &lt;Directory&gt; blocks. Note that <b>CacheQuickHandler</b> is set to “on” by default!
+
+   If the <b>CacheQuickHandler</b> is set to “off”, the cache will be checked significantly later in the request processing
+   sequence. Think of this configuration as placing the cache between your Apache processing logic and your actual
+   content. This will allow the conventional processing directives to be run prior to retrieving content from the cache.
+   Setting this to “off” trades a bit of speed for the ability to process requests more deeply.
+  
+
+<h1>Directives</h1>
+
+
+<h2>BLA</h2>
+</pre></body></html></div>
+</div>
+</div>
+<!--## mod_cache_disk #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-mod_cache_disk">
+<h2 class="foldable-title" id="foldable-title-mod_cache_disk">mod_cache_disk</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('mod_cache_disk')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Webserver','editable-paragraph-mod_cache_disk', 'foldable-content-penButton-mod_cache_disk')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-mod_cache_disk">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-mod_cache_disk" onclick="save_editable_content('Webserver','editable-paragraph-mod_cache_disk', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mod_cache_disk"><pre>Implements a shared object cache based <i>storage manager</i>. Headers and bodies are stored
+<i>together</i> beneath a <i>single key</i> based on the URL of the response being cached.
+for ex: <b>/var/cache/apache2/mod_cache_disk/</b>
+Multiple content negotiated responses can be stored concurrently, however the caching
+of partial content is not supported by this module.
+
+The cache is <i>not cleaned automatically</i> so a tool called htcacheclean must be run occasionally to slim
+down the cache. This can be run manually, set up as a regular cron job, or run as a daemon.
+
+- Enable with: <b>a2enmod cache_disk(debian-based)</b>
+
+<h1>Directives</h1>
+
+<h3>CacheQuickHandler</h3>
+Run the cache from the quick handler (faster and 
+
+<h2>BLA</h2>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html><!--## Different-Distribution-Implementation #################################################################################################################--><!--## mime-type-settings #################################################################################################################--><!--## nginx-configfile #################################################################################################################--><!--## a2enmod #################################################################################################################-->

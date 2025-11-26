@@ -100,9 +100,11 @@ Depends on whether you're <b>running as root or regular</b> user:
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <h2>Start vs. Run</h2>
 - <strong>Start</strong>: Launch a container previously stopped.
-  Restart Container: <b>podman start -ai ${CONTAINERNAME}</b>
+  Restart Container: <pre><code class="lang-bash">podman start -ai ${CONTAINERNAME}</code></pre>
 
 - <strong>Run</strong>: Run: create a new container of an image, and execute the container
+
+- Start and exec in one <pre><code class="lang-bash">podman start $ID &amp;&amp; podman exec -it $ID /bin/bash</code></pre>
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <h2>Check Containers</h2>

@@ -100,7 +100,7 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-iffp-exam"><pre>Für iffp mussten schon einigemal die IP-Zugriffe während
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-iffp-exam"><html><head></head><body><pre>Für iffp mussten schon einigemal die IP-Zugriffe während
 Prüfungen herausgesucht werden.
 
 Pege hat diese in <i>BS-12585</i> zusammengefasst.
@@ -149,7 +149,7 @@ FROM
     LEFT OUTER JOIN nice_survey_user_intrusion AS sui ON sqa.fk_user_intrusion = sui.pk
     LEFT OUTER JOIN nice_survey_intrusion AS si ON sui.fk_intrusion = si.pk
 WHERE
-    h.insertion_time BETWEEN '2024-09-10' AND '2024-09-11'
+    h.insertion_time BETWEEN '2026-09-10' AND '2026-09-11'
     AND h.entity_model = 'Survey_question_answer'
     AND h.username = '${USERMANE}@${WHATEVER}.com'
 ) TO '~/output2.csv' CSV HEADER;
@@ -173,7 +173,7 @@ WHERE
              left outer join nice_survey_user_intrusion as sui on sqa.fk_user_intrusion = sui.pk
              left outer join nice_survey_intrusion as si on sui.fk_intrusion = si.pk
         where
-            insertion_time between '2024-11-04' and '2024-11-07'
+            insertion_time between '2026-11-04' and '2026-11-07'
                and entity_model = 'Survey_question_answer'
     ) select
         s.username as user,
@@ -189,7 +189,7 @@ WHERE
                       
 </code>
 </pre>
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 </div>
@@ -246,7 +246,7 @@ WHERE
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Aufbereitung-Datenträgers-Escrow"><html><head></head><body><pre>Alle x-jahre, verlangt Akad Daten, um das ERP-Selber zu betreiben
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Aufbereitung-Datenträgers-Escrow"><pre>Alle x-jahre, verlangt Akad Daten, um das ERP-Selber zu betreiben
 falls wir von heute auf morgen konkurs gehen würden (lol).
 
 Das ganze ist eher eine Formalität, da dies ziemlich sicher eh nicht
@@ -259,7 +259,7 @@ Folgendes wir dabei inkludiert:
 
 Beispielticket -&gt; <i>BS-14540</i>
 
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </div>
