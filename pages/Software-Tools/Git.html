@@ -79,15 +79,12 @@
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-General-Git-Tips"><html><head></head><body><h3>Adjust Commit History</h3><br/>
-<p>
-</p><ul>
+<pre><ul>
 <li>interactive rebase starten ( for ex. 3 commits should be adjusted ~3 ): <b>git rebase -i HEAD~3</b></li><br/>
 <li>Commit lines can then be cut, moved, pasted as desired, directly in opened vim-editor</li><br/>
 </ul>
-<p></p>
 <h3>Squash</h3><br/>
-<p>
-</p><ul>
+<ul>
 <li>To <b>squash</b> in Git means to combine multiple commits into one.</li><br/>
 <li>interactive rebase starten ( for ex. 3 commits should be adjusted ~3 ): <b>git rebase -i HEAD~3</b></li><br/>
 <li>Search for commit(s) that need to be squashed</li><br/>
@@ -95,7 +92,33 @@
 <li>In the next vim window, we see what commits get taken into the squash and we can<br/>
 determine a new commit-message or just comment out all, except the one we want to keep.
 </li><br/>
-</ul><p></p></body></html></div>
+</ul>
+<div>
+<h3>Create new branch local</h3>
+<h2 class="highlighteryellow">git switch</h2>
+  <pre>  <code class="lang-bash">
+     # makes sure local master is up to date with remote 
+     git checkout master 
+     git pull
+     # create new branch based on local master
+     git switch -c <b>dain/feature-x</b> <b>origin/master</b>
+     # and then push to remote repo with
+     git push -u origin <b>dain/feature-x</b>
+     # after that, the branch should appear on the remote repo ( on git web-UI, in tocco-case)
+    </code>
+  </pre>
+  - Creates a new branch locally from <b>master</b> and switches to it.
+ <h2 class="highlighteryellow">git checkout -b</h2>
+  <pre>   <code class="lang-bash">
+     # same just with ...
+     git checkout -b <b>dain/feature-x</b> <b>master</b>
+    </code>
+  </pre>
+    Same effect as above. <b>git checkout</b> used to handle
+    switching branches, creating branches, and checking out files,
+    which is why <b>git switch</b> was introduced later to make this clearer.
+</div>
+</pre></body></html></div>
 </div>
 </div>
 <!--## Rebase #################################################################################################################-->

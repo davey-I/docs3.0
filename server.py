@@ -349,6 +349,7 @@ def load_indexpages():
         for ent in listOfEntries:
             if ent.is_file():
                 page_names.append(ent.name)
+    page_names.sort()
 
     with open(f'{path_with_folder}/{page_folder}-index.html', 'r', encoding='utf-8') as f:
         soup = bs(f, 'html.parser')

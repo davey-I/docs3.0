@@ -784,7 +784,31 @@ System prune we already do automatically once in a while but I don't think we cl
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-unifi-gerätli"><pre>Docs: https://docs.tocco.ch/devops/internal_servers/wlan.html
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-unifi-gerätli"><pre><img alt="unifi-hardware" height="50" src="../../images/unifi-geraetli.png" width="50"/>
+</pre>
+<!--## unifi-initial-setup #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-unifi-initial-setup">
+<h2 class="foldable-title" id="foldable-title-unifi-initial-setup">unifi-initial-setup</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('unifi-initial-setup')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Servers','editable-paragraph-unifi-initial-setup', 'foldable-content-penButton-unifi-initial-setup')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-unifi-initial-setup">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-unifi-initial-setup" onclick="save_editable_content('Servers','editable-paragraph-unifi-initial-setup', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-unifi-initial-setup"><pre>Docs: https://docs.tocco.ch/devops/internal_servers/wlan.html
+
+
 
 
 - unifi was "gerätli" was originally hosted on host03A
@@ -792,11 +816,13 @@ System prune we already do automatically once in a while but I don't think we cl
   we moved down to EG), is basically the real i.g. physical
   version of the old vm.
 
+
 - Now that we moved back to the old office, we want to add
   all of the Wifi-Access points to the physical "gerätli" ( when
   we moved down to EG, only two access points have been 
   added to the physical gerätli, the others where still managed
   by the VM )
+
 
   This wasn't really an issue, because the access points only 
   need to be connected to the Config-Gerätli once, then they 
@@ -804,29 +830,38 @@ System prune we already do automatically once in a while but I don't think we cl
   So if nothing needs to be changed or updated, they are fine
   on their own.
 
+
 - Like mentioned already, we want to add all access points 
   to the physical "gerätli" if we connected all of them (7) to
   the network, in theory the "gerätli" should be able to recognize
   and auto. add them. Because we imported the config from the 
 
+
   old VM-unifi to it. 
 
+
   So if for any reason we need to switch to the new "gerätli":
+
 
   - Connect "gerätli" to the network and wait until it is ready
      meaning it also has received a IP from DHCP. Which then
      should be appear on the small display on the "gerätli"
 
+
   - Enter the IP into a browser and enter credentials you find
      in ansible-vault. 
+
 
   - Somewhere there should be a list, that shows all the connected
     access points + also the two that the "gerätli" found, but are not
     yet connected. 
 
+
   - We add these via the UI somewhere and they should be ready
  
   - add chages to Docs ...
+
+
 
 
 <div class="frame">If this won't work, we need to reset and create everything new. Preferably
@@ -834,7 +869,37 @@ on a "non-working" day. Also the other steps would cause a network downtime.</di
 </pre></div>
 </div>
 </div>
-
+<!--## unifi-general-infos #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-unifi-general-infos">
+<h2 class="foldable-title" id="foldable-title-unifi-general-infos">unifi-general-infos</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('unifi-general-infos')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Servers','editable-paragraph-unifi-general-infos', 'foldable-content-penButton-unifi-general-infos')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-unifi-general-infos">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-unifi-general-infos" onclick="save_editable_content('Servers','editable-paragraph-unifi-general-infos', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-unifi-general-infos"><pre><div class="frame">
+<b>Location</b>: DevOps-Office, inside the rack, underneath the switch
+<b>IP</b>:10.27.254.87
+<b>Credentials</b>: BW or Vault
+</div>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <!--## Mikrotik-Routerboard #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-Mikrotik-Routerboard">
 <h2 class="foldable-title" id="foldable-title-Mikrotik-Routerboard">Mikrotik-Routerboard</h2>
@@ -865,7 +930,7 @@ on a "non-working" day. Also the other steps would cause a network downtime.</di
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Mikrotik-Routerboard"><html><head></head><body><pre><strong>Mikrotik Routerboard from IWay, where our Fiber and ADSL(Backup) connection are coming in</strong>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Mikrotik-Routerboard"><pre><strong>Mikrotik Routerboard from IWay, where our Fiber and ADSL(Backup) connection are coming in</strong>
 <strong>Type: <b>Mikrotik Routerboard RB 3011 UiAS-RM</b></strong>
 
 
@@ -873,13 +938,65 @@ Mikrotik connections Nov25: <strong class="highlighterred">
 (!!! ATTENTION: BLACK CABLE WORKED ONLY ON EHT2 PORT !!! NOT LIKE IN THE IMAGE BELOW)</strong>
  - Black Cable "30" direct connection from the ADSL-Backup lines <b>LAN2</b> Ports ( Via Stockwerkverbindungskabel 2.OG-1.OG)
  - Yellow Cable: Connection to Firewall (Sophos)
-<img alt="mikrotikimage" height="500" src="../../images/backupline2.jpg"  width="400"/>
+<img alt="mikrotikimage" height="500" src="../../images/backupline2.jpg" width="400"/>
 
 ADSL-Backupline connections Nov25: 
  - Black Cable: Connection to the incoming ADSL-Line from outside.
  - Yellow Cable: Direct connection to Mikrotik
 ( Via Stockwerkverbindungskabel 2.OG-1.OG , Cable "30" in the Mirkotik image from above)
-<img alt="mikrotikimage" height="500" src="../../images/backupline1.jpg"  width="400"/>
+<img alt="mikrotikimage" height="500" src="../../images/backupline1.jpg" width="400"/>
+</pre></div>
+</div>
+</div>
+
+<!--## Sophos-Firewall #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-Sophos-Firewall">
+<h2 class="foldable-title" id="foldable-title-Sophos-Firewall">Sophos-Firewall</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Sophos-Firewall')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Servers','editable-paragraph-Sophos-Firewall', 'foldable-content-penButton-Sophos-Firewall')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-Sophos-Firewall" onclick="add_subdiv('editable-paragraph-Sophos-Firewall')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-Sophos-Firewall">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Sophos-Firewall" onclick="save_editable_content('Servers','editable-paragraph-Sophos-Firewall', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Sophos-Firewall"><html><head></head><body><pre><h1 class="highlighteryellow">Old Sophos Firewall, hopefully soon gone (Tocco-Office)</h1>
+
+
+<h2 class="highlighterred">Problems</h2>
+
+- Microsoft Loop und Whiteboard users experienced problems using those two
+   services, when connected to Tocco-Wifi
+
+- This seems to be somhow related to MTU time. Which is per default 1500 
+   when I switched it to 1480 on my local ubuntu Interface, it worked also in Tocco-Wifi
+
+- It seems to always work when connected to <i>Tocco-Guest-Wifi</i>. Therefore we
+   told the users to just switch to <i>Tocco-Guets-Wifi</i> for the meantime. Because
+   fixing this has something to do with normal <b>Tocco-Wifi</b> being differently setup
+   via IPV6 then <i>Tocco-Guest-Wifi</i> and therefore the Problems
+
+- Also there was a kind of "Ethic - Windows is bad, we dont adjust MTU on Firewall for this 
+  ,it works for everything else " dispute in Devops intern...
 </pre></body></html></div>
 </div>
 </div>

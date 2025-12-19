@@ -1033,7 +1033,6 @@ More - <a href="https://manpages.ubuntu.com/manpages/focal/man8/apache2ctl.8.htm
 </pre></div>
 </div>
 </div>
-
 <!--## apache2-general-caching #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-apache2-general-caching">
 <h2 class="foldable-title" id="foldable-title-apache2-general-caching">apache2-general-caching</h2>
@@ -1054,13 +1053,37 @@ More - <a href="https://manpages.ubuntu.com/manpages/focal/man8/apache2ctl.8.htm
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-apache2-general-caching"><pre>There are three basic ways of caching, which have different modules involved:
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-apache2-general-caching"><pre><h2 class="highlighteryellow">Implementation Options</h2>
+There are three basic ways of caching, which have different modules involved:
 <ul>
 <li>File-Caching: mod_file_cache</li>
 <li>KeyValue-Caching: mod_socache_dbm, mod_socache_dc, mod_socache_memcache, mod_socache_shmcb</li>
 <li>Standard-HTTP-Caching: mod_cache</li>
 </ul>
-More infos: <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-apache-content-caching-on-ubuntu-14-04#standard-http-caching">Article-About-Caching</a>
+More infos: <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-apache-content-caching-on-ubuntu-14-04#standard-http-caching">Article-About-Caching</a> and also check the <i>apache2-mods</i> section further down in the Docs.
+
+<h2 class="highlighteryellow">Thundering Herd / Cache locking</h2>
+Cache locking is is a system of file locks that Apache will use when it is checking in with the content
+origin to see whether content is still valid.(Kurze zwischenzeit die Apache halt braucht um Cache mit Original
+Daten abzugleichen um zu sehen ob schon Stale oder noch Valid) during the time when this query is being
+satisfied, if additional requests for the same content come in, it would result in additional requests to the
+backend resource, which could cause load spikes.
+
+Setting a cache lock for a resource during validation tells Apache that the resource is currently being refreshed.
+During this time, the stale resource can be served with a warning header indicating its state. We can set this up
+with a cache lock directory in the /tmp (<i>CacheLockPath</i>) folder, We’ll allow a maximum of 5 seconds for a lock to
+be considered valid. 
+
+<pre><code class="lang-bash">
+CacheLock on
+CacheLockPath /tmp/mod_cache-lock
+CacheLockMaxAge 5
+</code>
+</pre>
+
+
+Check also <a href="https://httpd.apache.org/docs/current/mod/mod_cache.html">Avoiding the Thundering Herd
+ Section</a>
 </pre></div>
 </div>
 </div>
@@ -1256,14 +1279,14 @@ If you're using the Apache web server, check the <b>Media Types</b> and <b>Chara
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mod_cache"><html><head></head><body><pre><a href="https://httpd.apache.org/docs/current/mod/mod_cache.html">DOCS</a>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mod_cache"><pre><a href="https://httpd.apache.org/docs/current/mod/mod_cache.html">DOCS</a>
 <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-apache-content-caching-on-ubuntu-14-04#standard-http-caching">Article about mod_cache usage</a>
 
 
 - Enable with: <b>a2enmod cache (debian-based)</b>
 
 - <strong>mod_cache</strong> requires the services of one or more (also eines von beiden oder beide)
-   <i>storage management modules</i>: <i>mod_cache_disk</i> / <i>mod_cache_socache</i>
+   <i>storage managers</i> or <i>caching providers</i>: <i>mod_cache_disk</i> / <i>mod_cache_socache</i>
 
 - Apache’s HTTP cache is also known as a <i>“three state”</i> cache. This is because the content it has stored
   can be in one of three states. It can be <i>fresh</i>, meaning it is allowed to be served to clients with no further
@@ -1273,7 +1296,6 @@ If you're using the Apache web server, check the <b>Media Types</b> and <b>Chara
   If the content becomes stale, at the next request, the cache can re-validate it by checking the content at the origin.
   If it hasn’t changed, it can reset the freshness date and serve the current content. Otherwise, it fetches the changed
   content and stores that for the length of time allowed by its caching policy.
-
 
 -  Apache’s HTTP cache can be deployed in two different configurations depending on your needs.
 
@@ -1292,12 +1314,14 @@ If you're using the Apache web server, check the <b>Media Types</b> and <b>Chara
    content. This will allow the conventional processing directives to be run prior to retrieving content from the cache.
    Setting this to “off” trades a bit of speed for the ability to process requests more deeply.
   
+-  Most of the configuration for caching will take place within individual virtual host definitions or
+   location blocks. However, enabling <i>mod_cache_disk</i> also enables a global configuration that can be used to
+   specify some general attributes. Located at :
+   <pre><code class="lang-bash">/etc/apache2/mods-enabled/cache_disk.conf</code></pre>
 
 <h1>Directives</h1>
-
-
-<h2>BLA</h2>
-</pre></body></html></div>
+<h2>Nothing here yet ...</h2>
+</pre></div>
 </div>
 </div>
 <!--## mod_cache_disk #################################################################################################################-->
@@ -1321,13 +1345,20 @@ If you're using the Apache web server, check the <b>Media Types</b> and <b>Chara
 </svg>
 </button>
 <div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mod_cache_disk"><pre>Implements a shared object cache based <i>storage manager</i>. Headers and bodies are stored
-<i>together</i> beneath a <i>single key</i> based on the URL of the response being cached.
-for ex: <b>/var/cache/apache2/mod_cache_disk/</b>
-Multiple content negotiated responses can be stored concurrently, however the caching
-of partial content is not supported by this module.
+<i>together</i> beneath a <i>single key</i> based on the URL of the response being cached. 
+for ex: <b>/var/cache/apache2/mod_cache_disk/b1946ac9249...</b> The directory structure is
+derived from the md5 hash of the cached URL and further, the data will be organized into directories
+derived from the beginning characters of each hash (Therefore these weird character-folders).
+Multiple content negotiated responses can be stored concurrently, however the caching of partial
+content is not supported by this module.
 
 The cache is <i>not cleaned automatically</i> so a tool called htcacheclean must be run occasionally to slim
 down the cache. This can be run manually, set up as a regular cron job, or run as a daemon.
+
+Most of the configuration for caching will take place within individual virtual host definitions or
+location blocks. However, enabling <i>mod_cache_disk</i> also enables a global configuration that can be used to
+specify some general attributes. Located at :
+<pre><code class="lang-bash">/etc/apache2/mods-enabled/cache_disk.conf</code></pre>
 
 - Enable with: <b>a2enmod cache_disk(debian-based)</b>
 
@@ -1336,8 +1367,58 @@ down the cache. This can be run manually, set up as a regular cron job, or run a
 <h3>CacheQuickHandler</h3>
 Run the cache from the quick handler (faster and 
 
-<h2>BLA</h2>
+<h3>CacheDirLevels</h3>
+ specifies the number of subdirectories to create
+
+<h3>CacheDirLength</h3>
+Specifies how many characters to use as the name of each directory. So a hash of
+b1946ac92492d2347c6235b4d2611184 with the default values shown above would be filed
+in a directory structure of b/1/946ac92492d2347c6235b4d2611184
+
+<h3>CacheMaxFileSize &amp; CacheMinFileSize</h3> 
+Set the ranges of file sizes in bytes that Apache will commit to the cache.
+
+<h3>CacheReadSize and CacheReadTime</h3>
+As you to wait and buffer content before sending to the client.
+This can be useful if the content resides somewhere other than on the server itself.
+
 </pre></div>
+</div>
+</div>
+
+<!--## mod_expires #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-mod_expires">
+<h2 class="foldable-title" id="foldable-title-mod_expires">mod_expires</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('mod_expires')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Webserver','editable-paragraph-mod_expires', 'foldable-content-penButton-mod_expires')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-mod_expires">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-mod_expires" onclick="save_editable_content('Webserver','editable-paragraph-mod_expires', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-mod_expires"><html><head></head><body><pre>Controls the setting of the Expires HTTP header and the max-age directive of the
+Cache-Control HTTP header in server responses. These HTTP headers are an instruction
+to the client about the document's validity and persistence. If cached, the document may
+be fetched from the cache rather than from the source until this time has passed. After that,
+the cache copy is considered "expired" and invalid, and a new copy must be obtained from the source.
+
+Check <a href="https://httpd.apache.org/docs/current/mod/mod_expires.html">DOCS</a>
+
+
+<h1>Directives</h1>
+
+<h3></h3>
+</pre></body></html></div>
 </div>
 </div>
 </div>
