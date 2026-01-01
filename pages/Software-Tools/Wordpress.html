@@ -1191,7 +1191,7 @@ pgerber@tocco01:/var/www/vhosts/master$ sudo aa-status |grep test314
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-ansible-WordPress-automatisierung"><pre><h2>Add Customer</h2>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-ansible-WordPress-automatisierung"><html><head></head><body><pre><h2>Add Customer</h2>
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -1216,7 +1216,13 @@ Basically check <a href="https://docs.tocco.ch/devops/managing_tocco/remove_cust
 
 - And <b>yes</b> in most cases it has to be done including the scary sounding <b>-t all,force-irrevocable-removal</b>
   since all installations have their own maria-db, even testtemp and so on.
-</pre></div>
+
+
+- To check mariadb before and after go to the WP-Server and do:
+<pre><code class="lang-sql">mariadb</code></pre>
+and then enter:
+<pre><code class="lang-sql">show database;</code></pre>
+</pre></body></html></div>
 </div>
 </div>
 <!--## IWay-wordpress-stuff #################################################################################################################-->
@@ -1339,7 +1345,7 @@ our dns entrance there...
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-wordpress-was-macht-marcel"><html><head></head><body><pre><h2 class="highlighteryellow">Vorgehen Wie weiss man(maba) wann ein WP-Auftrag kommt</h2>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-wordpress-was-macht-marcel"><pre><h2 class="highlighteryellow">Vorgehen Wie weiss man(maba) wann ein WP-Auftrag kommt</h2>
 
 <h3>3 wege</h3>
 <b>CR wenn ein Kunde das CMS wechseln will (vom alten weg) siehe zweiter abschnitt in "Nameing"</b>
@@ -1403,7 +1409,7 @@ our dns entrance there...
 <h2 class="highlighteryellow">Löschen</h2>
 - maba bekommt benachr. das tocco-3t-instanz abgebaut wird und
   dann werden. ( eienzig unschön, dass man immer das vom BS reverten muss)
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </body></html><!--## neigh-stale-ipv6 #################################################################################################################-->
