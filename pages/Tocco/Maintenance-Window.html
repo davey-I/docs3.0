@@ -287,7 +287,7 @@ dedicated partitions or volumes.</li>
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-DB-Dumps-Burp-Archives"><html><head></head><body><pre><h3>! Delete the Old file first  !</h3>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-DB-Dumps-Burp-Archives"><pre><h3>! Delete the Old file first  !</h3>
 - script name <i>maintenance_ssh_commands.sh</i>
 
 - This automates the two tasks <b>verify DB dumps VSHN:</b> and <b>verify Burp archives VSHN:</b>
@@ -325,7 +325,7 @@ done
 - And saves the output in a file called <b>DB_dumps_VSHN</b> at the location where the command was executed
 
 - The script is located at <b>/home/dave/src/bash_srcipts_loco</b>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </div>
@@ -361,7 +361,7 @@ done
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Main-Tasks"><pre><h3>Borg</h3>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Main-Tasks"><html><head></head><body><pre><h3>Borg</h3>
 - Check age and number of files and be sure to verify:
 Archives with prefix postgres- (database backups).
 <pre><code class="lang-bash">
@@ -387,13 +387,13 @@ ssh backup02.tocco.ch 'sudo mount /offline; ls /offline/borg_repos; sudo umount 
 
 <h3>Check error and info logs of autorestore-vm:</h3>
 <pre><code class="lang-bash">
-ssh autorestore.tocco.ch 'sudo cat /home/autorestore/info.log'
+ssh autorestore.vm.tocco.ch 'sudo cat /home/autorestore/info.log'
 
-ssh autorestore.tocco.ch 'sudo cat /home/autorestore/error.log'
+ssh autorestore.vm.tocco.ch 'sudo cat /home/autorestore/error.log'
 </code>
 </pre>
 
-<h3>Check Gerrit updates</h3>
+<h3><s>Check Gerrit updates</s>(Wurde 2026 nach Gitlab transferiert)</h3>
 <ul>
 <li>Updates are not fully automated and checking for updates and installing needs to be done manually.</li>
 
@@ -432,7 +432,7 @@ and apply the changes via <i>ansible-playbook playbook.yml -l git.tocco.ch -t ge
 (Exclude host <b>-l '!backup02.tocco.ch'</b> or multiple with <b>-l '!backup02.tocco.ch:!artifactory01.tocco.ch:!...')
 
 <pre><code class="lang-bash">ansible-playbook playbooks/install_updates/main.yml -l '!tcagent*.tocco.ch:!artifactory01.tocco.ch' -t all,reboot</code></pre>
-</b></pre></div>
+</b></pre></body></html></div>
 </div>
 </div>
 </body></html><!--## Artifactory-Space-Issues #################################################################################################################-->
