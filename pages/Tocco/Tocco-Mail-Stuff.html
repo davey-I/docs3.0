@@ -50,7 +50,6 @@
 </div>
 <script src="../../prism/prism.js"></script>
 <script src="../../static/script.js"></script>
-
 <!--## Throttle-Outgoing-Mail #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-Throttle-Outgoing-Mail">
 <h2 class="foldable-title" id="foldable-title-Throttle-Outgoing-Mail">Throttle-Outgoing-Mail</h2>
@@ -81,7 +80,7 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Throttle-Outgoing-Mail"><html><head></head><body><pre>Some customers want to send a lot of mails to all their contact, which can lead to 1000+ mails being sent.
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Throttle-Outgoing-Mail"><pre>Some customers want to send a lot of mails to all their contact, which can lead to 1000+ mails being sent.
 
 If to many mails get sent in a certain amount of time, it could be that the server gets blacklisted (Spammer)
 
@@ -97,9 +96,463 @@ Geht das oder sollten wir den Versand tranchenweise (ca. 500 Adressen pro Versan
 - we can tell them, they can send all mails together, but keep in mind, that only ca. 600 mails per hour go out.
 
 <b>Example Ticket: OPS-484</b>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 
+<!--## neue-maildomain-kunden #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-neue-maildomain-kunden">
+<h2 class="foldable-title" id="foldable-title-neue-maildomain-kunden">neue-maildomain-kunden</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('neue-maildomain-kunden')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Tocco-Mail-Stuff','editable-paragraph-neue-maildomain-kunden', 'foldable-content-penButton-neue-maildomain-kunden')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-neue-maildomain-kunden" onclick="add_subdiv('editable-paragraph-neue-maildomain-kunden')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-neue-maildomain-kunden">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-neue-maildomain-kunden" onclick="save_editable_content('Tocco-Mail-Stuff','editable-paragraph-neue-maildomain-kunden', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-neue-maildomain-kunden"><html><head></head><body><div style="font-size:larger; font-weight:bold; color: antiquewhite;">Ticketart</div>
+<div style="color: antiquewhite;">tickets im stiel von :<br/><br/>
+<div style="margin-left: 20px; font-weight:bold; color: rgb(207, 170, 67);">
+        Im Moment <span class="highlighterblue">versenden</span> wir über @eitswiss.ch<br/> 
+          Mittlerweile koennen wir auch über @eit.swiss Mail versenden.<br/>
+          Bitte die Domain <b>@eit.swiss</b> auch noch als Mailversand hinterlegen.
+        </div><br/><br/>
+<div style="font-size:larger; font-weight:bold; color: antiquewhite;">Vorgehen</div><br/>
+<ul style="margin-left: 10px;">
+<li value="1">
+<div>
+<p style="font-size: larger; font-weight: 700;">ansible/tocco/config.yml oeffnen und betroffene Installation suchen... </p>
+<p style="margin-left: 20px; color: rgb(207, 170, 67);"> eitswiss:<br/>
+                    mail_sender_default: info@eitswiss.ch<br/>
+                    mail_sender_noreply: noreply@eitswiss.ch<br/>
+                    mail_domains:<br/>
+                    eitswiss.ch:<br/>
+</p><br/>
+<p>
+                    Kunde will nun, dass wir hier zusaetzlich unter <b>mail_domains</b>: (wo aktuell schon eitswiss.ch drin ist)<br/>
+                    noch <b>eit.swiss</b> hinzugefügt wird.<br/>
+                    Dies koennten wir nun einfach so machen, <b>machen wir aber nicht</b>. Aufgrund von Spam-Problematiken etc. muss vorher<br/>
+                    sichergestellt werden, dass auf der entsprechenden mail-domain folgende records eingerichtet sind:<br/><br/>
+</p>
+<ul style="margin-left: 20px; color: rgb(207, 170, 67);">
+<li>
+                            SPF-Record
+                        </li>
+<li>
+                            DKIM-Record
+                        </li>
+</ul><br/><br/>
+<div>
+<p class="infoboxyellow">
+<b>
+                                Reasons to maybe <span class="highlighterred2">not</span> accept <span class="highlighterblue">spdf</span> and <span class="highlighterblue">DKIM</span> ( zg.ch )<br/>
+                            Those record would allow us, Tocco, to send arbitrary<br/>
+                            mails for @zg.ch without them being able to inspect <br/>
+                            what's being sent.<br/><br/>
+                            
+                            I'm not sure if I was the admin of domain like zg.ch  <br/>
+                            (official Mail Kanton Zug)  
+                            , I'd allow that either. <span class="highlightergreen2">Solution -&gt; external Mailserver</span><br/>
+</b>
+</p>
+</div><br/>
+</div>
+<button class="collapsible" type="button"><span class="highlightergreen">1.<b>NS</b> bei uns oder extern ?</span></button>
+<div class="content"><br/>
+<p>
+                            Wir müssen als erstes also überprüfen ob diese records gesetzt sind. Eine domain kann einerseits auf unserem DNS-Server<br/>
+                            verwaltet werden oder bei einem externen wie z.B. Hostpoint.<br/>
+                            Als erstes also Nameserver Server checken entweder mit dig oder Google-Admin toolbox:<br/><br/>
+</p><ul style="margin-left: 20px; color: rgb(105, 164, 233);">
+<li>
+<div class="codebox"><pre>dig +short ns $DOMAINNAME</pre><button class="copyBtn"></button></div>
+</li>
+</ul><br/>
+                            Nun kann es sein, dass die Domain von uns verwaltet wird oder einem anderen hoster wie z.b. Hostpoint (ns.hostpoint.ch).<br/><br/>
+<ul style="margin-left: 30px;">
+<li>
+                                    Wenn bei uns = Koennen wir die records <b>selber setzen</b>
+</li>
+<li>
+                                    Else = Müssen wir <b>dem Kunden sagen</b> er muss diese selber setzen / dies <b>in auftrag geben.</b>
+</li>
+</ul>
+<br/><br/>
+</div>
+<button class="collapsible" type="button"><span class="highlightergreen">2. <b>SPF-Record</b> gesetzt ?</span></button>
+<div class="content"><br/>
+<p style="font-size: larger; font-weight: 700;">Als zweites checken ob ein SPF-Record gesetzt ist, der unsere NS included (z.B. auch mit google admin tolbox (TXT) testen)</p><br/><br/>
+<b style=" color: rgb(207, 170, 67);">"v=spf1 a mx include:spf.rtp.ch include:spf.mailxpert.ch <b>include:spf.tocco.ch</b>
+                            include:spf.protection.cyon.net include:spf.protection.outlook.com ~all"<br/><br/></b>
+<p style="margin-left: 30px; font-size:small; color:  rgb(207, 170, 67);">
+                                    (~ all : alle anderen Ips koennen senden, es wird aber ein hinweis auf nich in spf vorhanden erstellt (soft)<br/>
+                                    andere symbole vor dem all, haben andere folgen (hard) z.B. verweigert alle nicht eingetragenen)<br/>
+</p><br/>
+<p class="infobox">
+                                    Note: Kunden adden manchmal den “include” falsch, sodass sie all ihre anderen records loeschen und dann nur noch einen include<br/>
+                                    drin haben. Deshalb evtl. dem Kunden eindeutig sagen, dass er den ganzen Texz kopieren muss.<br/><br/>
+            
+                                    Alt:<br/>
+                                    v=spf1 a mx include:spf.rtp.ch include:spf.mailxpert.ch include:spf.protection.cyon.net include:spf.protection.outlook.com ~all<br/>
+                                    Neu:<br/>
+                                    v=spf1 a mx include:spf.rtp.ch include:spf.mailxpert.ch include:spf.tocco.ch include:spf.protection.cyon.net include:spf.protection.outlook.com ~all<br/>
+</p><br/><br/>
+</div>
+<button class="collapsible" type="button"><span class="highlightergreen">3. <b>DKIM</b> vorhanden ?</span></button>
+<div class="content"><br/>
+<div>
+<p style="font-size: larger; font-weight: 700;">Als drittes checken ob ein DKIM vorhanden ist.<br/><br/>
+</p><p>
+                                Hat kunde einen CNAME eintrag auf einen der folgenden dkim erstellt:<br/><br/>
+</p><ul style="margin-left:30px;">
+<li><b>default._domainkey.$DOMAINNAME</b> <b class="highlighterorange">IN CNAME</b> <b>default._domainkey.tocco.ch.</b></li>
+<li><b>tocco._domainkey</b> <b class="highlighterorange">IN CNAME</b> <b>tocco._domainkey.tocco.ch.</b></li>
+</ul><br/>
+<b>"default._domainkey.$DOMAINNAME"</b> in mxtoolbox.com einstellung<br/>
+                                DKIM-Lookup z.B.<br/><br/>
+<ul style="margin-left: 30px;">
+<li> heks.ch<span class="highlighterorange">:default</span></li>
+<li> eit.swiss<span class="highlighterorange">:default</span></li>
+</ul><br/>
+                                      <b class="highlighterorange">oder</b><br/><br/>
+<ul style="margin-left: 30px;">
+<li> heks.ch<span class="highlighterred">:tocco</span></li>
+<li> eit.swiss<span class="highlighterred">:tocco</span></li>
+</ul><br/><br/>
+<span><b>Wieso DKIM als <span class="highlighterorange">CNAME ?</span></b>:<br/>
+<div class="frame" style="max-width: 650px;">
+                                    Es wäre grundsätzlich auch möglich den DKIM via einfachem TXT-Record<br/>
+                                    zu setzten, denn das ist, was der DKIM am Ende auch ist. Wenn wir dies<br/>
+                                    aber via CNAME machen, haben wir den Vorteil, dass nicht alle<br/>
+                                    Kunde-Eigenserstellten DKIMs von Ihnen manuel angepasst werden<br/>
+                                    müssen, falls wir z.b. eine Key-Rotation durchführen.<br/><br/>
 
+
+                                    Da so einfach alle auf unseren Zentralen-Eintrag pointen.<br/>
+
+
+                                    Ob ein DKIM vom Kunden "von Hand" als TXT-Record erstellt wurde,<br/>
+                                    kann man z.B. daran erkennen, dass wenn man in Google-Toolbox<br/>
+                                    folgendes Eingibt: <br/><br/>
+<span class="highlighterblue" style="margin-left: 30px;">default._domainkey.$DOMAINNAME</span><br/>
+<span class="highlighterblue" style="margin-left: 30px;">tocco._domainkey.$DOMAINNAME</span><br/><br/>
+
+
+                                    Wenn nur ein <span class="highlighterblue">TXT-Record</span> kommt -&gt; es wurde ein "hand-gefertigter"<br/>
+<span class="highlighterblue">TXT-Record</span> erstellt.<br/><br/>
+
+
+                                    Wenn ein <span class="highlighteryellow">CNAME</span> + ein <span class="highlighterblue">TXT-Record</span> erscheint -&gt; Die Route geht über<br/>
+                                    einen <span class="highlighteryellow">CNAME</span> und zeigt dann auf den <span class="highlighterblue">TXT-Record</span>.
+                                </div><br/>
+<span>
+<span><b>Was bedeutet <span class="highlighterorange">oder</span></b>:<br/>
+<p class="frame" style="max-width: 600px;">
+                                        Der <span class="highlighterorange">:default</span> kann "<span class="highlighterorange">schon besetzt</span>" sein, deshalb wäre es grundsätzlich<br/>
+                                        schlauer gewesen, von Anfang den Kunden zu sagen, sie sollen den<br/>
+<span class="highlighterred">:tocco</span> einrichten und nicht den <span class="highlighterorange">:default</span> einrichten. Dies hat<br/>
+                                        sich aber nun leider schon über Jahre eingesittet und allen Kunden<br/>
+                                        eine Anpassung vorzunehmen wäre zu Aufwändig.
+                                    </p><br/><br/>
+
+
+                                    -&gt; "Es mues eine vo beidne gsetzt sie. de selektor <span class="highlighterred">:tocco</span> wird nur denn brucht,<br/>
+                                    wenn de chund für sin eigene Email Vercher DKIM ihsetzt und sin <span class="highlighterblue">selektor</span> uf<br/>
+<span class="highlighterorange">:default</span> het"
+                                </span><br/><br/>
+<span>Die Domain zuerst auf <span class="highlighterorange">:default</span> testen der check kann folgend ausfallen: </span><br/>
+</span><br/>
+<button class="collapsible" type="button"><span class="highlightergreen"><b>Kein</b> Ergebnis kann bedeuten:</span></button>
+<div class="content"><br/>
+<ul style="margin-left: 30px;">
+<li>Es ist überhaupt kein DKIM gesetzt</li><br/>
+<li>Es ist kein <span class="highlighterorange">:default</span>  aber ein <span class="highlighterred">:tocco</span> gesetzt<br/><br/>
+                                                    Deshalb auch noch einen test auf <span class="highlighterred">:tocco</span> ausführen.<br/>
+                                                    wenn dieser dann ein Resultat liefert,<br/>
+                                                    vergleichen wir den Hash den wir erhalten haben<br/>
+                                                    mit dem Hash aus einem Test denn wir mit einer<br/>
+                                                    Domain durchgeführt haben, bei der wir sicher <br/>
+                                                    sind, dass diese unseren <span class="highlighterred">:tocco</span> gesetzt hat.<br/>
+                                                    ( z.b <span class="highlighterblue">phsg.ch)</span>
+</li><br/>
+</ul>
+</div>
+<button class="collapsible" type="button"><span class="highlightergreen"><b>Ein</b> Ergebnis kann bedeuten:</span></button>
+<div class="content"><br/>
+<ul style="margin-left: 30px;">
+<li>Das Ergebnis testen wir in jedemfall gegen eines von einer<br/>
+                                                    Domain von der wir sicher sind, dass sie unseren <span class="highlighterorange">:default </span><br/>
+                                                    verwendet. (z.B. <span class="highlighterblue">plattenverband.ch</span>)<br/><br/>
+<ul style="margin-left: 30px;">
+<li>
+                                                            Wenn dieser <span class="highlightergreen2">matched</span> -&gt; ist ein dkim gesetzt und das ist unserer <span class="highlighterorange">:default</span>
+</li><br/>
+<li>Wenn dieser <span class="highlighterred2">nicht matched</span><br/><br/>
+<ul style="margin-left: 30px;">
+<li>Wir machen noch einen test auf <span class="highlighterred">:tocco</span><br/>
+                                                                    Wenn dieser matched -&gt; ist auf dem <span class="highlighterorange">:default</span> irgend ein anderer gesetzt<br/>
+                                                                    &amp; der <span class="highlighterred">:tocco</span> dkim wurde aber bereits gesetzt.<br/><br/>
+
+
+                                                                    Matched <span class="highlighterred">:tocco</span> auch nicht, ist irgend ein anderer dkim auf <span class="highlighterorange">:default</span> gesetzt<br/>
+                                                                    und noch kein zustäzlicher <span class="highlighterred">:tocco</span>
+                                                                    .<br/><br/>
+
+
+                                                                    Dann Anleitung (https://docs.tocco.ch/devops/mail/dns_entries.html)<br/>
+                                                                    unter Abschnitt "Create DKIM Record" in der grünen-box verwenden.<br/><br/>
+
+
+                                                                    Dies beinhaltet dann:<br/><br/>
+<ul style="margin-left: 30px;">
+<li>Eintragen der Domain im yaml files auf<br/>
+                                                                            VSHN tocco_hieradata -&gt; <a href="https://git.vshn.net/tocco/tocco_hieradata/-/blob/master/infrastructure/mxout.yaml?ref_type=heads">MXOUT</a></li><br/>
+<li> Anpassen der Domain im ansible-config<br/>
+                                                                            unter der entrsprechenden Installation.<br/>
+                                                                            ( + playbook laufen lassen etc.)
+                                                                        </li>
+</ul>
+</li>
+</ul>
+</li><br/>
+</ul></li>
+</ul>
+<br/>
+</div>
+<br/><br/>
+</span></div>
+</div>
+</li></ul>
+<div style="margin-left: 40px;">
+<p>
+<b>Je nachdem wie die tests ausfallen, ergibt sich eine unterschiedliche antwort für den Kunden:</b><br/><br/>
+</p><p style="margin-left: 30px;">
+<b>Alle records gesetzt</b> = die Domain kann direkt in src/ansible/config.yml unter dem<br/>
+                     installationseintrag des kunden erstellt werden in dem wir die neu gewünschte<br/>
+                     mail-domain einfügen.<br/><br/>
+</p><p style="margin-left: 60px; color: rgb(207, 170, 67);">
+                                eitswiss:<br/>
+  	                        mail_sender_default: info@eitswiss.ch<br/>
+ 	                        mail_sender_noreply: noreply@eitswiss.ch<br/>
+  	                        mail_domains:<br/>
+                	        eitswiss.ch:<br/>
+<b style="color: rgb(247, 244, 71);">eit.swiss.ch</b><br/>
+</p><br/>
+                        und das ansible-playbook nochmals laufen lassen ( zuerst branch wechseln ! ) und commiten.<br/>
+<br/>
+<p style="margin-left: 30px;">
+<b>
+  Ein oder beide records sind nicht gesetzt</b> = Kunde muss dies bitte erst machen oder terms von unten akzeptieren<br/>
+ sobald gemacht gleich weiterverfahren wie oben.
+                </p><br/><br/>
+
+
+                <div class="frame" style="max-width: 680px;">
+                  "disable_dkim_check: true" and/or "disable_spf_check: true" is added.<br/>
+                  This is no longer permitted unless:<br/><br/>
+
+
+                  <b class="highlighterorange">a</b>: The customer confirmed that DKIM/SPF is *not* to be added and that mails being<br/>
+                     classified as spam is acceptable.<br/><br/>
+
+
+                  <b class="highlighterorange">b</b>: The customer has been made to understand that Tocco won't be able to support them<br/>
+                     if mails end up being classified spam.<br/><br/>
+
+
+                  Additionally, a comment must be added stating why a SPF/DKIM has not been created<br/>
+                  and any related tickets must be referenced.<br/>
+                </div>
+
+
+<br/>
+<p class="infoboxyellow">
+<b class="highlighterred2">INFO </b>: Neu dürfen keine mail-domains hinzugefügt werden, ohne dass die gewünschten Records erstellt wurden. Dh. Wenn sich Kunden weigern, haben sie pech gehabt.<br/>
+                    Früher wurden gewisse Eintraege vom BS einfach trotzdem gemerged diese erkennt wenn hinter den eintraegen Test: True/False o.ae. steht. Jetzt geht das nicht mehr, <br/>
+                    da ein Linter das verhindert. (lint-spf-dkim:)
+                </p><br/><br/>
+</div>
+              <button class="collapsible" type="button"><span class="highlightergreen">Mail Empfänger Beschränken / Erlauben</span></button>
+                  <div class="content"><br/>
+                  <p>
+                  </p><ul>
+                  <li>Es ist möglich, ausgehende Mails auf bestimmte Domänen oder Adressen zu beschränken, indem die Empfängeradresse von Mails, die nicht explizit auf der Whitelist stehen, nochmals aufgeschrieben werden.</li>
+                  </ul><br/>
+                  <div class="codebox"><pre>                                                  abc:
+                                                    installations:
+                                                      abc:
+                                                        # only send out mails to domains/addresses listed
+                                                        # in mail_allowed_recipients
+                                                        mail_allowed_recipients_enabled: true
+                                                      abctest:
+                                                        # send out all mails
+                                                        mail_allowed_recipients_enabled: false
+                  </pre><button class="copyBtn"></button></div><br/><br/>
+                  <ul>
+                  <li>Standardmaessig ist <b class="highlighterblue"> mail_allowed_recipients_enabled </b> auf Testsystemen auf true und auf Produktionssystemen auf false gesetzt.</li>
+                  </ul><br/>
+                  <p class="infoboxred">
+                                                  Immer <b class="highlighterblue">!merge</b> verwenden (Merge-Variablen), um den Standard zu erweitern, der <b>tocco.ch</b> und <b>mail-tester.com</b> beinhaltet.
+                                              </p><br/><br/>
+                  <div class="codebox"><pre>                                                  # This should generally be set on customer level.
+                                                  abc:
+                                                    mail_allowed_recipients: !merge
+                                                    - example.com
+                                                    - jane@example.net
+                  </pre><button class="copyBtn"></button></div>
+                  <br/>
+                  <pre>                                              <b class="subtitle">Mail</b>
+                                              configure outgoing mail
+                                                   ◦ permitted domains - 
+                                                   ◦ sender rewrites
+                                                   ◦ SPF
+                                                   ◦ DKIM
+                                                   ◦ ( DMARC )
+                                              Set random sender address
+
+
+                                              - login to master.tocco.ch/support-tocco. Create or choose a Person. Select communication and then mail. Send a mail.
+
+
+                                              - Problem is: you can change the senders-mail to , for example “clint.eastwood@hollywood.com”
+
+
+                                              - If someone does that, the “wrong” mailadress gets replaced, by the one that is defined inside of
+                                              Settings “Zahnradicon” - ..? - Geschäftsstelle 1 /2 /3. There are some defaults set
+
+
+                                              - What if someone deletes those standards ?
+                                                  - Then the defaults, that are set in the /tocco/config.yml, underneath the installation, get used
+                                                  spv:
+                                                        mail_sender_default: noreply@plattenverband.ch
+                                                        mail_sender_noreply: noreply@plattenverband.ch
+
+
+                                              - Another option is, that someone creates a mail-template and in there sets a different mail-address. This has pretty much the same effect as above.
+                                          </pre>
+                  </div>
+
+
+
+
+                  <!--## dkim für Wix.com #################################################################################################################-->
+                  <button aria-label="dkim für Wix.com" class="collapsible" id="level-0" type="button">dkim für Wix.com</button>
+                  <div class="content">
+
+
+                    <br/><div class="frame" style="max-width: 300px;">
+                      Für Kunden die selber Wix.com benutzen<br/>
+                      z.B. <span class="highlighteryellow">RSS</span>
+                    </div><br/><br/>
+
+
+                    <div>
+
+
+                      
+
+
+                      die Kundin müsste bei der DNS Verwaltung bei Wix einen neuen <span class="highlighteryellow">CNAME</span><br/>
+                      (Aliasnamen) Eintrag erstellen. Wie dies geht ist hier beschrieben: Wix Anleitung: <a href="https://support.wix.com/de/article/einen-cname-eintrag-in-deinem-konto-bei-wix-hinzufuegen-oder-aendern">Hier</a><br/><br/>
+
+
+                      Im Feld “Hostname” müsste Sie<br/>
+                      <span class="highlighterorange">default._domainkey.steinerschule-zuerich.ch</span> eintragen und im Feld<br/>
+                      “Wert” <span class="highlighteryellow">default._domainkey.tocco.ch</span> , danach muss der Eintrag nur noch<br/>
+                      gespeichert werden.
+
+
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+
+
+
+
+</body></html><!-- 
+
+
+  Border ->  <div style="border: 2px solid rgb(58, 219, 25); padding: 10px;">
+    Add Prism nice code : class="language-rust"
+
+
+  Faltcontent -> <button type="button" class="collapsible"><span class="highlightergreen">TITLE</span></button>
+                    <div class="content"><br>
+                    </div>
+  Tables -> <div style="max-width: 400px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Month</th>
+                    <th>Savings</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>January</td>
+                    <td>$100</td>
+                  </tr>
+                  <tr>
+                    <td>February</td>
+                    <td>$80</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>Sum</td>
+                    <td>$180</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+
+
+
+        <b class="highlighterblue">
+    
+        <p class="maintitle"> Maintitle</p>
+
+
+        <p class="subtitle"> Subtitle</p>
+
+
+        <p class="subsubtitle"> Subsubtitle</p>
+
+
+        <p> Additional spaces : &nbsp;</p>
+
+
+        <img src="./../../images/rustcode3.png" alt="Code expl3." width="500" height="300"><br><br>
+
+
+        <div>
+
+--></div>
+</div>
+</div>
 </body></html>
