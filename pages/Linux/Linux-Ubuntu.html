@@ -384,7 +384,6 @@ that can be installed on Ubuntu, not sure if it really works...
 </pre></div>
 </div>
 </div>
-
 <!--## linux-commands-source #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-linux-commands-source">
 <h2 class="foldable-title" id="foldable-title-linux-commands-source">linux-commands-source</h2>
@@ -415,10 +414,152 @@ that can be installed on Ubuntu, not sure if it really works...
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-linux-commands-source"><html><head></head><body><pre>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-linux-commands-source"><pre>- for e.g.:<b>source /etc/os-release</b> is equal to <b>. /etc/os-release</b>
 
-- for e.g.:<b>source /etc/os-release</b> is equal to <b>. /etc/os-release</b>
 
+</pre></div>
+</div>
+</div>
+<!--## tee-EOF-etc. #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-tee-EOF-etc.">
+<h2 class="foldable-title" id="foldable-title-tee-EOF-etc.">tee-EOF-etc.</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('tee-EOF-etc.')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Linux-Ubuntu','editable-paragraph-tee-EOF-etc.', 'foldable-content-penButton-tee-EOF-etc.')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-tee-EOF-etc." onclick="add_subdiv('editable-paragraph-tee-EOF-etc.')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-tee-EOF-etc.">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-tee-EOF-etc." onclick="save_editable_content('Linux-Ubuntu','editable-paragraph-tee-EOF-etc.', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-tee-EOF-etc."><pre># tee # EOF # tee EOF
+
+<h2 class="highlighteryellow"> tee combined with EOF</h2>
+Say you are using bash, and you have some code copied that you’d like to quickly
+put into a new file or overwrite the contents of an existing file. This is the easiest way:
+
+<pre><code class="lang-bash">
+
+tee example.txt &lt;&lt;EOF
+paste
+your
+multiline
+clipboard
+text
+here
+EOF
+</code></pre>
+
+
+- Remember to manually type the ‘EOF’ after the text you pasted in. If all went well, you’ll
+   have a file example.txt filled with the contents from your clipboard.
+
+
+- This method will overwrite any contents of example.txt if the file already exists.
+  To append instead, you could simply add &gt;&gt; like this: tee &gt;&gt; example.txt &lt;&lt;EOF (and so on).
+
+
+- Anything you paste in will be interpreted. This usually won’t matter, but if you use $
+  in your contents, it will. Here’s how to adjust in case you have contents with $ and
+  ` (backticks): use tee example.txt &lt;&lt; 'EOF' (at the end, you’ll still write EOF as normal (no changes)
+
+
+</pre></div>
+</div>
+</div>
+
+<!--## EOT-vs-EOF #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-EOT-vs-EOF">
+<h2 class="foldable-title" id="foldable-title-EOT-vs-EOF">EOT-vs-EOF</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('EOT-vs-EOF')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Linux-Ubuntu','editable-paragraph-EOT-vs-EOF', 'foldable-content-penButton-EOT-vs-EOF')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-EOT-vs-EOF" onclick="add_subdiv('editable-paragraph-EOT-vs-EOF')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-EOT-vs-EOF">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-EOT-vs-EOF" onclick="save_editable_content('Linux-Ubuntu','editable-paragraph-EOT-vs-EOF', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-EOT-vs-EOF"><html><head></head><body><pre># EOT # EOF # EOT vs. EOF
+
+<h2 class="highlighteryellow">EOT &amp; EOF, meaning and applications</h2>
+
+In this post, we will discuss about <i>EOT</i> &amp; <b>EOF</b>, meaning and the applications.
+We will go into some details about it’s concept in Programming.
+
+<b>EOF</b> simply means END OF FILE while <i>EOT</i> simply means END OF TRANSMISSION.
+They are both signals sent to files or executables but have some slight
+difference, advantages and disadvantages.
+
+In ASCII table, both of them have different integer values. <b>EOF</b> has has
+the integer value “-1” while <i>EOT</i> has the integer value “4” and are both
+applicable in C programming, Unix like operating systems
+(Linux, Mac OS) and DOS(windows).
+
+From <b>EOF</b> full meaning (END OF FILE), it’s quite obvious what it does,
+but if still looks confusing, let me go into details.
+
+<b>EOF</b> is a signal sent or automatically added to a file to inform the
+operating system that the file being read or written ends at the last
+character of the last line. <b>EOF</b> is always found after the last character
+of the last line in a file and is always invisible to users or programmers.
+
+<i>EOT</i> is also a signal sent to a file stream to indicate end of message to a
+computer when using the standard input. It is risky sometimes because it’s also
+being added to the file and corrupts binary files.
+
+Going into details on how to use them, there are shortcut keys that adds them to
+a file or an input. Ctrl-V + Ctrl-D sends <i>EOT</i> to a file stream. Ctrl-Z sends
+<b>EOF</b> to a stream in an interactive mode.
+
+Practical applications on <b>EOF</b> is found in the cp command (for Unix), COPY command (for windows),
+echo (for both operating system), cat (for Unix) and also in text editors. The cp/copy command
+copies each character in the first file into the buffer serially and writes it to the second
+file till the <b>EOF</b> is found in the first file, then the loop terminates. <i>EOT</i> is applicable in
+Reverse Engineering when passing cracked password to a file which can be used as an input to
+the cracked application.
+
+The <i>EOT</i> is also similar to <b>EOF</b> operation but is always favourable in interactive mode and also
+dangerous when dealing with binary files.
+
+In summary, if confused on which one to use, I suggest you go with <b>EOF</b> for safety purposes.
+You can use <i>EOT</i> if required for a process or execution.
 
 </pre></body></html></div>
 </div>

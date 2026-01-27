@@ -80,542 +80,421 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-WAF"><h1>Different Project Infos etc.</h1>
-<div class="foldable-container" id="foldcontainer-Apache-Approach">
-<h2 class="foldable-title" id="foldable-title-Apache-Approach">Apache-Approach</h2>
-<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Apache-Approach')" type="button">
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-WAF"><div class="foldable-container" id="foldcontainer-run-apache-on-PINP-env">
+<h2 class="foldable-title" id="foldable-title-run-apache-on-PINP-env">run-apache-on-PINP-env</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('run-apache-on-PINP-env')" type="button">
 <svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
 <path d="M7 10l5 5 5-5H7z"></path>
 </svg>
 </button>
-<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-Apache-Approach', 'foldable-content-penButton-Apache-Approach')" type="button">
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-run-apache-on-PINP-env', 'foldable-content-penButton-run-apache-on-PINP-env')" type="button">
 <svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
 <path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
 </svg>
 </button>
-<div class="foldable-content folded" id="foldable-content-Apache-Approach">
-<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Apache-Approach" onclick="save_editable_content('Current-Work','editable-paragraph-Apache-Approach', 'page-folder')" type="button">
+<div class="foldable-content folded" id="foldable-content-run-apache-on-PINP-env">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-run-apache-on-PINP-env" onclick="save_editable_content('Current-Work','editable-paragraph-run-apache-on-PINP-env', 'page-folder')" type="button">
 <svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
 <path d="M12 20h9"></path>
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Apache-Approach"><pre><h3>Webserver-WAF Testing</h3>
-Create new VM  and set up a fresh web server reverse proxying
-traffic to <b>master.tocco.ch.</b>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-run-apache-on-PINP-env"><pre><h2 class="highlighteryellow">Create Dockerfile</h2>
+  <b>NOTE</b> : run the first podman container always with <b>--privileged</b>, otherwise fuse-overlay-error
 
+      -  <pre><code class="lang-bash">use apache image FROM docker.io/library/httpd:2.4.65-trixie</code></pre>
 
-
-It's probably easier to set this up locally and or in a
-VM just adding an additional proxy in front. Not sure if <i>Nginx</i>
-or <b>Apache</b> is the better choice. If mod_security is to be used
-Apache2 may have better support.
-
-
-
-Setup Apache2 Webserver on debian-vm
-
-
-- Apache webserver on debian12-vm setup
-
-
-- Creating portforwarding Host - VM 8080:80
-
-
-- Setup Postgres(15.3) on VM
-
-
-- enabled following on apache2
-  sudo a2enmod proxy
-  sudo a2enmod proxy_http
-  sudo a2enmod ssl
-  sudo a2enmod headers
-
-
-- Created a vhost: /etc/apache2/sites-available/reverse-proxy.conf
-  
-   <b>Mit Fasc</b>: 
-       - ProxyPreserveHost: ...musste auf off gestellt werden
-
-
-       - generell musste das ganze auf https bzw. <virtualhost *:443=""> umgestellt werden
-          was natürlich auch ein Zertifikat benötigte (Self-Signed, einfach für schnell )
-
-
-- Man kann jetzt über die in /etc/hosts definierte wegleitung über proxy auf test313 kommen
-
-
-- configure webserver as reverse proxy.. basically this setup 
-  https://www.linuxbabe.com/security/modsecurity-apache-debian-ubuntu
-
-
-<h3>WAF / Nice2 Problems </h3>
-
-
-- Für das Setup müssen zimlich sicher Rules aus dem Modsecurity package gefunden und deaktiviert werden
-
-
-- Modsecurity kann für bestimmte IPs auch komplett deaktiviert werden ( IP Whitelisting )
-
-
-
-<h3>Things that occurd after the SecRuleEngine DetectionOnly was turned to On</h3>
-
-
--  ReverseAjax.dwr / xhr type Problems ending in 403 Forbidden
-   - RequestURL:  https://myproxy.local:4443/nice2/dwr/call/plainpoll/ReverseAjax.dwr
-   - If any other Endpoint except " / " gets visited this appears after a few seconds
-</virtualhost></pre></div>
-</div>
-</div>
-
-
-<!--## Apache-Approach-Part2 #################################################################################################################-->
-<div class="foldable-container" id="foldcontainer-Apache-Approach-Part2">
-<h2 class="foldable-title" id="foldable-title-Apache-Approach-Part2">Apache-Approach-Part2</h2>
-<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Apache-Approach-Part2')" type="button">
-<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 10l5 5 5-5H7z"></path>
-</svg>
-</button>
-<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-Apache-Approach-Part2', 'foldable-content-penButton-Apache-Approach-Part2')" type="button">
-<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
-</svg>
-</button>
-<div class="foldable-content folded" id="foldable-content-Apache-Approach-Part2">
-<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Apache-Approach-Part2" onclick="save_editable_content('Current-Work','editable-paragraph-Apache-Approach-Part2', 'page-folder')" type="button">
-<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 20h9"></path>
-<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
-</svg>
-</button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Apache-Approach-Part2"><html><head></head><body><pre><h2 class="highlighteryellow">Simulate Gitlabrunner Env.</h2>
-- Used Containerfile:
 <pre><code class="lang-bash">
-FROM docker.io/library/httpd:2.4.65-trixie
-RUN apt-get update \
-    &amp;&amp; apt-get install -y --no-install-recommends python3 python3-jinja2 \
-    &amp;&amp; rm -r /var/cache/apt/* \
-    &amp;&amp; sed -i 's/Listen 80/Listen 8081/' /usr/local/apache2/conf/httpd.conf # remove as soon as set via config Listen ...
-EXPOSE 8081
-</code>
-</pre>
-- Build image:<pre><code class="lang-bash">podman build -t tocco-nginx .</code></pre>
+podman run -dit --name waf-testing --privileged -v waf-testing:/usr/local/my_container 37ec2fea7530
+</code></pre>
+      -  run the apache2(not the first-container) always with -d, otherwise we get a SIGWINCH error
+         but we can start it simply with podman start ${ID}
+
+<pre><code class="lang-bash">
+podman run -d --net=host --name apache2 -e APACHE2_HEADER_Some-Header='some "value"' -e APACHE2_ALWAYS_HEADER_Some__Always__Header='some always "value"' tocco-apache2
+podman run -d -u 1234:0 --net=host --name apache2 -e APACHE2_HEADER_Some-Header='some "value"' -e APACHE2_ALWAYS_HEADER_Some__Always__Header='some always "value"' tocco-apache2</code></pre>
+
+        Enter the container: <pre><code class="lang-bash">podman exec -it d801fe80d810 bash</code></pre>
+
+     -  Decide if envvar in <i>/etc/apache2/</i> is to keep or not...--
+</pre></div>
+</div>
+</div>
+<div class="foldable-container" id="foldcontainer-deploy-to-shared-imagestream">
+<h2 class="foldable-title" id="foldable-title-deploy-to-shared-imagestream">deploy-to-shared-imagestream</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('deploy-to-shared-imagestream')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-deploy-to-shared-imagestream', 'foldable-content-penButton-deploy-to-shared-imagestream')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-deploy-to-shared-imagestream">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-deploy-to-shared-imagestream" onclick="save_editable_content('Current-Work','editable-paragraph-deploy-to-shared-imagestream', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-deploy-to-shared-imagestream"><pre>deploy TO shared-imagestreams
 
 
-<h2 class="highlighteryellow">entrypoint.py</h2>
-<h3>def process_template</h3>
-In a nutshell, this takes our config_template replaces certain
-values with values defined in the os_env and writes it to the
-final config.
+be aware, that the whole thing is setup that new images from shared-imagestreams are only taken
+if a projects config has the "nginx_enable_image_change_trigger: true" set...
 
-<pre><code class="lang-python">
-with template_path.open() as f:
-        template = jinja2.Template(f.read())
-</code>
-</pre>
-- creates a <b>'jinja2.environment.template</b> object
 
-<pre><code class="lang-python">
 
-# allow use of any env. variable in nginx config files
-    config = template.render(os.environ
-</code>
-</pre>
- - next we kind of make all Env-Vars, from the current OS available inside the template
 
-<div class="frame"><b>Note</b>:template.render(os.environ) does not automatically inject the environment
-variables into the text unless your template explicitly references them. Jinja2 only substitutes variables where
-they appear in the template. For e.g.: if <b>os.environ["PORT"] = "8080"</b> and we enter the following into
-the template <i>server { ..listen {{ PORT }};...}</i> this would be replaced.
+On Openshift:
+
+
+   - created new image-stream (oc create is apache2 -n shared-imagestreams) in old Project (shared-imagestreams)
+
+
+Local
+    - Built the image local with description from doc-entrance from below...
+    - use 'upload own image' steps from https://docs.tocco.ch/devops/service_setup.html#initial-manual-deployment
+
+
+    - cd {TO_WHERE_CONTAINERFILE_IS}
+    - podman build -t registry.apps.openshift.tocco.ch/shared-imagestreams/apache2:latest .
+    - podman login -u any --password-stdin registry.apps.openshift.tocco.ch &lt; &lt;(oc whoami -t)
+    - podman push registry.apps.openshift.tocco.ch/shared-imagestreams/apache2:latest
+
+
+ 
+Problem DB-Deployment
+Hat man die Master-DB aktiv, failed der replication-controller pod irgendwie immer. Deshalb vor deployment kurz wechseln auf "_old":
+
+
+Old -&gt; Master:
+
+
+ALTER DATABASE nice_abctest RENAME TO nice_abctest_old;
+ALTER DATABASE nice_abctest_history RENAME TO nice_abctest_history_old;
+
+
+ALTER DATABASE nice_abctest_master RENAME TO nice_abctest;
+ALTER DATABASE nice_abctest_history_master RENAME TO nice_abctest_history;
+
+
+
+
+Master -&gt; Old:
+
+
+ALTER DATABASE nice_abctest RENAME TO nice_abctest_master;
+ALTER DATABASE nice_abctest_history RENAME TO nice_abctest_history_master;
+
+
+ALTER DATABASE nice_abctest_old RENAME TO nice_abctest;
+ALTER DATABASE nice_abctest_history_old RENAME TO nice_abctest_history;
+</pre></div>
+</div>
+</div>
+<!--## geoIP-restriciton #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-geoIP-restriciton">
+<h2 class="foldable-title" id="foldable-title-geoIP-restriciton">geoIP-restriciton</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('geoIP-restriciton')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-geoIP-restriciton', 'foldable-content-penButton-geoIP-restriciton')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-geoIP-restriciton">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-geoIP-restriciton" onclick="save_editable_content('Current-Work','editable-paragraph-geoIP-restriciton', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-geoIP-restriciton"><pre><h2 class="highlighteryellow">Apply GeoIP restriciton</h2>
+
+
+Use mod_maxminddb or only mod_security ?
+   -&gt; rather split it up into two separate functionalities. Otherwise unwanted traffic would be processed much further
+        / cause more unwanted trafficing, security-rule evaluation etc...
+
+
+<h3>Apply mod_maxminddb</h3>
+
+
+- Direkt via apt ? - Geht nicht, da apt nur die alte / outdated version von maxminddb zur
+   verfügung hat https://github.com/maxmind/geoip-api-mod_geoip2
+
+- Die neue version gibts nicht via apt. Wir müssen also von source selber builden..
+   ungefähr so  - soure: https://github.com/maxmind/mod_maxminddb
+
+     # Install dependencies
+     apt install apache2-dev libmaxminddb-dev libmaxminddb0 mmdb-bin build-essential wget
+
+     # Download and extract mod_maxminddb
+     cd /tmp
+     wget https://github.com/maxmind/mod_maxminddb/releases/download/1.3.0/mod_maxminddb-1.3.0.tar.gz
+     tar -xzf mod_maxminddb-1.3.0.tar.gz
+     cd mod_maxminddb-1.3.0
+
+     # Compile and install
+     ./configure
+     make
+     --------- Since this would require 356 MB space , we better do all the building outside the container --
+
+     make install
+
+     # Load the module
+     echo "LoadModule maxminddb_module /usr/lib/apache2/modules/mod_maxminddb.so" &gt; /etc/apache2/mods-available/maxminddb.load
+     a2enmod maxminddb
+
+     # Restart Apache
+     systemctl restart apache2
+
+- The finished containerfile had the following commands in it:
+<pre><code class="lang-bash">
+
+ADD mod_maxminddb.so /usr/lib/apache2/modules/
+ADD GeoLite2-Country.mmdb /usr/local/share/
+RUN echo "LoadModule maxminddb_module /usr/lib/apache2/modules/mod_maxminddb.so" &gt; /etc/apache2/mods-available/maxminddb.load
+a2enmod maxminddb"
+</code></pre>
+
+- After the module is setup we need to download the latest maxmindDB (country lite) to some location on inside the container
+   shared folder on local machine :   /home/dave/.local/share/containers/storage/volumes/waf-testing/_data/apache-CI
+   we need an account for this on maxminddb
+
+- Next we need to configure the module in the main apache2 config with something like this:
+
+       <i>MaxMindDBEnable</i> On
+       <i>MaxMindDBFile</i> COUNTRY_DB /usr/local/share/GeoIP/GeoLite2-Country.mmdb
+       <i>MaxMindDBEnv</i> COUNTRY_CODE COUNTRY_DB/country/iso_code
+
+- if this all works, we can then define rules to allow coutries -&gt; https://github.com/maxmind/mod_maxminddb?tab=readme-ov-file#allowing-by-country
+   this makes probably most sense,  if defined in the nice2.config.template on the location s Directives.</pre></div>
+</div>
+</div>
+<!--## geoIP-restriction-WordPress #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-geoIP-restriction-WordPress">
+<h2 class="foldable-title" id="foldable-title-geoIP-restriction-WordPress">geoIP-restriction-WordPress</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('geoIP-restriction-WordPress')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-geoIP-restriction-WordPress', 'foldable-content-penButton-geoIP-restriction-WordPress')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-geoIP-restriction-WordPress">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-geoIP-restriction-WordPress" onclick="save_editable_content('Current-Work','editable-paragraph-geoIP-restriction-WordPress', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-geoIP-restriction-WordPress"><pre><h2 class="highlighteryellow">Step 1: Install mod_maxminddb (one-time setup)</h2>
+Since we need to do this without restarting Apache immediately, we can prepare everything first:
+bash# Copy  compiled module and database ( first via <b>scp</b> to home, then on server as root to..)
+<pre><code class="lang-bash">
+cp mod_maxminddb.so /usr/lib/apache2/modules/
+cp GeoLite2-Country.mmdb /usr/local/share/
+chmod 644 /usr/lib/apache2/modules/mod_maxminddb.so
+</code></pre>
+
+# Create the module load file
+<pre><code class="lang-bash">echo "LoadModule maxminddb_module /usr/lib/apache2/modules/mod_maxminddb.so" &gt; /etc/apache2/mods-available/maxminddb.load</code></pre>
+
+# Enable the module (prepares symlink but won't load until restart)
+<pre><code class="lang-bash">a2enmod maxminddb
+
+# Enabling module maxminddb.
+# To activate the new configuration, you need to run:
+  systemctl restart apache2
+</code></pre>
+
+<h2 class="highlighteryellow">Step 2: Create a reusable GeoIP include file</h2>
+Create <i>/etc/apache2/includes/geoip_restriction.conf</i>:
+apache# GeoIP Configuration - Allow only CH, DE, AT (or internal IPs)
+<pre><code class="lang-bash">MaxMindDBEnable On
+MaxMindDBFile DB /usr/local/share/GeoLite2-Country.mmdb
+MaxMindDBEnv MM_COUNTRY_CODE DB/country/iso_code</code></pre>
+
+# Set AllowCountry for allowed countries
+<pre><code class="lang-bash">SetEnvIf MM_COUNTRY_CODE ^(CH|DE|AT)$ AllowCountry</code></pre>
+
+# Also allow internal/monitoring IPs
+<pre><code class="lang-bash">SetEnvIf Remote_Addr ^172\.18\. AllowCountry
+SetEnvIf Remote_Addr ^10\. AllowCountry
+SetEnvIf Remote_Addr ^127\. AllowCountry</code></pre>
+
+# Apply restriction
+<pre><code class="lang-bash">&lt;RequireAll&gt;
+    Require all granted
+    Require env AllowCountry
+&lt;/RequireAll&gt;</code></pre>
+
+All together:
+
+<pre><code class="lang-bash">
+# GeoIP Configuration - Allow only CH, DE, AT (or internal IPs)
+MaxMindDBEnable On
+MaxMindDBFile DB /usr/local/share/GeoLite2-Country.mmdb
+MaxMindDBEnv MM_COUNTRY_CODE DB/country/iso_code
+SetEnvIf MM_COUNTRY_CODE ^(CH|DE|AT)$ AllowCountry
+
+# internal/monitoring IPs for monitoring
+SetEnvIf Remote_Addr ^172\.18\. AllowCountry
+SetEnvIf Remote_Addr ^10\. AllowCountry
+SetEnvIf Remote_Addr ^127\. AllowCountry
+
+&lt;requireall&gt;
+    Require all granted
+    Require env AllowCountry
+&lt;/requireall&gt;
+</code></pre>
+
+<h2 class="highlighteryellow"> Step 3: Modify your VirtualHost template</h2>
+Update Ansible template to include the GeoIP restriction in the HTTPS VirtualHost:
+<pre><code class="lang-bash">&lt;VirtualHost *:443&gt;
+        ServerName web-page1.test308.tocco.ch
+        ServerAlias web-page2.test308.tocco.ch
+        AADefaultHatName test308
+        DocumentRoot /var/www/vhosts/test308
+        CustomLog /var/log/apache2/test308_access.log custom
+        ErrorLog /var/log/apache2/test308_error.log
+        Include includes/sec_headers.conf
+        
+        # GeoIP Restriction - protect everything except ACME challenges
+        &lt;LocationMatch "^/(?!\.well-known/)"&gt;
+            Include includes/geoip_restriction.conf
+        &lt;/LocationMatch&gt;
+        
+        &lt;FilesMatch \.php(\/.*)?$&gt;
+                SetHandler "proxy:unix:/var/run/php/test308.sock|fcgi://localhost"
+        &lt;/FilesMatch&gt;
+        &lt;LocationMatch ^/fpm-status&gt;
+                SetHandler "proxy:unix:/var/run/php/test308.sock|fcgi://localhost"
+        &lt;/LocationMatch&gt;
+        SSLEngine on
+        SSLCertificateFile      /etc/letsencrypt/live/wordpress-test308/fullchain.pem
+        SSLCertificateKeyFile   /etc/letsencrypt/live/wordpress-test308/privkey.pem
+        &lt;Files xmlrpc.php&gt;
+            Require all denied
+        &lt;/Files&gt;
+&lt;/VirtualHost&gt;</code></pre>
+
+<h2 class="highlighteryellow"> Step 4: Deployment Strategy (minimize downtime)</h2>
+For a production deployment with minimal disruption:
+bash# 1. Test configuration syntax WITHOUT restarting
+<pre><code class="lang-bash">apachectl configtest</code></pre>
+
+# 2. If syntax is OK, schedule a graceful restart during low-traffic period
+# Graceful restart finishes existing requests before reloading 
+# (probably not enough, since its a complete new module..)
+<pre><code class="lang-bash">systemctl reload apache2</code></pre>
+
+<div class="frame">
+We can test if the module is already loaded (<b>reload</b> is enough)
+with:
+
+<pre><code class="lang-bash">apachectl -M | grep maxminddb
+# positive if we get a "maxminddb_module (shared)"
+</code></pre>
 </div>
 
-- Next we create the config_path based on the templates location and write
-  the final config to it.
+# OR if it needs full restart (for the module load):
+# Plan a brief maintenance window and notify customers
+<pre><code class="lang-bash">systemctl restart apache2</code></pre>
 
-<h3>def main</h3>
-Executes the other scripts and sets a global var and then
-creates the config. After that it tests the configs syntax and
-then replaces the main process with the webserver process..
+Alternative: Per-customer control
+If some customers need different country restrictions, create parameterized includes:
+<pre><code class="lang-bash">/etc/apache2/includes/geoip_restriction_default.conf (CH, DE, AT)
+/etc/apache2/includes/geoip_restriction_eu.conf (all EU countries)
+/etc/apache2/includes/geoip_restriction_global.conf (no restrictions)</code></pre>
+Then in your Ansible variables, set which include each customer uses.
 
-Since creating new processes cost resources, we use
-<b>os.execvp('nginx', ['nginx', '-g', GLOBAL_DIRECTIVES])</b> so the parent
-process just simply gets replaced by the new one. Replaces the current Python process
-with the Nginx process using os.execvp
+<h3>Important Notes:</h3>
+
+ACME challenges -  LocationMatch "^/(?!\.well-known/)" already excludes .well-known, which is perfect for Let's Encrypt renewals
+Testing - Test on one low-traffic vhost first before rolling out to all customers
+Monitoring - Watch  error logs after deployment for unexpected 403s
+Communication - If any customers have legitimate users outside CH/DE/AT, coordinate first
+
+</pre></div>
+</div>
+</div>
+
+<!--## apply-apache2-waf #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-apply-apache2-waf">
+<h2 class="foldable-title" id="foldable-title-apply-apache2-waf">apply-apache2-waf</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('apply-apache2-waf')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-apply-apache2-waf', 'foldable-content-penButton-apply-apache2-waf')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-apply-apache2-waf">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-apply-apache2-waf" onclick="save_editable_content('Current-Work','editable-paragraph-apply-apache2-waf', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-apply-apache2-waf"><html><head></head><body><pre><h2 class="highlighteryellow">Actual WAF implementation steps </h2>
+<h3>Add</h3> apt-get installation for to <i>libapache2-mod-security2</i> to <b>Containerfile</b>:
+<pre><code class="lang-bash">
+RUN apt-get update \
+    &amp;&amp; apt-get install -y --no-install-recommends python3 python3-jinja2 apache2 libmaxminddb0 libapache2-mod-security2 \
+</code></pre>
+
+<h3>Add</h3> the predefined config file modsecurity.conf:
+<pre><code class="lang-bash">
+ADD modsecurity.conf /etc/modsecurity/
+</code></pre>
+To actually enable the config, we need to change <b>SecRuleEngine DetectionOnly</b>
+to <b>SecRuleEngine On</b>
+
+<h3>Other directives worth mentioning:</h3>
+- <b>SecResponseBodyAccess</b> (default <i>On</i>): configures whether response bodies are buffered (i.e. read by modsecurity)
+    neccessary if data leakage detection and protection is required. Leavinc it on will increase the logfile size.
+
+- <b>SecRequestBodyLimit</b>: specifies the maximum POST data size. If anything larger is sent by a client the server
+    will respond with a <strong>413: Request Entity Too Large</strong> If your web application doesn’t have any file
+    uploads this value can be greatly reduced. (Tocco does have a file-upload but maybe an option..?)
+
+    For ex. can be set to: <pre><code class="lang-bash">SecRequestBodyLimit 13107200</code></pre> which is <i>12.5MB</i>.
 
 
-<h2 class="highlighteryellow">header_config.py</h2>
-<pre><code class="lang-python">def extract_headers(env):
-    for key, value in env.items():
-        if key.startswith(ENV_PREFIX):
-            yield Header(unescape(key[len(ENV_PREFIX):]), value, always=False)
-        elif key.startswith(ENV_ALWAYS_PREFIX):
-            yield Header(unescape(key[len(ENV_ALWAYS_PREFIX):]), value, always=True)</code></pre>
-<p>Scans through <b>all environment variables</b> and:</p>
-<ul>
-    <li>Finds variables starting with <i>NGINX_HEADER_</i> or <i>NGINX_ALWAYS_HEADER_</i></li>
-    <li>Extracts the <b>header name</b> by removing the prefix and converting underscores to hyphens</li>
-    <li>Creates <i>Header objects</i> with the appropriate "always" flag</li>
-    <li>Uses a <b>generator</b> for memory efficiency</li>
-    <li>At the end this gets written to <i>/etc/nginx/headers.include</i> and script ends</li>
-</ul>
+- There is also the <b>SecRequestBodyNoFilesLimit 131072</b> and the <b>SecRequestBodyInMemoryLimit 131072</b>
 
-<h2 class="highlighteryellow">csp_header_config.py</h2>
-- basically does the same thing as the above...
+Additional infos about testing and the config <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-mod_security-with-apache-on-debian-ubuntu">Here</a><br/>
 
+<h3>Create</h3> modsec_audit.log in correct location:
+<pre><code class="lang-bash">
+&amp;&amp; touch /var/log/modsec_audit.log
+</code></pre>
+Not sure, but the file would otherwise just be added in <i>/var/log/apache2/</i>
+but it would still search for it at <i>/var/log/</i>
 
-<h2 class="highlighteryellow">---</h2>
+<h3>Change</h3> group and mod:
+<pre><code class="lang-bash">
+&amp;&amp; chgrp -R 0 /var/log/modsec_audit.log \
+&amp;&amp; chmod -R g+rwx /var/log/modsec_audit.log
+</code></pre>
 </pre></body></html></div>
 </div>
 </div>
-
-
-<!--## Nginx-Approach #################################################################################################################-->
-<div class="foldable-container" id="foldcontainer-Nginx-Approach">
-<h2 class="foldable-title" id="foldable-title-Nginx-Approach">Nginx-Approach</h2>
-<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Nginx-Approach')" type="button">
-<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 10l5 5 5-5H7z"></path>
-</svg>
-</button>
-<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-Nginx-Approach', 'foldable-content-penButton-Nginx-Approach')" type="button">
-<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
-</svg>
-</button>
-<div class="foldable-content folded" id="foldable-content-Nginx-Approach">
-<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Nginx-Approach" onclick="save_editable_content('Current-Work','editable-paragraph-Nginx-Approach', 'page-folder')" type="button">
-<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 20h9"></path>
-<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
-</svg>
-</button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Nginx-Approach"><pre>- since the complete tocco-setup is already based on Nginx-Webserver
- its maybe easier to just use the mod-security adapter for that
-
-
-- Next steps assume that a running VM on Virtualbox is available
- and reachable vis SSH ( ports forwarding already done )
-
-
-<h3>Setup basic Nginx Webserver</h3>
-
-
-<pre><code class="lang-bash">
-sudo apt install nginx -y
-
-
-# next stepd might be optional...
-sudo ufw allow 80/tcp
-sudo ufw reload
-
-
-</code>
-</pre>
-
-
-- Create portforwarding in Virtualbox
- 
- Host 8080 - Guest 80 (should work directly..)
- Host 4443 - Guest 443 ( won't work directly...)
-
-
-<h3>Make https work</h3>
-
-
-- For https to work, we need a certificate. We could now:
-
-
-   - Creat a verified cert the <b>browser trusts</b>
-   - Create a self-signed cert, the <b>browser won't trust</b>
-
-
-- No matter which option we choose, the <b>traffic is encrypted</b>
- and we can <b>use https</b> to connect to our VM-Webserver.
-
-
- However, if we choose the <b>self-signed option</b>, the browser will always
- show a warning, because it <b>won't trust</b> the certificate, because its <b>origin</b>
- does not lead to a <b>trusted cert authority</b>.
-
-
-<h4>Summary</h4>
-<div class="frame">
-<b>Benefits of a self-signed certificate</b>
-
-
-✅ Encryption: traffic is still fully encrypted — no one can snoop passwords or
- tokens between your browser and VM.
-
-
-✅ CORS compatibility: your app requires HTTPS origin (https://myproxy.local:4443).
-A self-signed cert satisfies that requirement (the scheme is https://).
-
-
-✅ Dev/Testing: good enough for local or test environments where you don’t
-want to request a real CA cert.
-
-
-❌ Downside: You’ll always see “Not Trusted” unless you import the
-cert into your OS/browser trust store.
-
-
-❌ MITM attacks can <b>not</b> be prevented, unless clients are configured to
-explicitly trust the self-signed cert’s fingerprint.
-</div>
-
-
-<h3> Where are these Certs located, where does Nginx search ? </h3>
-
-
-- Both <b>Apache2 and Nginx</b> usually look for certificates in a few standard directories:
-
-
-  - /etc/ssl/certs/
-
-
-  - /etc/ssl/private/
-
-
-  - /etc/nginx/ssl/ (sometimes manually created by admins)
-
-
-  - <b>/etc/nginx/certs/</b>
-
-
-  - /etc/apache2/ssl/
-
-
-  - /etc/apache2/sites-available/ (or /etc/apache2/sites-enabled/) → check configs for paths
-
-
-  - /usr/local/share/ca-certificates/ (for trusted custom CA roots)
-
-
-<h3> Create self-signed cert </h3>
-
-
-1️⃣ <h4>Create a directory to store your certs</h4>
-
-
-<pre><code class="lang-bash">
-
-
-sudo mkdir -p /etc/nginx/ssl
-sudo chmod 700 /etc/nginx/ssl
-
-
-</code>
-</pre>
-
-
-2️⃣ <h4>Generate a private key and self-signed certificate</h4>
-For ex: a certificate valid for 1 year for <i>myproxy.local</i>
-<pre><code class="lang-bash">
-
-
-sudo openssl req -x509 -nodes -days 365 \
-  -newkey rsa:2048 \
-  -keyout /etc/nginx/ssl/myproxy.local.key \
-  -out /etc/nginx/ssl/myproxy.local.crt \
-  -subj "/CN=myproxy.local"
-
-
-</code>
-</pre>
-<b>Explanation</b>
-
-
--x509 → generate a self-signed cert, not a CSR
-
-
--nodes → no passphrase on private key (so Nginx can read it automatically)
-
-
--days 365 → valid for 1 year
-
-
--newkey rsa:2048 → generate a 2048-bit RSA key
-
-
--subj "/CN=myproxy.local" → sets the certificate’s Common Name (hostname)
-
-
-4️⃣ <h4>Configure Nginx to use it</h4>
-Add a server block in <i>/etc/nginx/sites-available/default</i>
-(or your own config):
-<pre><code class="lang-bash">
-server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
-    server_name myproxy.local;
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
-
-
-    location / {
-         # First attempt to serve request as file, then
- # as directory, then fall back to displaying a 404.
- try_files $uri $uri/ =404;
-    }
-
-
-    ssl_certificate     /etc/nginx/ssl/myproxy.local.crt;
-    ssl_certificate_key /etc/nginx/ssl/myproxy.local.key;
-}
-
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name myproxy.local;
-    return 301 https://$host$request_uri;
-}
-
-
-</code>
-</pre>
-
-
-- Check config validity with <b>sudo nginx -t</b>
-
-
-5️⃣ <h4>Restart Nginx</h4>
-Restart and then follow this guide: <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu#step-2-configuring-nginx-to-use-ssl">Configure-Nginx</a>
--Maybe also test if encryption works, see <b>Part2</b> (below) for that
-
-
-
-<h3>Adjust hosts file on Host machine</h3>
-At the end, we need to create a entrance in <i>/etc/hosts</i>
-on the Host machine (not the VM ! ) 
-For the example config from above we would add
-<b> 127.0.0.1        myproxy.local</b>
-After this we should be able to just enter
-<i>https://myproxy.local:${PORT}</i>
-Where ${PORT} is the Port from Virtualbox
-NAT Portforwarding...
-</pre></div>
-</div>
-</div>
-<!--## Nginx-Approach-Part2 #################################################################################################################-->
-<div class="foldable-container" id="foldcontainer-Nginx-Approach-Part2">
-<h2 class="foldable-title" id="foldable-title-Nginx-Approach-Part2">Nginx-Approach-Part2</h2>
-<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('Nginx-Approach-Part2')" type="button">
-<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 10l5 5 5-5H7z"></path>
-</svg>
-</button>
-<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-Nginx-Approach-Part2', 'foldable-content-penButton-Nginx-Approach-Part2')" type="button">
-<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
-</svg>
-</button>
-<div class="foldable-content folded" id="foldable-content-Nginx-Approach-Part2">
-<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-Nginx-Approach-Part2" onclick="save_editable_content('Current-Work','editable-paragraph-Nginx-Approach-Part2', 'page-folder')" type="button">
-<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 20h9"></path>
-<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
-</svg>
-</button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Nginx-Approach-Part2"><pre>At this point, it should be possible to connect to the Nginx-Webserver, that
-is setup on the VM, via <i>https</i>. But the Browser will still flag this as
-a <b> Not Secure </b> connection.
-
-<h3>How to manually identify if Stuff gets really encrypted ?</h3>
-To identify this we can use a combination of <b>curl</b> and <b>tcpdump</b>
-
-<h4>Test on the VM</h4>
-- <b>curl -v</b> the Website, which should show the content decrypted. Important
-is that we should see something like :
-
-* TLSv1.3 (OUT), TLS handshake, Client hello (1):
-* TLSv1.3 (IN), TLS handshake, Server hello (2):
-* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
-* TLSv1.3 (IN), TLS handshake, Certificate (11):
-* TLSv1.3 (IN), TLS handshake, CERT verify (15):
-* TLSv1.3 (IN), TLS handshake, Finished (20):
-* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
-* TLSv1.3 (OUT), TLS handshake, Finished (20):
-<b>More infos at: </b><a href="../Security/Security-SSL-Certificates.html">TLS-Section</a>
-
-This means the
-<pre><code class="lang-bash">
-# Change to whatever IP/Port expected
-curl -vk https://127.0.0.1:443/
-</code>
-</pre>
-
-- Capture packages on the VM. This should give encrypted output.
-so to say we look what comes out the "pipe" on the arrival-side. Which
-at this point is of course still encrypted.
-<pre><code class="lang-bash">
-#Change to whatever port and interface
-sudo tcpdump -i enp0s3 -nn -s 0 -A port 443
-</code>
-</pre>
-<h4>Test on the Host machine</h4>
-On the <b>Host</b> we can basically do the same
-aso above on the <b>Guest-VM</b> and we should also
-get similar outputs, since we just send this from a different
-host to Nginx ( not on the Guest but now on the Host )
-
-<pre><code class="lang-bash">
-placeholder
-</code>
-</pre>
-<h2 class="highlighteryellow">Simulate gitlabrunner Env. for local testing</h2>
-
-<b>First just using the Nginx-Repo and Image</b>
-
-- Pull the image that is used on the gitlabrunner:
-<pre><code class="lang-bash">registry.gitlab.com/toccoag/base-images/debian:stable-podman</code></pre>
-
-- Clone the Repo:
-<pre><code class="lang-bash">git clone git@gitlab.com:toccoag/openshift-nginx.git</code></pre>
-
-- Run the container and mount the repo into it, so that all files etc. are
-available for the podman build that is performed afterwards:
-<pre><code class="lang-bash">
-podman run -it --rm \
-  # --privileged \ # not sure about that one
-  -v $(pwd):/var/lib/containers \
-  -w /var/lib/containers \
-  registry.gitlab.com/toccoag/base-images/debian:stable-podman \
-  /bin/bash
-</code></pre>
-<div class="frame">It's <b>important</b> that we mount to <i>/var/lib/containers</i>
-otherwise we probably get an fuse-overlayfs error later
-see: <a href="https://github.com/containers/buildah/issues/3666#issuecomment-989295318">This post</a></div>
-after this we should be in the container.
-
-- Performe the steps from <i>gitlab-ci.yml</i> file manually
-Output from running the integration tests:
-<pre><code class="lang-bash">
-root@3fe2a4565f6e:/var/lib/containers# ./tests/integration_tests.py 
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "GET /200 HTTP/1.1" 200 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "GET /cache HTTP/1.1" 200 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "GET /cache HTTP/1.1" 200 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "GET /cache HTTP/1.1" 200 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "HEAD /cache HTTP/1.1" 200 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "GET /method HTTP/1.1" 200 -
-{'Server': 'nginx', 'Date': 'Fri, 10 Oct 2025 10:43:12 GMT', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'X-Method-Received': 'GET', 'Some-Always-Header': 'some always "value"', 'Some-Header': 'some "value"', 'X-Cache': 'MISS', 'X-AppServer-Status': '200'}
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "HEAD /method HTTP/1.1" 200 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "GET /200 HTTP/1.1" 200 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "GET /404 HTTP/1.1" 404 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:43:12] "GET /500 HTTP/1.1" 500 -
-Testing 4 minute timeout. Be patient.
-::ffff:127.0.0.1 - - [10/Oct/2025 10:47:12] "GET /time=240 HTTP/1.1" 200 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:47:12] "GET /websocket HTTP/1.1" 101 -
-::ffff:127.0.0.1 - - [10/Oct/2025 10:47:12] "GET /no-websocket HTTP/1.1" 200 -
-</code></pre>
-
-</pre></div>
-</div>
-</div>
-
 </div>
 </div>
 </div>
-</body></html><!--## Apache-Approach #################################################################################################################-->
+</body></html><!--## deploy-to-shared-imagestream #################################################################################################################--><!--## run-apache-on-PINP-env #################################################################################################################--><!--## Apache-Approach #################################################################################################################-->
