@@ -9,9 +9,15 @@ body {
     width: fit-content;
 }
 
-h1, h2, h3, h4, h5, h6, ul, ol, p {
+h1,h3, h4, h5, h6, ul, ol, p {
   margin-top: 0.3em;
   margin-bottom: 0.3em;
+}
+
+h2 {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  color: yellow;
 }
 
 .foldable-content h3 {
@@ -38,6 +44,16 @@ h1, h2, h3, h4, h5, h6, ul, ol, p {
 
 i {
 color: rgb(64, 134, 240)
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
 }
 
 /* Sidebar enclosure */
