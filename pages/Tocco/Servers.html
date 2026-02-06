@@ -445,7 +445,7 @@ probably just change the owners manually via <b>ALTER TABLE</b> command.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Backup-Locations"><html><head></head><body><pre><h4>VSHN  Seitig</h4>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Backup-Locations"><pre><h4>VSHN  Seitig</h4>
 
 VSHN's backup setup involves both
 
@@ -517,7 +517,7 @@ Nov 4 04:26:14 backup2 kernel: [402009.582890] sky2 0000:03:00.0: error interrup
 Nov 4 04:26:14 backup2 kernel: [402009.583329] sky2 0000:03:00.0 eth0: rx error, status 0x7ffc0001 length 1236
 </code></pre>
 </div>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </div>
@@ -1074,7 +1074,8 @@ ADSL-Backupline connections Nov25: 
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Sophos-Firewall"><pre><h1 class="highlighteryellow">Old Sophos Firewall, hopefully soon gone (Tocco-Office)</h1>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Sophos-Firewall"><html><head></head><body><pre><h1 class="highlighteryellow">Old Sophos Firewall,
+hopefully soon gone (Tocco-Office)</h1>
 
 
 <h2 class="highlighterred">Problems</h2>
@@ -1095,6 +1096,10 @@ ADSL-Backupline connections Nov25: 
 
 -  Access the firewall via <i>Browser : https://[2001:8e3:5396:c92::1]:4444</i> if in VPN
 
+- First we tried to set the mtu of the firewalls ipv6 port to 1480, which did not help.
+
+- <strong class="highlightergreen">Solved</strong>: We had to set a different MTU level to 1480, that fasc found
+  which is kind of like setting the mtu to 1480 on every users pcs interface...
 
 <h2 class="highlighteryellow">Restore Backups </h2>
 Configurations get sent every Sunday to the admin@tocco.ch/backup mail-box, as encrypted file.
@@ -1103,7 +1108,7 @@ If main Firewall goes down, activate seconde one - enter the configuration menu 
 and on left side go to "System -&gt; Backup and firmware"
 
 There we can upload the file and enter the key to decrypt the file (Ansible-Vault)
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 <!--## autorestore.vm.tocco.ch #################################################################################################################-->

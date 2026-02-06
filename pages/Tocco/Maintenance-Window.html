@@ -383,7 +383,7 @@ ssh backup02.tocco.ch 'sudo mount /offline; ls /offline/borg_repos; sudo umount 
 - RSYNC: check uage history at: <a href="https://www.rsync.net/am/view_usage_hist.html?uid=zh2366"> rsync.net </a>
 
 <h3>Check for unused DBs and cleanup if necessary:</h3>
-<i>tco dbs unused</i>
+<i>tco dbs unused</i> + check the <b>manual</b> Deployment dump folders / delete old dumps.
 
 <h3>Check error and info logs of autorestore-vm:</h3>
 <pre><code class="lang-bash">
@@ -431,7 +431,16 @@ and apply the changes via <i>ansible-playbook playbook.yml -l git.tocco.ch -t ge
 <a href="https://devops-docs.tocco.ch/updates/automated_updates.html">Docs-Ansible-Updates</a>
 (Exclude host <b>-l '!backup02.tocco.ch'</b> or multiple with <b>-l '!backup02.tocco.ch:!artifactory01.tocco.ch:!...')
 
+
 <pre><code class="lang-bash">ansible-playbook playbooks/install_updates/main.yml -l '!tcagent*.tocco.ch:!artifactory01.tocco.ch' -t all,reboot</code></pre>
+<div class="frame">As long as jfrog can't be updated, we still have to update the vm itselfe, so do manual updates with :
+<pre><code class="lang-bash">
+
+sudo apt-mark hold jfrog-artifactory-oss
+sudo apt full-upgrade
+sudo apt-mark unhold jfrog-artifactory-oss
+</code></pre>
+</div>
 </b></pre></body></html></div>
 </div>
 </div>
