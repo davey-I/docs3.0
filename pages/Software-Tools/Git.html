@@ -78,7 +78,7 @@
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-General-Git-Tips"><html><head></head><body><h3>Adjust Commit History</h3><br/>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-General-Git-Tips"><h3>Adjust Commit History</h3><br/>
 <pre><ul>
 <li>interactive rebase starten ( for ex. 3 commits should be adjusted ~3 ): <b>git rebase -i HEAD~3</b></li><br/>
 <li>Commit lines can then be cut, moved, pasted as desired, directly in opened vim-editor</li><br/>
@@ -118,7 +118,7 @@ determine a new commit-message or just comment out all, except the one we want t
     switching branches, creating branches, and checking out files,
     which is why <b>git switch</b> was introduced later to make this clearer.
 </div>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 <!--## Rebase #################################################################################################################-->
@@ -161,7 +161,6 @@ determine a new commit-message or just comment out all, except the one we want t
 </div>
 </div>
 </div>
-
 <!--## gitignore #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-gitignore">
 <h2 class="foldable-title" id="foldable-title-gitignore">gitignore</h2>
@@ -197,46 +196,69 @@ determine a new commit-message or just comment out all, except the one we want t
   <li>Create a file named <code>.gitignore</code> in the root of your repository if it doesn't exist.</li>
   <li>Add patterns to specify files, file types, or directories to ignore.</li>
 </ul>
-
-
 <h3>Ignore Specific Files</h3>
 <ul>
   <li><code>filename.txt</code> → ignores a specific file in the root directory.</li>
   <li><code>path/to/file.log</code> → ignores a specific file in a subdirectory.</li>
 </ul>
-
-
 <h3>Ignore File Extensions</h3>
 <ul>
   <li><code>*.log</code> → ignores all files ending in <code>.log</code>.</li>
   <li><code>*.tmp</code> → ignores all temporary files.</li>
 </ul>
-
-
 <h3>Ignore Folders</h3>
 <ul>
   <li><code>foldername/</code> → ignores the folder and all its contents.</li>
   <li><code>logs/</code> → ignores the <code>logs</code> directory.</li>
 </ul>
-
-
 <h3>Negating Patterns (Include After Ignore)</h3>
 <ul>
   <li><code>*.log</code> ignores all <code>.log</code> files.</li>
   <li><code>!important.log</code> keeps <code>important.log</code> tracked even if above pattern exists.</li>
 </ul>
-
-
 <h3>Important Notes</h3>
 <ul>
   <li><code>.gitignore</code> only affects files not yet tracked by Git.</li>
   <li>To stop tracking a file already in Git: <code>git rm --cached ${FILENAME}</code></li>
   <li>Use <code>git status</code> to confirm ignored files are not staged.</li>
 </ul>
-
 </div>
 </div>
 </div>
 
-
+<!--## git-stash #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-git-stash">
+<h2 class="foldable-title" id="foldable-title-git-stash">git-stash</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('git-stash')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Git','editable-paragraph-git-stash', 'foldable-content-penButton-git-stash')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-git-stash" onclick="add_subdiv('editable-paragraph-git-stash')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-git-stash">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-git-stash" onclick="save_editable_content('Git','editable-paragraph-git-stash', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-git-stash"><html><head></head><body><pre><h2>Git stash things</h2>
+- git stash is not branch-specific , but "global" per repository
+</pre></body></html></div>
+</div>
+</div>
 </body></html>
