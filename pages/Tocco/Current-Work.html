@@ -619,7 +619,6 @@ ________________________________________________________________________________
 </pre></div>
 </div>
 </div>
-
 <!--## add-controlling-via-env #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-add-controlling-via-env">
 <h2 class="foldable-title" id="foldable-title-add-controlling-via-env">add-controlling-via-env</h2>
@@ -640,7 +639,7 @@ ________________________________________________________________________________
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-add-controlling-via-env"><html><head></head><body><pre><h3>Ansible Part</h3>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-add-controlling-via-env"><pre><h3>Ansible Part</h3>
 - changes had to be applied to <b>global.yml</b> at the end:
   <pre><code class="lang-yaml"># apache2 turn on/off mod_security(WAF), options: DetectionOnly,On,Off
   SEC_RULE_ENGINE: '{{ mod_security_state }}'
@@ -658,8 +657,72 @@ that can later be used directly in the modsecurity / RESP... file 
 
 <h3>Containerfile Part</h3>
 
+- All single "echo ..." commands were reduced to two:
+<pre><code class="lang-bash">
+RUN echo 'PassEnv CRS_EXCEPTIONS' &gt;&gt; /etc/modsecurity/crs/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf
+RUN echo '${CRS_EXCEPTIONS}' &gt;&gt; /etc/modsecurity/crs/RESPONSE-999-EXCLUSION-RULES-AFTER-CRS.conf</code></pre>
+These pass the env-var from os to apache and use it in the second one for the exception directives.
+
+- In theory, all other aspects of the container could also be controlled by this, question is how much is usefull ?
+
 
 <h3>modsecurity config Part</h3>
+- Instead of the hard coded "<b>SecRuleEngine On</b>
+<pre><code class="lang-bash">PassEnv SEC_RULE_ENGINE
+SecRuleEngine ${SEC_RULE_ENGINE}</code></pre>
+</pre></div>
+</div>
+</div>
+
+<!--## nginx-to-webserver-renaming #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-nginx-to-webserver-renaming">
+<h2 class="foldable-title" id="foldable-title-nginx-to-webserver-renaming">nginx-to-webserver-renaming</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('nginx-to-webserver-renaming')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Current-Work','editable-paragraph-nginx-to-webserver-renaming', 'foldable-content-penButton-nginx-to-webserver-renaming')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-nginx-to-webserver-renaming">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-nginx-to-webserver-renaming" onclick="save_editable_content('Current-Work','editable-paragraph-nginx-to-webserver-renaming', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-to-webserver-renaming"><html><head></head><body><pre>- before applying the apache2-webserver all nginx containers
+  on Openshift should be renamed to "webserver" so it matches
+  the env-variable set in global.yml etc.
+
+- it also makes live easier later, for applying the apache2 container
+
+<h4>Steps</h4>
+
+- roll <b>abctest</b> back to old state (container=nginx)
+
+- create new branch <i> dain/webserver-container-renaming </i> for the
+  webserver-renaming changes and apply to <b>abctest</b>
+
+- <b>Wichtig</b> für das ein "batch-playbook" run
+   müsste global das <i>webserver_enable_image_change_trigger: false</i> auf true 
+   gesetzt werden, damit autorollout klappt.. <span style="color: red">not sure if that must be anymore</span>
+
+- With the latest changes, there is no need to remove the whole dc anymore
+  there is a new function in the <i>filter_plugins</i> that takes care of the container
+  also the <span style="color: red">409 Error</span> was avoided by skipping some parts
+  not important for the renaming of the container.
+
+- With thes state from above, a old-setup ( with 'nginx' container) can be taken
+  and we basically only have to add <b>webserver_renaming: true</b> to the <i>config.yml</i>
+  ( lets see what <span style="color: orange"> peges-review</span> gives )
+
+- These changes first would have to be applied in as a "batch-playbook" run at weekend or smth.
+   and it is not really necessary to merge, if the apache2 changes get merged right away... ? 
+
 </pre></body></html></div>
 </div>
 </div>
