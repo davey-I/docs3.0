@@ -563,7 +563,6 @@ You can use <i>EOT</i> if required for a process or execution.
 </pre></div>
 </div>
 </div>
-
 <!--## create-envvars-linux #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-create-envvars-linux">
 <h2 class="foldable-title" id="foldable-title-create-envvars-linux">create-envvars-linux</h2>
@@ -594,14 +593,118 @@ You can use <i>EOT</i> if required for a process or execution.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-create-envvars-linux"><html><head></head><body><pre># envvars #variables # env variables 
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-create-envvars-linux"><pre># envvars #variables # env variables 
 <h2>Create environment variables</h2>
 
 Different ways to create env-variables
 <table border="1"><tbody><tr><th>Command</th><th>Type</th><th>Visibility</th><th>Scope</th><th>Persistence</th><th>`printenv` Output</th></tr><tr><td><code>BANANA=rama</code></td><td>Shell Variable</td><td>Invisible</td><td>Current shell only</td><td>Temporary (session-based)</td><td>Will NOT appear</td></tr><tr><td><code>export BANANA=rama</code></td><td>Environment Variable</td><td>Visible</td><td>Current shell and child processes</td><td>Session-based</td><td>Will appear</td></tr><tr><td><code>echo 'export BANANA=rama' &gt;&gt; ~/.bashrc</code></td><td>Persistent Environment Variable</td><td>Visible</td><td>All new shell sessions</td><td>Permanent until removed</td><td>Will appear in all new terminals</td></tr>
 </tbody></table>
 
-Use <pre><code class="lang-bash">printenv</code></pre> to print available env-vars</pre></body></html></div>
+Use <pre><code class="lang-bash">printenv</code></pre> to print available env-vars</pre></div>
+</div>
+</div>
+
+<!--## reuse-disks-after-raid-usage #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-reuse-disks-after-raid-usage">
+<h2 class="foldable-title" id="foldable-title-reuse-disks-after-raid-usage">reuse-disks-after-raid-usage</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('reuse-disks-after-raid-usage')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Linux-Ubuntu','editable-paragraph-reuse-disks-after-raid-usage', 'foldable-content-penButton-reuse-disks-after-raid-usage')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<button class="create-subdiv" id="create-subdiv-reuse-disks-after-raid-usage" onclick="add_subdiv('editable-paragraph-reuse-disks-after-raid-usage')" type='*button"'>
+<svg class="add-tag-icon" fill="none" height="22" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg">
+<!-- < and > symbols -->
+<path d="M6 8l-4 4 4 4"></path> <!-- Left angle bracket -->
+<path d="M18 8l4 4-4 4"></path> <!-- Right angle bracket -->
+<!-- Plus sign in center -->
+<path d="M12 10v4"></path>
+<path d="M10 12h4"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-reuse-disks-after-raid-usage">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-reuse-disks-after-raid-usage" onclick="save_editable_content('Linux-Ubuntu','editable-paragraph-reuse-disks-after-raid-usage', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-reuse-disks-after-raid-usage"><html><head></head><body><h2>Clean and Prepare /dev/sdb for Reuse</h2>
+
+<p>Your disk has <b>RAID metadata</b> from previous use. You must remove this before reusing the disk, otherwise the system may try to activate old RAID arrays.</p>
+
+<hr/>
+
+<h3>Step 1: Stop active RAID arrays</h3>
+
+<p>If RAID arrays are running, stop them first. This prevents the system from trying to use them while you're cleaning the disk.</p>
+
+<pre><code class="lang-bash">sudo mdadm --stop /dev/md127
+sudo mdadm --stop /dev/md126
+sudo mdadm --stop --scan</code></pre>
+
+<p><b>Why?</b> RAID arrays keep data in memory. If you don't stop them, the kernel will continue managing them and may interfere with disk operations.</p>
+
+<hr/>
+
+<h3>Step 2: Zero RAID superblocks</h3>
+
+<p>RAID metadata is stored in <b>superblocks</b> on the disk partitions. These must be erased, or the system will recognize the disk as part of an old RAID array.</p>
+
+<pre><code class="lang-bash">sudo mdadm --zero-superblock /dev/sdb1
+sudo mdadm --zero-superblock /dev/sdb2
+sudo mdadm --zero-superblock /dev/sdb5</code></pre>
+
+<p><b>Why?</b> Even if you delete partitions or reformat the disk, RAID superblocks can persist. When you reconnect the disk, <i>mdadm</i> will scan for these superblocks and try to reassemble the old arrays. Zeroing them prevents this.</p>
+
+<hr/>
+
+<h3>Step 3: Wipe all filesystem signatures</h3>
+
+<p>Remove all filesystem and partition table metadata from the entire disk.</p>
+
+<pre><code class="lang-bash">sudo wipefs --all --force /dev/sdb</code></pre>
+
+<p><b>Why?</b> Old partition tables and filesystem signatures can confuse the kernel. <i>wipefs</i> removes all traces so the disk appears completely blank.</p>
+
+<hr/>
+
+<h3>Step 4: Create fresh partition table</h3>
+
+<p>Initialize a new GPT partition table to prepare the disk for use.</p>
+
+<pre><code class="lang-bash">sudo parted /dev/sdb mklabel gpt</code></pre>
+
+<p><b>Why?</b> This overwrites any remaining partition table data and gives you a clean slate to work with.</p>
+
+<hr/>
+
+<h3>Step 5: Verify the disk is clean</h3>
+
+<pre><code class="lang-bash">lsblk -f | grep sdb</code></pre>
+
+<p>You should see only <b>sdb</b> with no partitions or filesystem signatures listed.</p>
+
+<hr/>
+
+<h3>Important: Reboot if partitions persist</h3>
+
+<p>If partitions still appear in <b>lsblk</b> after these steps, the <i>kernel cache</i> is holding old partition information in memory. Reboot to force the kernel to re-read the disk:</p>
+
+<pre><code class="lang-bash">sudo reboot</code></pre>
+
+<p>After rebooting, verify again:</p>
+
+<pre><code class="lang-bash">lsblk -f | grep sdb</code></pre>
+
+<p><b>Why?</b> The kernel caches partition tables. Even though the disk is clean, the kernel doesn't know this until it rescans the disk on boot.</p>
+
+</body></html></div>
 </div>
 </div>
 </body></html><!--## Only-Use-CMD #################################################################################################################-->
