@@ -393,55 +393,21 @@ ssh autorestore.vm.tocco.ch 'sudo cat /home/autorestore/error.log'
 </code>
 </pre>
 
-<h3><s>Check Gerrit updates</s>(Wurde 2026 nach Gitlab transferiert)</h3>
-<ul>
-<li>Updates are not fully automated and checking for updates and installing needs to be done manually.</li>
-
-<li>check installed version on https://git.tocco.ch (in footer)</li>
-
-<li>check available releases on the Gerrit Code Review page</li>
-
-<li>If we are on the newest version nothing has to be done ✅ </li>
-
-<li>If there is a new version <a href="https://www.gerritcodereview.com/">Go to Gerrit Code Review</a> 
-and find newest version Rightclick the download link and copy it. The link should look something like:
-<i>https://gerrit-releases.storage.googleapis.com/gerrit-3.10.0.war</i></li>
-
-<li>This copied link goes into <b>ansible/roles/gerrit/vars/main.yml</b></li>
-
-<li>We also  need to download the package <b>ourself (locally)</b> and build a hash of it by running
-<pre><code class="lang-bash">
- sha256sum gerrit-{version}.war
-</code>
-
-</pre></li>
-This hash also need to be added to <b>ansible/roles/gerrit/vars/main.yml</b>
-
-<li>Then we change dir to <b>${ANSIBLE_GIT_REPO_ROOT_DIRECTORY}/servers/</b>
-and apply the changes via <i>ansible-playbook playbook.yml -l git.tocco.ch -t gerrit</i></li>
-
-</ul>
 <h3>Check for firewall updates</h3>
 <a href="./Servers.html">OPNsense</a>
 
 <h3>Check Grafana updates</h3>
 <a href="https://devops-docs.tocco.ch/updates/grafana.html">Docs-Grafana-Updates</a>
 
-<h3>Install updates via Ansible</h3>
-<a href="https://devops-docs.tocco.ch/updates/automated_updates.html">Docs-Ansible-Updates</a>
-(Exclude host <b>-l '!backup02.tocco.ch'</b> or multiple with <b>-l '!backup02.tocco.ch:!artifactory01.tocco.ch:!...')
+<h3>apt updates</h3>
+All automated, since migration to IWay. Only thing left to do for now:
+- check <b>artifactory-old vm</b> ~all 10months, create snapshot and check if updates are fixes
+- check <b>Teamcity-Server</b> GUI ( there is a "check updates" button somewhere) 
+  in theory we should receive an E-Mail if updates are available, but better double check
+- check if <b>OpnsSense FW</b> has Upgrades available, maybe we can find a Mailing list to get notified
+  for available updates, but until that, check manually
 
-
-<pre><code class="lang-bash">ansible-playbook playbooks/install_updates/main.yml -l '!tcagent*.tocco.ch:!artifactory01.tocco.ch' -t all,reboot</code></pre>
-<div class="frame">As long as jfrog can't be updated, we still have to update the vm itselfe, so do manual updates with :
-<pre><code class="lang-bash">
-
-sudo apt-mark hold jfrog-artifactory-oss
-sudo apt full-upgrade
-sudo apt-mark unhold jfrog-artifactory-oss
-</code></pre>
-</div>
-</b></pre></body></html></div>
+</pre></body></html></div>
 </div>
 </div>
 </body></html><!--## Artifactory-Space-Issues #################################################################################################################-->
