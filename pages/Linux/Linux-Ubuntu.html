@@ -261,7 +261,13 @@ If you want to tar the current directory, use <b>.</b> to designate that.
 
 
 - If we click on the "gear" icon we can then do different things like 
+
+
  <b>format</b> or <b>adjust partitions</b> etc.
+
+
+<strong style="color: red">IF YOU WANT TO BE SURE IT WORKS ON WINDOWS JUST DO IT WITH THE UBUNTU APP !! AND NOT CMDs</strong>
+
 </pre>
 <div class="foldable-container" id="foldcontainer-Only-Use-CMD">
 <h2 class="foldable-title" id="foldable-title-Only-Use-CMD">Only-Use-CMD</h2>
@@ -282,7 +288,12 @@ If you want to tar the current directory, use <b>.</b> to designate that.
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Only-Use-CMD"><pre><ol>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-Only-Use-CMD"><html><head></head><body><pre><strong style="color: red">
+
+AGAIN.. IF YOU WANT TO BE SURE IT WORKS ON WINDOWS JUST DO IT WITH THE UBUNTU APP !! AND NOT CMDs
+OR TRY AND MAKE SURE YOU ADD LABELS / DATENTRAEGER-BUCHSTABEN SOMEHOW (not sure if it is that but could be)
+</strong>
+<ol>
 <li>Open the Terminal (Ctrl+Alt+T)</li>
 
 
@@ -330,9 +341,11 @@ Once again pay attention to this name as there will not be any protection to pre
 <li>
 Issue the command below to format the new volume:
 <pre><code class="lang-bash">
-sudo mkfs.vfat /dev/${WHATEVER} 
+sudo mkfs.exfat /dev/${WHATEVER} 
 </code>
-Replace /dev/${WHATEVER} with your corresponding device.
+
+<p>Replace /dev/${WHATEVER} with your corresponding device.
+If use on Windows <i>and</i> Linux use <b>exFAT</b></p>
 </pre>
 </li>
 <li>Eject the device:
@@ -343,7 +356,107 @@ sudo eject /dev/sdb
 </li>
 </ul>
 </ol>
-</pre></div>
+</pre></body></html></div>
+</div>
+</div>
+
+<!--## no-disk-shown-in-windows-explorer #################################################################################################################-->
+<div class="foldable-container" id="foldcontainer-no-disk-shown-in-windows-explorer">
+<h2 class="foldable-title" id="foldable-title-no-disk-shown-in-windows-explorer">no-disk-shown-in-windows-explorer</h2>
+<button class="foldable-content-unfoldbutton" id="foldable-content-unfoldbutton-newchapter" onclick="toggleFoldableContent('no-disk-shown-in-windows-explorer')" type="button">
+<svg class="arrow-icon" fill="currentColor" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 10l5 5 5-5H7z"></path>
+</svg>
+</button>
+<button class="foldable-content-edittoggle" onclick="fetchEditableContent('Linux-Ubuntu','editable-paragraph-no-disk-shown-in-windows-explorer', 'foldable-content-penButton-no-disk-shown-in-windows-explorer')" type="button">
+<svg class="wrench-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.7 19.3l-4.1-4.1c.6-1.1.9-2.3.9-3.5 0-3.9-3.1-7-7-7-1.3 0-2.5.3-3.5.9l3.3 3.3-4 4-3.3-3.3C4.3 10.5 4 11.7 4 13c0 3.9 3.1 7 7 7 1.3 0 2.5-.3 3.5-.9l4.1 4.1c.4.4 1 .4 1.4 0l2.7-2.7c.4-.4.4-1 0-1.4z"></path>
+</svg>
+</button>
+<div class="foldable-content folded" id="foldable-content-no-disk-shown-in-windows-explorer">
+<button class="foldable-content-penButton-hidden" id="foldable-content-penButton-no-disk-shown-in-windows-explorer" onclick="save_editable_content('Linux-Ubuntu','editable-paragraph-no-disk-shown-in-windows-explorer', 'page-folder')" type="button">
+<svg fill="none" height="30" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 20h9"></path>
+<path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+</svg>
+</button>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-no-disk-shown-in-windows-explorer"><h2>Fix Windows not showing disk in Explorer</h2>
+
+<p>Your disk is formatted as <b>FAT32</b> and shows in Device Manager, but Windows Explorer can't see it because it doesn't have a <b>drive letter assigned</b>.</p>
+
+<hr/>
+
+<h3>Step 1: Open Disk Management</h3>
+
+<p>Press <b>Windows + X</b> on your keyboard.</p>
+
+<p>A menu will appear. Click on <b>Disk Management</b>.</p>
+
+<p><i>Alternative:</i> Search for "Disk Management" in the Windows Start menu and click it.</p>
+
+<p><b>Why?</b> Disk Management is where Windows assigns drive letters to disks. Without a drive letter, Windows Explorer cannot access the disk.</p>
+
+<hr/>
+
+<h3>Step 2: Locate your disk</h3>
+
+<p>In Disk Management, look at the list of disks. Find your <b>476 GB</b> disk (or whatever size your sdc is).</p>
+
+<p>Look for the partition labeled <b>FAT32</b>. It may appear in <i>black</i> or with a <b>?</b> symbol if no drive letter is assigned.</p>
+
+<p><b>Why?</b> You need to identify which disk is yours before making changes.</p>
+
+<hr/>
+
+<h3>Step 3: Right-click the partition</h3>
+
+<p>Right-click on the <b>FAT32</b> partition for your disk.</p>
+
+<p>A context menu will appear with options like <b>Properties</b>, <b>Format</b>, or <b>Delete Volume</b>.</p>
+
+<hr/>
+
+<h3>Step 4: Assign a drive letter</h3>
+
+<p>Click on <b>Properties</b>.</p>
+
+<p>In the window that opens, look at the top. You should see a field showing the drive letter (like <b>D:</b>, <b>E:</b>, etc.).</p>
+
+<p>If it says <b>No drive letter</b> or is blank, you need to assign one:</p>
+
+<ul>
+  <li>Close Properties and right-click the partition again</li>
+  <li>Select <b>Rename or Change Drive Letter and Path</b></li>
+  <li>Click <b>Add</b></li>
+  <li>Choose an available drive letter from the dropdown (like <b>E:</b> or <b>F:</b>)</li>
+  <li>Click <b>OK</b></li>
+</ul>
+
+<p><b>Why?</b> Windows Explorer only shows disks that have a drive letter. Without one, the disk is invisible to Explorer.</p>
+
+<hr/>
+
+<h3>Step 5: Check Explorer</h3>
+
+<p>Open <b>File Explorer</b> (Windows + E).</p>
+
+<p>Your disk should now appear in the left sidebar under <b>This PC</b> with the drive letter you assigned (e.g., <b>E: New Volume</b>).</p>
+
+<p>You can now access the disk and copy files to it.</p>
+
+<hr/>
+
+<h3>If it still doesn't appear:</h3>
+
+<p>Go back to Linux and reformat the disk to ensure it's properly initialized:</p>
+
+<pre><code class="lang-bash">sudo mkfs.vfat -F 32 /dev/sdc1</code></pre>
+
+<p>Then plug it back into Windows and repeat the steps above.</p>
+
+<p><b>Why?</b> Reformatting ensures the disk has proper Windows filesystem structures that Windows recognizes.</p>
+
+</div>
 </div>
 </div>
 </div>
@@ -603,7 +716,6 @@ Different ways to create env-variables
 Use <pre><code class="lang-bash">printenv</code></pre> to print available env-vars</pre></div>
 </div>
 </div>
-
 <!--## reuse-disks-after-raid-usage #################################################################################################################-->
 <div class="foldable-container" id="foldcontainer-reuse-disks-after-raid-usage">
 <h2 class="foldable-title" id="foldable-title-reuse-disks-after-raid-usage">reuse-disks-after-raid-usage</h2>
@@ -634,77 +746,63 @@ Use <pre><code class="lang-bash">printenv</code></pre> to print available env-va
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-reuse-disks-after-raid-usage"><html><head></head><body><h2>Clean and Prepare /dev/sdb for Reuse</h2>
-
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-reuse-disks-after-raid-usage"><div class="frame">
+<p></p><h4>This guide is for disks that have been used in a raid-array and look something like this, when looked at with <b>lsblk</b></h4><p></p>
+<pre><code class="lang-bash">
+sdc                                                                                             
+├─sdc1      linux_raid_member 1.2   db01b:0 2c8cf926-cc74-17ee-9caa-2cac67cf71ef                
+│ └─md127                                                                                       
+├─sdc2                                                                                          
+└─sdc5      linux_raid_member 1.2   db01b:1 2e870b1c-0611-d8de-872b-344186c9b1cb                
+  └─md126 
+</code></pre>
+</div>
+<h2>Clean and Prepare disks for Reuse after used in raid array</h2>
 <p>Your disk has <b>RAID metadata</b> from previous use. You must remove this before reusing the disk, otherwise the system may try to activate old RAID arrays.</p>
-
 <hr/>
-
 <h3>Step 1: Stop active RAID arrays</h3>
-
 <p>If RAID arrays are running, stop them first. This prevents the system from trying to use them while you're cleaning the disk.</p>
-
 <pre><code class="lang-bash">sudo mdadm --stop /dev/md127
 sudo mdadm --stop /dev/md126
 sudo mdadm --stop --scan</code></pre>
-
 <p><b>Why?</b> RAID arrays keep data in memory. If you don't stop them, the kernel will continue managing them and may interfere with disk operations.</p>
-
 <hr/>
-
 <h3>Step 2: Zero RAID superblocks</h3>
-
 <p>RAID metadata is stored in <b>superblocks</b> on the disk partitions. These must be erased, or the system will recognize the disk as part of an old RAID array.</p>
-
 <pre><code class="lang-bash">sudo mdadm --zero-superblock /dev/sdb1
 sudo mdadm --zero-superblock /dev/sdb2
 sudo mdadm --zero-superblock /dev/sdb5</code></pre>
-
 <p><b>Why?</b> Even if you delete partitions or reformat the disk, RAID superblocks can persist. When you reconnect the disk, <i>mdadm</i> will scan for these superblocks and try to reassemble the old arrays. Zeroing them prevents this.</p>
-
 <hr/>
-
 <h3>Step 3: Wipe all filesystem signatures</h3>
-
 <p>Remove all filesystem and partition table metadata from the entire disk.</p>
-
 <pre><code class="lang-bash">sudo wipefs --all --force /dev/sdb</code></pre>
-
 <p><b>Why?</b> Old partition tables and filesystem signatures can confuse the kernel. <i>wipefs</i> removes all traces so the disk appears completely blank.</p>
-
 <hr/>
-
 <h3>Step 4: Create fresh partition table</h3>
-
 <p>Initialize a new GPT partition table to prepare the disk for use.</p>
-
 <pre><code class="lang-bash">sudo parted /dev/sdb mklabel gpt</code></pre>
-
 <p><b>Why?</b> This overwrites any remaining partition table data and gives you a clean slate to work with.</p>
+<div class="frame">
+<h4>If you get a : Information: You may need to update /etc/fstab.</h4>
+<p>The message is just a warning, not an error. It appears because parted detected that the disk might have been previously mounted.
+You only need to update <i>/etc/fstab</i> if you plan to automatically mount the disk on every boot. Since you just cleaned the disk and
+haven't set it up yet, you can ignore this message for now.
 
+If you want to set up automatic mounting later, you can do it then. For now, your disk is clean and ready to use.</p></div>
 <hr/>
-
 <h3>Step 5: Verify the disk is clean</h3>
-
 <pre><code class="lang-bash">lsblk -f | grep sdb</code></pre>
-
 <p>You should see only <b>sdb</b> with no partitions or filesystem signatures listed.</p>
-
 <hr/>
-
 <h3>Important: Reboot if partitions persist</h3>
-
 <p>If partitions still appear in <b>lsblk</b> after these steps, the <i>kernel cache</i> is holding old partition information in memory. Reboot to force the kernel to re-read the disk:</p>
-
 <pre><code class="lang-bash">sudo reboot</code></pre>
-
 <p>After rebooting, verify again:</p>
-
 <pre><code class="lang-bash">lsblk -f | grep sdb</code></pre>
-
-<p><b>Why?</b> The kernel caches partition tables. Even though the disk is clean, the kernel doesn't know this until it rescans the disk on boot.</p>
-
-</body></html></div>
+<p><b>Why?</b> The kernel caches partition tables. Even though the disk is clean, the kernel doesn't know this until it rescans the disk on boot. For further
+steps check the guide <b>format-usb-stick</b> further up the page</p>
+</div>
 </div>
 </div>
 </body></html><!--## Only-Use-CMD #################################################################################################################-->
