@@ -104,18 +104,14 @@ ethtool ${NIC-Name}
 <p>- WOL utilities typically require the target host's NIC MAC address get it with for ex. 
 <b>ip a </b> = link/ether 00:22:4d:ac:79:81 or <b>lshw -C network</b> = serial: </p>
 
-<p>- now we have to decide, do we use <i>etherwake</i> or <b>wakeonlan</b>
-<i>- etherwake</i> needs sudo. For more details check <a href="https://packages.debian.org/search?keywords=etherwake">etherwake</a>
-or <a href="https://packages.debian.org/search?keywords=wakeonlan">wakeonlan</a></p>
+
+<p>- now we have to setup <i>etherwake</i> on the controlling system <i>- etherwake</i> needs sudo.
+For more details check <a href="https://packages.debian.org/search?keywords=etherwake">etherwake</a></p>
 <hr/>
 <pre><code class="lang-bash">
 # setup and use etherwake
 sudo apt install etherwake
 sudo etherwake ${mac address}
-
-#OR wakonlan
-sudo apt install wakeonlan
-wakeonlan ${mac address}
 </code></pre>
 
 </body></html></div>
