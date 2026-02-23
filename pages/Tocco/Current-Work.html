@@ -298,9 +298,9 @@ a2enmod maxminddb"
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-geoIP-restriction-WordPress"><pre><h2 class="highlighteryellow">Step 1: Install mod_maxminddb (one-time setup)</h2>
-Since we need to do this without restarting Apache immediately, we can prepare everything first:
-bash# Copy  compiled module and database ( first via <b>scp</b> to home, then on server as root to..)
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-geoIP-restriction-WordPress"><html><head></head><body><pre><h2 class="highlighteryellow">Step 1: Install mod_maxminddb (one-time setup)</h2>
+<p>Since we need to do this without restarting Apache immediately, we can prepare everything first:
+bash# Copy  compiled module and database ( first via <b>scp</b> to home, then on server as root to..)</p>
 <pre><code class="lang-bash">
 cp mod_maxminddb.so /usr/lib/apache2/modules/
 cp GeoLite2-Country.mmdb /usr/local/share/
@@ -317,6 +317,13 @@ chmod 644 /usr/lib/apache2/modules/mod_maxminddb.so
 # To activate the new configuration, you need to run:
   systemctl restart apache2
 </code></pre>
+
+
+<p>steps until here (except the enabling) are already in ansible-playbook in role <i>wordpress</i>:
+- name: 'Apache2: add module and mmdb file for geoIP restriction'
+- name: 'Apache2: add string to load the mod_maxminddb module'</p>
+<hr/>
+
 
 <h2 class="highlighteryellow">Step 2: Create a reusable GeoIP include file</h2>
 Create <i>/etc/apache2/includes/geoip_restriction.conf</i>:
@@ -358,6 +365,15 @@ SetEnvIf Remote_Addr ^127\. AllowCountry
     Require env AllowCountry
 &lt;/requireall&gt;
 </code></pre>
+
+
+
+<strong style="color: purple">Ansible</strong>:
+- added the config from above to the <i>roles/wordpress/template/apache2</i> folder
+- until now, this got manually added to the <i>/etc/apache2/includes</i> folder. we need
+  to find a way, this can be configured via Ansible-Env-Vars
+- 
+
 
 <h2 class="highlighteryellow"> Step 3: Modify your VirtualHost template</h2>
 Update Ansible template to include the GeoIP restriction in the HTTPS VirtualHost:
@@ -426,7 +442,7 @@ Testing - Test on one low-traffic vhost first before rolling out to all customer
 Monitoring - Watch  error logs after deployment for unexpected 403s
 Communication - If any customers have legitimate users outside CH/DE/AT, coordinate first
 
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 <!--## apply-apache2-waf #################################################################################################################-->
@@ -694,7 +710,7 @@ SecRuleEngine ${SEC_RULE_ENGINE}</code></pre>
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-to-webserver-renaming"><html><head></head><body><pre>- before applying the apache2-webserver all nginx containers
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-to-webserver-renaming"><pre>- before applying the apache2-webserver all nginx containers
   on Openshift should be renamed to "webserver" so it matches
   the env-variable set in global.yml etc.
 
@@ -726,7 +742,7 @@ SecRuleEngine ${SEC_RULE_ENGINE}</code></pre>
 <h4>try with nginx-remove after creation of 3 containers</h4>
 
 - if done afterwards and no fetch in between = <b>409</b>
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 </div>
