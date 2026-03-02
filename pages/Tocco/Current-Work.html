@@ -738,6 +738,13 @@ So that we don't have to add a <i>webserver_replacement: true</i> i added :
       #webserver_replacement_apache: {{ true if dc_conf.resources[0].spec.triggers[2].imageChangeParams.from.name == 'nginx_docker_tag:stable' and {{ webserver_type }} == 'apache' }}
 </code></pre>
 to the <i>- name: create nice deploymentconfig</i> task, this compares webserver type with the current image tag
+
+<strong style="color: orange"> you might need to do a manual rollout after deployment ! </strong>
+
+
+<h4>Pege request to merge all env-vars int one <b>webserver_envs:</b>( WEBSERVER_)</h4>
+- this got applied and the dependencies in <i>openshift-nginx</i> and <i>openshift-apache2</i>
+  have been changed accordingly
 </pre></body></html></div>
 </div>
 </div>
