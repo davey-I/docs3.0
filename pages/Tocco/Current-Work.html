@@ -298,7 +298,7 @@ a2enmod maxminddb"
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-geoIP-restriction-WordPress"><pre><h2 class="highlighteryellow">Step 1: Install mod_maxminddb (one-time setup)</h2>
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-geoIP-restriction-WordPress"><html><head></head><body><pre><h2 class="highlighteryellow">Step 1: Install mod_maxminddb (one-time setup)</h2>
 <p>Since we need to do this without restarting Apache immediately, we can prepare everything first:
 bash# Copy  compiled module and database ( first via <b>scp</b> to home, then on server as root to..)</p>
 <pre><code class="lang-bash">
@@ -317,13 +317,11 @@ chmod 644 /usr/lib/apache2/modules/mod_maxminddb.so
 # To activate the new configuration, you need to run:
   systemctl restart apache2
 </code></pre>
-
-
+<strong style="color: purple">Ansible</strong>:
 <p>steps until here (except the enabling) are already in ansible-playbook in role <i>wordpress</i>:
-- name: 'Apache2: add module and mmdb file for geoIP restriction'
+- name: 'Apache2: add module and mmdb file for geoIP restriction
 - name: 'Apache2: add string to load the mod_maxminddb module'</p>
 <hr/>
-
 
 <h2 class="highlighteryellow">Step 2: Create a reusable GeoIP include file</h2>
 Create <i>/etc/apache2/includes/geoip_restriction.conf</i>:
@@ -366,14 +364,22 @@ SetEnvIf Remote_Addr ^127\. AllowCountry
 &lt;/requireall&gt;
 </code></pre>
 
-
-
 <strong style="color: purple">Ansible</strong>:
 - added the config from above to the <i>roles/wordpress/template/apache2</i> folder
-- until now, this got manually added to the <i>/etc/apache2/includes</i> folder. we need
-  to find a way, this can be configured via Ansible-Env-Vars
-- 
 
+   the task - name: 'Apache2: add geoIP restriction template to includes' adds this to 
+   <i>/etc/apache2/includes</i> folder.:
+<strong style="color: red">Aktueller Error</strong>:
+<pre><code class="lang-yaml">
+TASK [wordpress : Apache2: add geoIP restriction template to includes] *****************************************************
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+fatal: [wp2.stage.tocco.ch]: FAILED! =&gt; 
+    changed: false
+    msg: |-
+        Could not find or access '/apache2/geoip_restriction.conf' on the Ansible Controller.
+        If you are using a module and expect the file to exist on the remote, see the remote_src option
+</code></pre>
+  
 
 <h2 class="highlighteryellow"> Step 3: Modify your VirtualHost template</h2>
 Update Ansible template to include the GeoIP restriction in the HTTPS VirtualHost:
@@ -404,6 +410,20 @@ Update Ansible template to include the GeoIP restriction in the HTTPS VirtualHos
             Require all denied
         &lt;/Files&gt;
 &lt;/VirtualHost&gt;</code></pre>
+
+<strong style="color: purple">Ansible</strong>:
+- added if condition via wp_geoIP_restriction, to the site.conf in <i>templates</i>
+  <pre><code class="lang-bash">
+  {% if wp_geoip_restriction %}
+        # GeoIP Restriction - protect everything except ACME challenges
+        <locationmatch "^="" (?!\.well-known="" )"="">
+            Include includes/geoip_restriction.conf
+        </locationmatch>
+  {% endif %}
+  </code></pre>
+
+
+
 
 <h2 class="highlighteryellow"> Step 4: Deployment Strategy (minimize downtime)</h2>
 For a production deployment with minimal disruption:
@@ -442,7 +462,7 @@ Testing - Test on one low-traffic vhost first before rolling out to all customer
 Monitoring - Watch  error logs after deployment for unexpected 403s
 Communication - If any customers have legitimate users outside CH/DE/AT, coordinate first
 
-</pre></div>
+</pre></body></html></div>
 </div>
 </div>
 <!--## apply-apache2-waf #################################################################################################################-->
@@ -704,7 +724,7 @@ SecRuleEngine ${SEC_RULE_ENGINE}</code></pre>
 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"></path>
 </svg>
 </button>
-<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-to-webserver-renaming"><html><head></head><body><pre>- before applying the apache2-webserver all nginx containers
+<div class="editable-paragraph" contenteditable="false" id="editable-paragraph-nginx-to-webserver-renaming"><pre>- before applying the apache2-webserver all nginx containers
   on Openshift should be renamed to "webserver" so it matches
   the env-variable set in global.yml etc.
 
@@ -745,7 +765,7 @@ to the <i>- name: create nice deploymentconfig</i> task, this compares webserver
 <h4>Pege request to merge all env-vars int one <b>webserver_envs:</b>( WEBSERVER_)</h4>
 - this got applied and the dependencies in <i>openshift-nginx</i> and <i>openshift-apache2</i>
   have been changed accordingly
-</pre></body></html></div>
+</pre></div>
 </div>
 </div>
 
