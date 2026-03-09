@@ -371,13 +371,7 @@ SetEnvIf Remote_Addr ^127\. AllowCountry
    <i>/etc/apache2/includes</i> folder.:
 <strong style="color: red">Aktueller Error</strong>:
 <pre><code class="lang-yaml">
-TASK [wordpress : Apache2: add geoIP restriction template to includes] *****************************************************
-An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
-fatal: [wp2.stage.tocco.ch]: FAILED! =&gt; 
-    changed: false
-    msg: |-
-        Could not find or access '/apache2/geoip_restriction.conf' on the Ansible Controller.
-        If you are using a module and expect the file to exist on the remote, see the remote_src option
+None
 </code></pre>
   
 
@@ -421,9 +415,6 @@ Update Ansible template to include the GeoIP restriction in the HTTPS VirtualHos
         </locationmatch>
   {% endif %}
   </code></pre>
-
-
-
 
 <h2 class="highlighteryellow"> Step 4: Deployment Strategy (minimize downtime)</h2>
 For a production deployment with minimal disruption:
